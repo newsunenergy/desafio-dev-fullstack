@@ -1,0 +1,34 @@
+version: "3.5"
+
+services:
+  frontend:
+    container_name: "challenge_fe"
+    build: { context: ./frontend }
+    entrypoint: yarn frontend dev
+    depends_on:
+      - db
+    volumes:
+      - ./:/home/app
+    ports:
+      - 9900:5173
+
+  backend:
+    container_name: "challenge_be"
+    build: { context: ./backend }
+    entrypoint: yarn backend start:dev
+    depends_on:
+      - db
+    volumes:
+      - ./:/home/app
+    ports:
+      - 9901:3000
+
+  db:
+    container_name: "challenge_db"
+    image: mysql:8-debian
+    environment:
+      MYSQL_PASSWORD: carljohnson
+      MYSQL_USER: carljohnson
+      MYSQL_DATABASE: challenge
+    ports:
+      - 9902:3306
