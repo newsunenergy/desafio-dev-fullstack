@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  createdAt    DateTime @default(now())
+  email        String   @unique
+  nomeCompleto String
+  telefone     String
+  units        Unit[]
+}
+
+model Unit {
+  id                         String        @id @default(uuid()) @db.VarChar(36)
+  createdAt                  DateTime      @default(now())
+  codigoDaUnidadeConsumidora String        @unique
+  modeloFasico               PhaseModel
+  enquadramento              ChargingModel
+  Lead                       Lead?         @relation(fields: [leadId], references: [id])
+  leadId                     String?       @db.VarChar(36)
+  Consumo                    Consumo[]
+}
+
+model Consumo {
+  id                    String   @id @default(uuid()) @db.VarChar(36)
+  consumoForaPontaEmKWH Int
+  mesDoConsumo          DateTime
+  Unit                  Unit?    @relation(fields: [unitId], references: [id])
+  unitId                String?  @db.VarChar(36)
+}
+
+enum PhaseModel {
+  monofasico
+  bifasico
+  trifasico
+}
+
+enum ChargingModel {
+  AX
+  B1
+  B2
+  B3
+}

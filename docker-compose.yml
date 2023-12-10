@@ -27,8 +27,9 @@ services:
     container_name: "challenge_db"
     image: mysql:8-debian
     environment:
-      MYSQL_PASSWORD: carljohnson
-      MYSQL_USER: carljohnson
+      MYSQL_ROOT_PASSWORD: devpass
+      MYSQL_PASSWORD: devpass
+      MYSQL_USER: dev
       MYSQL_DATABASE: challenge
     ports:
       - 9902:3306
