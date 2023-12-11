@@ -20,7 +20,7 @@ model Lead {
 
 model Unit {
   id                         String    @id @default(uuid())
-  codigoDaUnidadeConsumidora String
+  codigoDaUnidadeConsumidora String    @unique
   modeloFasico               String
   enquadramento              String
   historicoDeConsumoEmKWH    Consumo[]

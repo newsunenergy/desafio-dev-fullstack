@@ -1,7 +1,6 @@
 import { Router } from 'express'
+import { makeAddLeadController } from '../factories/controllers/add-lead-controller-factory'
 
 export default (router: Router): void => {
-  router.get('/hello', (req, res) => {
-    res.send('Hello world!')
-  })
+  router.post('/lead', makeAddLeadController)
 }
