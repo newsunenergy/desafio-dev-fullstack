@@ -4,6 +4,6 @@ export interface CheckExistentUnit {
 
 export namespace CheckExistentUnit {
   export type Params = {
-    codigoDaUnidadeConsumidora: string
+    codigoDeUnidadesConsumidoras: string[]
   }
 }
