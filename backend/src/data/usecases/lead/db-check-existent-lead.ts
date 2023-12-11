@@ -5,7 +5,7 @@ export class DbCheckExistentLead implements CheckExistentLead {
   constructor (private readonly loadLeadRepository: LoadLeadRepository) { }
   async leadExists (params: CheckExistentLead.Params): Promise<boolean> {
     const existentLead = await this.loadLeadRepository.load(params)
-    if (existentLead) return true
+    if (existentLead.length > 0) return true
     return false
   }
 }

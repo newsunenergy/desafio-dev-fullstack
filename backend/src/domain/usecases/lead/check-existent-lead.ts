@@ -5,6 +5,5 @@ export interface CheckExistentLead {
 export namespace CheckExistentLead {
   export type Params = {
     email: string
-    codigoDaUnidadeConsumidora: string
   }
 }
