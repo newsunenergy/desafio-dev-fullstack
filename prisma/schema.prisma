@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource new_sun {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+  phone Int
+  Lead  Lead?
+}
+
+model Lead {
+  id           String    @id @default(uuid())
+  nomeCompleto String
+  email        String    @unique
+  telefone     Int
+  unidades     Unidade[]
+  user         User      @relation(fields: [email], references: [email])
+}
+
+model Unidade {
+  id                         String            @id @default(uuid())
+  codigoDaUnidadeConsumidora String            @unique
+  modeloFasico               TipoModeloFasico
+  enquadramento              TipoEnquadramento
+  historicoDeConsumoEmKWH    Consumo[]
+  leadId                     String
+  lead                       Lead              @relation(fields: [leadId], references: [id])
+}
+
+model Consumo {
+  id                    String   @id @default(uuid())
+  consumoForaPontaEmKWH String
+  mesDoConsumo          DateTime
+  unidadeId             String
+  unidade               Unidade  @relation(fields: [unidadeId], references: [id])
+}
+
+enum TipoModeloFasico {
+  MONOFASICO
+  BIFASICO
+  TRIFASICO
+}
+
+enum TipoEnquadramento {
+  AX
+  B1
+  B2
+  B3
+}
