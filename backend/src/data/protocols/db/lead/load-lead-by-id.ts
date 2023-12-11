@@ -1,10 +1,10 @@
 import { Unidade } from '@/domain/models/unit'
 
-export interface LoadLeadById {
-  leadExists: (params: LoadLeadById.Params) => Promise<boolean>
+export interface LoadLeadByIdRepository {
+  loadById: (params: LoadLeadByIdRepository.Params) => Promise<LoadLeadByIdRepository.Result>
 }
 
-export namespace LoadLeadById {
+export namespace LoadLeadByIdRepository {
   export type Params = {
     id: number
   }
