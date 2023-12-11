@@ -6,7 +6,11 @@ export interface LoadUnitRepository {
 
 export namespace LoadUnitRepository {
   export type Params = {
-    codigoDeUnidadesConsumidoras: string []
+    codigoDeUnidadesConsumidoras: string[]
+    leadId?: number
+    leadName?: string
+    leadEmail?: string
+    leadPhone?: string
   }
   export type Result = Unidade[]
 
