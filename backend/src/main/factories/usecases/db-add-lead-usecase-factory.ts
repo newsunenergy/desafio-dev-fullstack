@@ -1,4 +1,4 @@
-import { DbAddLead } from '@/data/usecases/lead/add-lead'
+import { DbAddLead } from '@/data/usecases/lead/db-add-lead'
 import { AddLead } from '@/domain/usecases/lead/add-lead'
 import { LeadPrismaRepository } from '@/infra/db/prisma/lead-prisma-repository'
 
