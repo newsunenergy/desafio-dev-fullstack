@@ -14,5 +14,5 @@ export namespace LoadLeadByIdRepository {
     email: string
     phone: string
     unidades: Unidade[]
-  }
+  } | null
 }
