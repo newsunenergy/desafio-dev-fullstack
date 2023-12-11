@@ -1,5 +1,7 @@
 import React from "react";
-import App from "./modules/App";
+import App from "./pages/App";
+import Simulate from "./pages/Simulate";
+import ListSimulations from "./pages/ListSimulations";
 
 export const routes = [
   {
@@ -8,10 +10,10 @@ export const routes = [
   },
   {
     path: "/listagem",
-    element: <App />,
+    element: <ListSimulations />,
   },
   {
     path: "/simular",
-    element: <App />,
+    element: <Simulate />,
   },
 ];

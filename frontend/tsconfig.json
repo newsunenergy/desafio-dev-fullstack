@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "commonjs",
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "ES2021",
+        "noImplicitAny": true,
+        "forceConsistentCasingInFileNames": true,
+    }
+}
