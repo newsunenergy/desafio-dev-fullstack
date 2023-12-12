@@ -11,11 +11,12 @@ datasource new_sun {
 }
 
 model User {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique
-  phone Int
-  Lead  Lead?
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  phone    Int
+  password String
+  lead     Lead?
 }
 
 model Lead {
