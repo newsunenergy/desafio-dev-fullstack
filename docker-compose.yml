@@ -30,6 +30,18 @@ services:
     volumes:
       - ./backend/:/app
 
+  frontend-new-sun:
+    image: node:18.17.0
+    container_name: frontend-new-sun
+    command: npm run dev
+    depends_on:
+      - backend-new-sun
+    working_dir: /app
+    ports:
+      - 3333:3333
+    volumes:
+      - ./frontend-new-sun/:/app
+
 networks:
   base:
 volumes:
