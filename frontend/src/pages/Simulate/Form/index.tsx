@@ -1,32 +1,28 @@
-import React from "react";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { UseFormRegister } from "react-hook-form";
+import React, { ReactElement, useContext } from 'react'
+import { SubmitHandler } from 'react-hook-form'
+import { SimulationContext } from '../context'
+export { FormContent } from './content'
 
-export default function Form({ register }: Props) {
-  return (
-    <>
-      <FormControl isRequired>
-        <FormLabel>Nome completo</FormLabel>
-        <Input type="text" {...register("nomeCompleto")} />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Email</FormLabel>
-        <Input type="email" {...register("email")} />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Telefone</FormLabel>
-        <Input type="text" {...register("telefone")} />
-      </FormControl>
-    </>
-  );
+export function Form({ children }: Props) {
+  const { handleSubmit } = useContext(SimulationContext)
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    fetch('/api/simulate', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  return <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
 }
 
 type Props = {
-  register: UseFormRegister<Inputs>;
-};
+  children: ReactElement[]
+}
 
 export type Inputs = {
-  nomeCompleto: string;
-  email: string;
-  telefone: number;
-};
+  nomeCompleto: string
+  email: string
+  telefone: number
+  files: object[]
+}
