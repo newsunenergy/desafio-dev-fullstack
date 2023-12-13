@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export class UnitService {
@@ -20,6 +20,12 @@ export class UnitService {
       cursor,
       where,
       orderBy,
+    });
+  }
+
+  async createUnit(data: Prisma.UnitCreateInput) {
+    return this.prisma.unit.create({
+      data,
     });
   }
 }

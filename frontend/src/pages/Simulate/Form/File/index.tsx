@@ -24,6 +24,8 @@ export function File() {
 
             if (fileArray.length == 0) return <FileInput />
 
+            console.log(value)
+
             return (
               <>
                 {fileArray.map((file, index) => (

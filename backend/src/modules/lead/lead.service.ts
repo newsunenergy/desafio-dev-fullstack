@@ -1,12 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Lead, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export class LeadService {
   constructor(private prisma: PrismaService) {}
 
   async createLead(data: Prisma.LeadCreateInput): Promise<Lead> {
+    const alreadyExistLead = this.prisma.lead.findFirst({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (alreadyExistLead) {
+      return alreadyExistLead;
+    }
+
     return this.prisma.lead.create({
       data,
     });

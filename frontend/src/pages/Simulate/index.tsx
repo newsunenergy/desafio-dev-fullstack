@@ -8,8 +8,7 @@ import {
   Button,
   Container,
 } from '@chakra-ui/react'
-import { SubmitHandler } from 'react-hook-form'
-import { FormContent, Form, Inputs } from './Form'
+import { FormContent, Form } from './Form'
 import { ProvideSimulationContext } from './context'
 
 export default function Simulate() {
