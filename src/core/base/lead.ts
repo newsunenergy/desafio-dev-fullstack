@@ -1,6 +1,7 @@
 import { Entity } from './entity'
 
 export abstract class Lead extends Entity {
+  id: string
   nomeCompleto: string
   email: string
   telefone: string

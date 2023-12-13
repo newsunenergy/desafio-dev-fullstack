@@ -13,7 +13,7 @@ export class LeadDTO {
   invoice: Consumo[]
   energy_company_id: string
 
-  public static mapTo(dto: LeadDTO) {
+  public static mapFrom(dto: LeadDTO) {
     const entity = new LeadEntity()
     const unidade = new Unidade()
 

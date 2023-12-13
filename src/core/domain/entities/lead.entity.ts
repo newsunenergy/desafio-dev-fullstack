@@ -1,13 +1,13 @@
 import { Lead } from '../../base/lead'
 
 export class LeadEntity extends Lead {
+  public id: string
   public nomeCompleto: string
   public email: string
   public telefone: string
   public unidades: Unidade[]
 }
-
-class Unidade {
+export class Unidade {
   id: string
   codigoDaUnidadeConsumidora: string
   modeloFasico: 'monofasico' | 'bifasico' | 'trifasico'
@@ -15,7 +15,7 @@ class Unidade {
   historicoDeConsumoEmKWH: Consumo[]
 }
 
-class Consumo {
+export class Consumo {
   consumoForaPontaEmKWH: number
   mesDoConsumo: Date
 }
