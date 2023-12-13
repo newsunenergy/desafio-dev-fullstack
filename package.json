@@ -1,0 +1,29 @@
+{
+  "name": "Desafio NewSun",
+  "version": "1.0.0",
+  "description": "Olá dev, bem vindo ao nosso processo de recrutamento para desenvolvedor Full Stack!",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cors": "^2.8.5"
+  }
+}
