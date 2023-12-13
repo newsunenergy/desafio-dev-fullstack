@@ -1,6 +1,6 @@
-export class LeadExistsError extends Error {
+export class UnitExistsError extends Error {
   constructor () {
-    super('The received Lead already exists in the database')
-    this.name = 'LeadExistsError'
+    super('One ore more of the received units already exists in the database')
+    this.name = 'UnitExistsError'
   }
 }

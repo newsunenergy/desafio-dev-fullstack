@@ -3,11 +3,11 @@ import { CheckExistentLead } from '@/domain/usecases/lead/check-existent-lead'
 import { CheckExistentUnit } from '@/domain/usecases/units/check-existent-unit'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { LeadExistsError } from '@/presentation/errors/unit-exists-error'
-import { UnitExistsError } from '@/presentation/errors/unit-exists-error copy'
+import { LeadExistsError } from '@/presentation/errors/lead-exists-error'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpResponse } from '@/presentation/protocols/http'
+import { UnitExistsError } from '@/presentation/errors/unit-exists-error'
 
 export class AddLeadController implements Controller {
   constructor (
@@ -31,6 +31,7 @@ export class AddLeadController implements Controller {
       await this.addLeadUsecase.addLead(request)
       return ok(true)
     } catch (err) {
+      console.log(err)
       return serverError(err as Error)
     }
   }

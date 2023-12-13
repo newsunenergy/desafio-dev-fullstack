@@ -5,16 +5,37 @@ import { LoadLeadByIdRepository } from '@/data/protocols/db/lead/load-lead-by-id
 
 export class LeadPrismaRepository implements AddLeadRepository, LoadLeadRepository, LoadLeadByIdRepository {
   async add ({ unidades, ...params }: AddLeadRepository.Params): Promise<void> {
-    await prisma.lead.create({
+    const createdLead = await prisma.lead.create({
       data: {
         ...params,
         unidades: {
           createMany: {
-            data: unidades
+            data: unidades.map((unit) => ({
+              modeloFasico: unit.modeloFasico,
+              enquadramento: unit.enquadramento,
+              codigoDaUnidadeConsumidora: unit.codigoDaUnidadeConsumidora
+            }))
           }
         }
+      },
+      select: {
+        unidades: true
       }
     })
+    for (const unit of unidades) {
+      console.log('🚀🔴  unit:', unit.historicoDeConsumoEmKWH)
+      let i = 0
+      const createMany = unit.historicoDeConsumoEmKWH.map(unidade => ({
+        ...unidade,
+        unitId: createdLead.unidades[i].id
+      }))
+      await prisma.consumo.createMany({
+        data: [
+          ...createMany
+        ]
+      })
+      i++
+    }
   };
 
   async load (params: LoadLeadRepository.Params): Promise<LoadLeadRepository.Result> {
