@@ -1,9 +1,8 @@
-import { PDFFile } from '../../core/domain/entities/pdf'
-import { UserEntity } from '../../core/domain/entities/user.entity'
+import { FileDTO } from './file.dto'
 
 export class UserDTO {
   username: string
   email: string
   phone: string
-  file: any
+  file: FileDTO
 }

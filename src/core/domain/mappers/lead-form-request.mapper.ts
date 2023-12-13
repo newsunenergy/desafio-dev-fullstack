@@ -10,7 +10,7 @@ export class LeadFormMapper extends Mapper<UserDTO, LeadFormRequest> {
     const form = new LeadFormRequest()
     form.email = param.email
     form.name = param.username
-    form.file = param.file
+    //form.file = param.file
     return form
   }
 }

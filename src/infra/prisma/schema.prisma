@@ -11,12 +11,13 @@ datasource new_sun {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  email    String @unique
+  email    String  @unique
   phone    Int
   password String
-  lead     Lead?
+  lead     Lead?   @relation(fields: [leadId], references: [id])
+  leadId   String?
 }
 
 model Lead {
@@ -25,7 +26,7 @@ model Lead {
   email        String    @unique
   telefone     Int
   unidades     Unidade[]
-  user         User      @relation(fields: [email], references: [email])
+  User         User[]
 }
 
 model Unidade {
