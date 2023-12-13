@@ -7,8 +7,6 @@ class DecodificacaoService {
       const response = await axios.post('https://magic-pdf.solarium.newsun.energy/v1/magic-pdf', {
         file,
       });
-
-      // Retornar os dados decodificados
       return response.data;
     } catch (error) {
       // Lidar com erros
@@ -21,7 +19,7 @@ class DecodificacaoService {
           // A requisição foi feita, mas não houve resposta do servidor
           console.error('Sem resposta do servidor:', axiosError.request);
         } else {
-          // Algo aconteceu na configuração da requisição que desencadeou um erro
+          // Algo aconteceu e desencadeou um erro
           console.error('Erro de configuração da requisição:', axiosError.message);
         }
       } else {

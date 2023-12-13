@@ -8,7 +8,6 @@ class LeadController {
   static registrarSimulacao(req: Request, res: Response) {
     const { nomeCompleto, email, telefone, unidades } = req.body;
 
-    // Validar dados (adapte conforme necessário)
     if (!nomeCompleto || !email || !telefone || !unidades || unidades.length === 0) {
       return res.status(400).json({ error: 'Dados inválidos' });
     }
@@ -22,10 +21,8 @@ class LeadController {
       unidades,
     };
 
-    // Adicionar ao array de leads (ou seria array de simulações?)
     LeadController.leads.push(novaSimulacao);
 
-    // Renomeie a propriedade 'lead' para 'simulacao'
     const simulacao = { simulacao: novaSimulacao };
 
     return res.status(201).json(simulacao);
@@ -45,7 +42,6 @@ class LeadController {
       return res.status(404).json({ error: 'Simulação não encontrada' });
     }
 
-    // Renomeie a propriedade 'lead' para 'simulacao'
     const simulacao = { simulacao: lead };
 
     return res.status(200).json(simulacao);
