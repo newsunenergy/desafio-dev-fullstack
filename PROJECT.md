@@ -2,7 +2,7 @@ Para executar o projeto siga os passos abaixo:
 
 1 - Clone o projeto.
 
-2 - Entre no Diretório Backend, via terminal digite o comando **npm install** para instalar as dependências do projeto.
+2 - Entre no Diretório backend, via terminal digite o comando **npm install** para instalar as dependências do projeto.
 
 3 - Dentro do Diretório backend crie um arquivo **.env** na raiz do projeto e copie para dentro dele as informações contidas no arquivo **.env.exemple**.
 
@@ -10,7 +10,7 @@ Para executar o projeto siga os passos abaixo:
 
 5 - Volte para o diretório principal **desafio-dev-fullstack-12-2023** e digite o comando docker-compose up.
 
-6 - Entre no diretório backend e rode o comando **npm run migrate:dev**.
+6 - Entre no diretório backend e rode o comando **npm run migrate:dev** via terminal.
 
 7 - Volte para o diretório principal e interrompa o processo do **docker-compose up** apertando as teclas ctrl + c.
 
