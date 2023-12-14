@@ -1,4 +1,6 @@
-import { IsEmail, IsNotEmpty, IsObject, IsPhoneNumber } from 'class-validator';
+import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { InformacaoDaFatura } from './lead.service';
+import { Transform } from 'class-transformer';
 
 export class InputCreateLeadDto {
   @IsNotEmpty({
@@ -11,8 +13,14 @@ export class InputCreateLeadDto {
   })
   email: string;
 
-  @IsPhoneNumber('BR', {
+  @IsString({
     message: 'O número de telefone informado é inválido',
   })
+  @Transform(({ value }) => value.replaceAll(/[^0-9]/g, ''))
   telefone: string;
+
+  @IsArray({
+    message: 'As informações da fatura informada são inválidas',
+  })
+  informacoesDaFatura: InformacaoDaFatura[];
 }

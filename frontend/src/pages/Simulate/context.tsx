@@ -1,40 +1,43 @@
 import React, { ReactElement, createContext } from 'react'
 import {
-  Control,
-  UseFormHandleSubmit,
-  UseFormRegister,
-  useForm,
+    Control,
+    FormState,
+    UseFormHandleSubmit,
+    UseFormRegister,
+    useForm,
 } from 'react-hook-form'
 import { Inputs } from './Form'
 
 export const SimulationContext = createContext<ContextValue>({})
 
 export function ProvideSimulationContext({
-  children,
+    children,
 }: ProvideSimulationContextProps) {
-  const { register, handleSubmit, control } = useForm<Inputs>({
-    mode: 'onSubmit',
-  })
+    const { register, handleSubmit, control, formState } = useForm<Inputs>({
+        mode: 'onChange',
+    })
 
-  return (
-    <SimulationContext.Provider
-      value={{
-        register,
-        handleSubmit,
-        control,
-      }}
-    >
-      {children}
-    </SimulationContext.Provider>
-  )
+    return (
+        <SimulationContext.Provider
+            value={{
+                register,
+                handleSubmit,
+                control,
+                formState,
+            }}
+        >
+            {children}
+        </SimulationContext.Provider>
+    )
 }
 
 type ProvideSimulationContextProps = {
-  children: ReactElement
+    children: ReactElement
 }
 
 type ContextValue = {
-  register?: UseFormRegister<Inputs>
-  handleSubmit?: UseFormHandleSubmit<Inputs>
-  control?: Control<Inputs>
+    register?: UseFormRegister<Inputs>
+    formState?: FormState<Inputs>
+    handleSubmit?: UseFormHandleSubmit<Inputs>
+    control?: Control<Inputs>
 }

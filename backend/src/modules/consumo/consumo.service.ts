@@ -3,18 +3,18 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
-export class UnitService {
+export class ConsumoService {
   constructor(private prisma: PrismaService) {}
 
-  async listUnits(params: {
+  async listConsumos(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.UnitWhereUniqueInput;
-    where?: Prisma.UnitWhereInput;
-    orderBy?: Prisma.UnitOrderByWithRelationInput;
+    cursor?: Prisma.ConsumoWhereUniqueInput;
+    where?: Prisma.ConsumoWhereInput;
+    orderBy?: Prisma.ConsumoOrderByWithRelationInput;
   }) {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.unit.findMany({
+    return this.prisma.consumo.findMany({
       skip,
       take,
       cursor,
@@ -23,8 +23,8 @@ export class UnitService {
     });
   }
 
-  async createManyUnits(data: Prisma.UnitCreateManyInput[]) {
-    return this.prisma.unit.createMany({
+  async createManyConsumos(data: Prisma.ConsumoCreateManyInput[]) {
+    return this.prisma.consumo.createMany({
       data,
       skipDuplicates: true,
     });

@@ -7,7 +7,7 @@ export class LeadService {
   constructor(private prisma: PrismaService) {}
 
   async createLead(data: Prisma.LeadCreateInput): Promise<Lead> {
-    const alreadyExistLead = this.prisma.lead.findFirst({
+    const alreadyExistLead = await this.prisma.lead.findFirst({
       where: {
         email: data.email,
       },
@@ -30,10 +30,10 @@ export interface SolicitarSimulacaoDeCompensacaoEnergeticaInput {
   informacoesDaFatura: InformacaoDaFatura[];
 }
 
-interface InformacaoDaFatura {
+export interface InformacaoDaFatura {
   codigoDaUnidadeConsumidora: string;
-  modeloFasico: string;
-  enquadramento: string;
+  modeloFasico: 'monofasico' | 'bifasico' | 'trifasico';
+  enquadramento: 'AX' | 'B1' | 'B2' | 'B3';
   consumoEmReais: number;
   historicoDeConsumoEmKWH: {
     consumoForaPontaEmKWH: number;

@@ -26,7 +26,7 @@ model Unit {
   modeloFasico               PhaseModel
   enquadramento              ChargingModel
   Lead                       Lead?         @relation(fields: [leadId], references: [id])
-  leadId                     String?       @db.VarChar(36)
+  leadId                     String       @db.VarChar(36)
   Consumo                    Consumo[]
 }
 
@@ -35,7 +35,7 @@ model Consumo {
   consumoForaPontaEmKWH Int
   mesDoConsumo          DateTime
   Unit                  Unit?    @relation(fields: [unitId], references: [id])
-  unitId                String?  @db.VarChar(36)
+  unitId                String  @db.VarChar(36)
 }
 
 enum PhaseModel {

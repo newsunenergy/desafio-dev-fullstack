@@ -5,7 +5,8 @@ import { OutputCreateSimulationDto } from './simulation.dto';
 
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { UnitService } from 'src/modules/unit/unit.service';
-import { LeadService } from '../lead/lead.service';
+import { LeadService } from 'src/modules/lead/lead.service';
+import { InputCreateLeadDto } from 'src/modules/lead/lead.dto';
 
 @Injectable()
 export class SimulationService {
@@ -33,15 +34,27 @@ export class SimulationService {
   }
 
   async createSimulation(
-    data: Prisma.LeadCreateInput,
-    files: Array<Express.Multer.File>,
+    data: InputCreateLeadDto,
   ): Promise<OutputCreateSimulationDto> {
-    await this.lead.createLead(data);
+    const createdLead = await this.lead.createLead({
+      email: data.email,
+      nomeCompleto: data.nomeCompleto,
+      telefone: data.telefone,
+    });
 
-    // TODO subir arquivos
+    const createdUnits = await this.unit.createManyUnits(
+      data.informacoesDaFatura.map((fatura) => ({
+        codigoDaUnidadeConsumidora: fatura.codigoDaUnidadeConsumidora,
+        enquadramento: fatura.enquadramento,
+        modeloFasico: fatura.modeloFasico,
+        leadId: createdLead.id,
+      })),
+    );
+
+    console.log(createdUnits);
 
     return {
-      message: ['Simulação criada com sucesso!'],
+      message: 'Simulação criada com sucesso!',
     };
   }
 }

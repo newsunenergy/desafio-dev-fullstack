@@ -1,4 +1,4 @@
 export class OutputCreateSimulationDto {
-  message: string[];
+  message: string[] | string;
   error?: string;
 }
