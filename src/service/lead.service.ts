@@ -20,25 +20,21 @@ export class LeadService {
     const url = 'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf'
     const fileFormData = FileDTO.mapToPdfFormData(file)
     const response = await axios.post(url, fileFormData, fileFormData)
+    log('foi', response.data)
+    log('foi', userData)
+    log('foi', userData.email)
     this.validateLead(response.data, userData)
   }
 
   async validateLead(data: LeadResponseDTO, userData: UserDataDTO) {
-    try {
-      log('\n\npassou pelo submit', data, '\nuserData\n\n\n')
-      const newLead: Lead = UserDataDTO.mapToLead(userData)
-      const unidades = LeadResponseDTO.mapToUnidade(data)
-      const listaConsumo = LeadResponseDTO.mapToConsumo(data)
+    const newLead: Lead = UserDataDTO.mapToLead(userData)
+    const unidades = LeadResponseDTO.mapToUnidade(data)
+    const listaConsumo = LeadResponseDTO.mapToConsumo(data)
+    const leadResponse = await this.prisma.lead.create({ data: newLead })
+    unidades.leadId = leadResponse.id
+    const unidadesResponse = this.unidadeService.createUnidade(unidades)
+    const consumoResponse = this.consumoService.createManyConsumo(listaConsumo)
 
-      const leadResponse = await this.prisma.lead.create({ data: newLead })
-      unidades.leadId = leadResponse.id
-      const unidadesResponse = this.unidadeService.createUnidade(unidades)
-      const consumoResponse =
-        this.consumoService.createManyConsumo(listaConsumo)
-      log(leadResponse, unidadesResponse, consumoResponse)
-    } catch (erro) {
-      log('\n\n\nocorreu um erro: ', erro, '\n\n\n\n')
-    }
     return 'ok'
   }
 

@@ -11,6 +11,4 @@ export class CreateLeadDTO {
     }
     return lead
   }
-
-  //ublic static mapFrom(leadResponse: LeadResponseDTO) {}
 }

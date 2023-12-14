@@ -6,6 +6,9 @@ import { PrismaService } from 'src/infra/prisma/prisma.service'
 export class ConsumoService {
   constructor(private readonly prisma: PrismaService) {}
   async createManyConsumo(consumo: Consumo[]) {
+    console.log(consumo)
+    console.log(consumo.length)
+    console.log(consumo[0])
     if (consumo.length != 12) {
       return new BadRequestException(
         'O documento deve conter o histórico de consumo dos ultimos 12 meses!',

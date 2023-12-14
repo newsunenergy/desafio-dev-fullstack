@@ -1,4 +1,5 @@
 import { Unidade, Consumo, $Enums } from '@prisma/client'
+import { log } from 'console'
 import { randomUUID } from 'crypto'
 
 export class LeadResponseDTO {
@@ -23,12 +24,12 @@ export class LeadResponseDTO {
   public static mapToConsumo(dto: LeadResponseDTO) {
     const consumoAnual: Consumo[] = []
 
-    for (const mesDeConsumo of dto.invoice) {
+    for (const mes of dto.invoice) {
       const entity: Consumo = {
         id: randomUUID(),
-        mesDoConsumo: mesDeConsumo.mesDoConsumo,
-        consumoForaPontaEmKWH: mesDeConsumo.consumoForaPontaEmKWH,
-        unidadeCodigo: mesDeConsumo.unidadeCodigo,
+        mesDoConsumo: mes['consumo_date'],
+        consumoForaPontaEmKWH: mes['consumo_fp'],
+        unidadeCodigo: mes['unit_key'],
       }
       consumoAnual.push(entity)
     }
