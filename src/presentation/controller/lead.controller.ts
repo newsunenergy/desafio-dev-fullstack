@@ -1,9 +1,9 @@
 // eslint-disable-next-line prettier/prettier
 import { Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common'
 import { FileFieldsInterceptor } from '@nestjs/platform-express'
-import { plainToInstance } from 'class-transformer'
+import { createReadStream, renameSync } from 'fs'
 import { LeadService } from 'src/service/lead.service'
-import { LeadFormRequest } from 'src/shared/dtos/lead-form-request.dto'
+import { UserDataDTO } from 'src/shared/dtos/user-data.dto'
 
 @Controller()
 export class LeadController {
@@ -14,22 +14,18 @@ export class LeadController {
   async submitLead(
     @UploadedFiles()
     files: any,
-    @Body() rawUser: any,
+    @Body() user: UserDataDTO,
   ) {
-    console.log(files)
     const uploadedFile = files.file[0]
-    const user = LeadFormRequest.mapFrom(rawUser)
-    user.file = uploadedFile
+    //const formData = new FormData()
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const FormData = require('form-data')
     const formData = new FormData()
-    const fileBlob = new Blob([uploadedFile.buffer], {
-      type: uploadedFile.mimetype,
-    })
 
-    formData.append('file', fileBlob, uploadedFile.originalname)
+    renameSync(uploadedFile.path, uploadedFile.path + '.pdf')
+    formData.append('file', createReadStream(uploadedFile.path + '.pdf'))
+    //formData.append('file', fileBlob, uploadedFile.originalname)
 
-    console.log(uploadedFile)
-
-    const response = this.service.submitLead(formData)
-    return response
+    return this.service.submitLead(formData, user)
   }
 }

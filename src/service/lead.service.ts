@@ -1,25 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import axios, { AxiosResponse } from 'axios'
-import { LeadEntity } from 'src/core/domain/entities/lead.entity'
+import FormData from 'form-data'
 import { PrismaService } from 'src/infra/prisma/prisma.service'
-import { Lead } from '@prisma/client'
-import { LeadFormRequest } from 'src/shared/dtos/lead-form-request.dto'
-import { LeadDTO } from 'src/shared/dtos/lead-response.dto'
+import { LeadResponseDTO } from 'src/shared/dtos/lead-response.dto'
+import { UserDataDTO } from 'src/shared/dtos/user-data.dto'
 
 @Injectable()
 export class LeadService {
   constructor(private readonly prisma: PrismaService) {}
-  async submitLead(data: any) {
+  async submitLead(data: FormData, userData: UserDataDTO) {
     const url = 'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf'
 
     axios
-      .post(url, data)
+      .post(url, data, {
+        headers: data.getHeaders(),
+      })
       .then((response: AxiosResponse) => {
-        const lead = new LeadEntity()
-        lead.email = data.email
-        lead.nomeCompleto = data.nomeCompleto
-        lead.telefone = data.telefone
-        this.validateLead(response.data, lead)
+        console.log(response.data)
+        this.validateLead(response.data, userData)
       })
       .catch((error) => {
         // Se houver um erro na solicitação, ele será capturado aqui
@@ -27,17 +25,8 @@ export class LeadService {
       })
   }
 
-  async validateLead(data: LeadDTO, lead: LeadEntity) {
-    if (data.invoice.length < 12) {
-      return new BadRequestException(
-        'O documento deve conter o histórico de consumo dos ultimos 12 meses',
-      )
-    }
-
-    const newLead = LeadDTO.mapFrom(data)
-    newLead.email = lead.email
-    newLead.nomeCompleto = lead.nomeCompleto
-    newLead.telefone = lead.telefone
+  async validateLead(data: LeadResponseDTO, userData: UserDataDTO) {
+    const newLead = userData.mapToLead()
     return await this.prisma.lead.create({
       data: newLead,
     })

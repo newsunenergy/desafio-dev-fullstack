@@ -10,18 +10,10 @@ datasource new_sun {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String
-  phone    Int
-  password String
-}
-
 model Lead {
   id           String    @id @default(uuid())
   nomeCompleto String
-  email        String
+  email        String    @unique
   telefone     String
   unidades     Unidade[]
 }
@@ -31,16 +23,16 @@ model Unidade {
   modeloFasico               TipoModeloFasico
   enquadramento              TipoEnquadramento
   historicoDeConsumoEmKWH    Consumo[]
-  Lead                       Lead              @relation(fields: [leadId], references: [id])
-  leadId                     String
+  Lead                       Lead?             @relation(fields: [leadId], references: [id])
+  leadId                     String?
 }
 
 model Consumo {
-  id                                String   @id @default(uuid())
-  consumoForaPontaEmKWH             String
-  mesDoConsumo                      DateTime
-  Unidade                           Unidade  @relation(fields: [unidadeCodigoDaUnidadeConsumidora], references: [codigoDaUnidadeConsumidora])
-  unidadeCodigoDaUnidadeConsumidora String
+  id                    String   @id @default(uuid())
+  consumoForaPontaEmKWH String
+  mesDoConsumo          DateTime
+  Unidade               Unidade? @relation(fields: [unidadeCodigo], references: [codigoDaUnidadeConsumidora])
+  unidadeCodigo        String?
 }
 
 enum TipoModeloFasico {
