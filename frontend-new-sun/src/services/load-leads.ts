@@ -1,4 +1,3 @@
-import { AxiosError } from "axios"
 import { api } from "./api"
 
 type Invoice = {
@@ -14,7 +13,7 @@ type DecodedBill = {
   historicoDeConsumoEmKWH: Invoice[],
 }
 
-export type LeadInfo = {
+type LeadInfo = {
   name: string
   email: string
   phone: string
@@ -24,16 +23,14 @@ export type LeadInfo = {
 export const existentUnitsError = 'One ore more of the received units already exists in the database'
 export const existentLeadError = 'The received Lead already exists in the database'
 
-export const registerLead = async (leadInfo: LeadInfo): Promise<number | string> => {
-  try {
-    const res = await api.post(
-      '/lead',
-      leadInfo)
-    return res.status
-  } catch (err) {
-    const error = err as AxiosError<{error: string}>
-    const errorMessage = error.response?.data?.error
-    
-    return errorMessage ?? 'Houve um erro inesperado'
-  }
+type Filters = {
+  name?: string
+  email?: string
+  codigoDaUnidadeConsumidora?: string
+}
+
+export const loadLeads = async ({email, name, codigoDaUnidadeConsumidora}: Filters): Promise<LeadInfo[]> => {
+    const res = await api.get<LeadInfo[]>(
+      `/filtered-leads?${email ? 'email=' + email + '&' : ''}${name ? 'name=' + name + '&' : ''}${codigoDaUnidadeConsumidora ? 'codigoDaUnidadeConsumidora=' + codigoDaUnidadeConsumidora : ''}`)
+    return res.data
 }

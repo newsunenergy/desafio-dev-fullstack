@@ -7,5 +7,5 @@ import { adaptRoute } from '../adapters/express-route-adapter'
 export default (router: Router): void => {
   router.post('/lead', adaptRoute(makeAddLeadController()))
   router.get('/lead', adaptRoute(makeLoadLeadByIdController()))
-  router.get('filtered-leads', adaptRoute(makeLoadLeadsController()))
+  router.get('/filtered-leads', adaptRoute(makeLoadLeadsController()))
 }

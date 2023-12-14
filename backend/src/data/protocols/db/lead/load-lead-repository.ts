@@ -9,7 +9,7 @@ export namespace LoadLeadRepository {
     id?: number
     name?: string
     email?: string
-    codigosDeUnidadesConsumidoras?: string[]
+    codigoDaUnidadeConsumidora?: string
   }
   export type Result = Array<{
     id: number

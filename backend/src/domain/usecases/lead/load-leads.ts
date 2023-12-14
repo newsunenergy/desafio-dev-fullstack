@@ -8,7 +8,7 @@ export namespace LoadLeads {
   export type Params = {
     name?: string
     email?: string
-    codigosDeUnidadesConsumidoras?: string[]
+    codigoDaUnidadeConsumidora?: string
   }
   export type Result = Array<{
     id: number

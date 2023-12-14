@@ -23,6 +23,7 @@ model Unit {
   codigoDaUnidadeConsumidora String    @unique
   modeloFasico               String
   enquadramento              String
+  consumoEmReais             Float
   historicoDeConsumoEmKWH    Consumo[]
   Lead                       Lead?     @relation(fields: [leadId], references: [id])
   leadId                     Int?

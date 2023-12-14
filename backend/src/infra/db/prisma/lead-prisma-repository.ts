@@ -13,7 +13,8 @@ export class LeadPrismaRepository implements AddLeadRepository, LoadLeadReposito
             data: unidades.map((unit) => ({
               modeloFasico: unit.modeloFasico,
               enquadramento: unit.enquadramento,
-              codigoDaUnidadeConsumidora: unit.codigoDaUnidadeConsumidora
+              codigoDaUnidadeConsumidora: unit.codigoDaUnidadeConsumidora,
+              consumoEmReais: unit.consumoEmReais
             }))
           }
         }
@@ -22,9 +23,8 @@ export class LeadPrismaRepository implements AddLeadRepository, LoadLeadReposito
         unidades: true
       }
     })
+    let i = 0
     for (const unit of unidades) {
-      console.log('🚀🔴  unit:', unit.historicoDeConsumoEmKWH)
-      let i = 0
       const createMany = unit.historicoDeConsumoEmKWH.map(unidade => ({
         ...unidade,
         unitId: createdLead.unidades[i].id
@@ -38,10 +38,15 @@ export class LeadPrismaRepository implements AddLeadRepository, LoadLeadReposito
     }
   };
 
-  async load (params: LoadLeadRepository.Params): Promise<LoadLeadRepository.Result> {
+  async load ({ codigoDaUnidadeConsumidora, ...params }: LoadLeadRepository.Params): Promise<LoadLeadRepository.Result> {
     const lead = await prisma.lead.findMany({
       where: {
-        ...params
+        ...params,
+        unidades: {
+          some: {
+            codigoDaUnidadeConsumidora: { equals: codigoDaUnidadeConsumidora }
+          }
+        }
       },
       include: {
         unidades: {

@@ -48,6 +48,7 @@ export namespace AddLeadController {
     codigoDaUnidadeConsumidora: string
     modeloFasico: 'monofasico' | 'bifasico' | 'trifasico'
     enquadramento: 'AX' | 'B1' | 'B2' | 'B3'
+    consumoEmReais: number
     historicoDeConsumoEmKWH: Consumo[]
   }
 

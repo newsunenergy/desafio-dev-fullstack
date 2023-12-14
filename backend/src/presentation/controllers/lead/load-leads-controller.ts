@@ -20,6 +20,6 @@ export namespace LoadLeadsController {
   export type Params = {
     email?: string
     name?: string
-    codigosDeUnidadesConsumidoras?: string[]
+    codigoDaUnidadeConsumidora?: string
   }
 }

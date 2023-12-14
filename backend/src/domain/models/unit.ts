@@ -8,5 +8,6 @@ export type Unidade = {
   codigoDaUnidadeConsumidora: string
   modeloFasico: string
   enquadramento: string
+  consumoEmReais: number
   historicoDeConsumoEmKWH: Consumo[]
 }
