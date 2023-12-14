@@ -103,10 +103,10 @@ export const SubmitSimulation = () => {
                 <Button onClick={() => handleRemoveDecodedFile(decodedFile)} colorScheme="red">Remover conta</Button>
             </Box>
               <Box width="100%" display="flex" flexWrap="wrap" justifyContent="space-between" margin="15px 0">
-                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.unit_key ?? 'Sem arquivo'} title="Código da unidade consumidora"/>
-                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.chargingModel ?? 'Sem arquivo'} title="Enquadramento" />
-                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.phaseModel ?? 'Sem Arquivo'} title="Modelo Fásico" />
-                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={'R$' + decodedFile?.valor.toLocaleString('pt-BR', {currency: 'BRL'}) ?? 'Sem Arquivo'} title="Valor" />
+                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.unit_key} title="Código da unidade consumidora"/>
+                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.chargingModel} title="Enquadramento" />
+                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={decodedFile?.phaseModel} title="Modelo Fásico" />
+                <InfoBox width={isSmallerThan400 ? '50%' : undefined} smallScreen={isSmallerThan400} info={'R$' + decodedFile?.valor.toLocaleString('pt-BR', {currency: 'BRL'})} title="Valor" />
               </Box>
               {decodedFile?.invoice?.map((invoice) => (
                 <InfoBox 
