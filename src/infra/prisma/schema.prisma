@@ -32,7 +32,7 @@ model Consumo {
   consumoForaPontaEmKWH String
   mesDoConsumo          DateTime
   Unidade               Unidade? @relation(fields: [unidadeCodigo], references: [codigoDaUnidadeConsumidora])
-  unidadeCodigo        String?
+  unidadeCodigo         String?
 }
 
 enum TipoModeloFasico {

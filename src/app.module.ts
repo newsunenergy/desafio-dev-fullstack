@@ -6,6 +6,8 @@ import { HttpModule } from '@nestjs/axios'
 import { LeadController } from './presentation/controller/lead.controller'
 import { LeadService } from './service/lead.service'
 import { MulterModule } from '@nestjs/platform-express'
+import { ConsumoService } from './service/consumo.service'
+import { UnidadeService } from './service/unidade.service'
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { MulterModule } from '@nestjs/platform-express'
     }),
   ],
   controllers: [LeadController],
-  providers: [PrismaService, LeadService],
+  providers: [PrismaService, LeadService, ConsumoService, UnidadeService],
 })
 export class AppModule {}

@@ -1,19 +1,14 @@
-import { FileArray } from 'express-fileupload'
+import { createReadStream, renameSync } from 'fs'
 
 export class FileDTO {
-  fieldname: string
-  originalname: string
-  encoding: string
-  mimetype: string
-  buffer: Buffer
-  size: number
-
-  constructor(file: FileArray) {
-    this.fieldname = file.fieldname
-    this.originalname = file.originalname
-    this.encoding = file.encoding
-    this.mimetype = file.mimetype
-    this.buffer = file.buffer
-    this.size = file.size
+  public static mapToPdfFormData(file: File) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const FormData = require('form-data')
+    const uploadedFile = file['file'][0]
+    const formData = new FormData()
+    formData.append('file', createReadStream(uploadedFile.path + '.pdf'))
+    formData.headers = { 'Content-Type': 'multipart/form-data' }
+    renameSync(uploadedFile.path, uploadedFile.path + '.pdf')
+    return formData
   }
 }

@@ -1,4 +1,5 @@
 import { Unidade, Consumo, $Enums } from '@prisma/client'
+import { randomUUID } from 'crypto'
 
 export class LeadResponseDTO {
   valor: number
@@ -24,7 +25,7 @@ export class LeadResponseDTO {
 
     for (const mesDeConsumo of dto.invoice) {
       const entity: Consumo = {
-        id: null,
+        id: randomUUID(),
         mesDoConsumo: mesDeConsumo.mesDoConsumo,
         consumoForaPontaEmKWH: mesDeConsumo.consumoForaPontaEmKWH,
         unidadeCodigo: mesDeConsumo.unidadeCodigo,
