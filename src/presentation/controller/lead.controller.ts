@@ -1,7 +1,7 @@
 // eslint-disable-next-line prettier/prettier
-import { BadRequestException, Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common'
 import { FileFieldsInterceptor } from '@nestjs/platform-express'
-import { isEmpty } from 'class-validator'
+import { isEmpty, isNotEmptyObject } from 'class-validator'
 import { LeadService } from 'src/service/lead.service'
 import { UserDataDTO } from 'src/shared/dtos/user-data.dto'
 
@@ -24,6 +24,16 @@ export class LeadController {
     if (isEmpty(requestFile)) {
       return new BadRequestException('Selecione um pdf para continuar')
     }
-    this.leadService.submitLead(requestFile, user)
+    return this.leadService.submitLead(requestFile, user)
+  }
+
+  @Get('/listagem')
+  async getAllLeads(@Query() query?: any) {
+    console.log(query)
+
+    if (!isNotEmptyObject(query)) {
+      return this.leadService.getAllLeads()
+    }
+    return this.leadService.getBy(query)
   }
 }

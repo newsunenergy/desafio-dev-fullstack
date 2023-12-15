@@ -36,9 +36,9 @@ model Consumo {
 }
 
 enum TipoModeloFasico {
-  MONOFASICO
-  BIFASICO
-  TRIFASICO
+  monofasico
+  bifasico
+  trifasico
 }
 
 enum TipoEnquadramento {

@@ -28,8 +28,8 @@ export class LeadResponseDTO {
       const entity: Consumo = {
         id: randomUUID(),
         mesDoConsumo: mes['consumo_date'],
-        consumoForaPontaEmKWH: mes['consumo_fp'],
-        unidadeCodigo: mes['unit_key'],
+        consumoForaPontaEmKWH: mes['consumo_fp'].toString(),
+        unidadeCodigo: dto.unit_key,
       }
       consumoAnual.push(entity)
     }

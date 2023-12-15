@@ -6,17 +6,14 @@ import { PrismaService } from 'src/infra/prisma/prisma.service'
 export class ConsumoService {
   constructor(private readonly prisma: PrismaService) {}
   async createManyConsumo(consumo: Consumo[]) {
-    console.log(consumo)
-    console.log(consumo.length)
-    console.log(consumo[0])
-    if (consumo.length != 12) {
-      return new BadRequestException(
+    if (consumo.length !== 12) {
+      throw new BadRequestException(
         'O documento deve conter o histórico de consumo dos ultimos 12 meses!',
       )
     }
-    const response = await this.prisma.consumo.createMany({
+
+    return await this.prisma.consumo.createMany({
       data: consumo,
     })
-    return response
   }
 }

@@ -11,4 +11,15 @@ export class UnidadeService {
     })
     return response
   }
+
+  async getByUnitKey(key: string) {
+    return await this.prisma.unidade.findUnique({
+      where: {
+        codigoDaUnidadeConsumidora: key,
+      },
+      include: {
+        historicoDeConsumoEmKWH: true,
+      },
+    })
+  }
 }
