@@ -1,5 +1,4 @@
 import { Unidade, Consumo, $Enums } from '@prisma/client'
-import { log } from 'console'
 import { randomUUID } from 'crypto'
 
 export class LeadResponseDTO {

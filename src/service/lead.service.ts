@@ -52,7 +52,15 @@ export class LeadService {
   }
 
   async getAllLeads() {
-    return await this.prisma.lead.findMany()
+    return await this.prisma.lead.findMany({
+      include: {
+        unidades: {
+          include: {
+            historicoDeConsumoEmKWH: true,
+          },
+        },
+      },
+    })
   }
 
   async getBy(query) {
@@ -74,7 +82,9 @@ export class LeadService {
     try {
       return await this.prisma.lead.findMany({
         where: {
-          [key]: value,
+          [key]: {
+            contains: value,
+          },
         },
       })
     } catch (e: any) {
@@ -91,7 +101,11 @@ export class LeadService {
         id: id,
       },
       include: {
-        unidades: true,
+        unidades: {
+          include: {
+            historicoDeConsumoEmKWH: true,
+          },
+        },
       },
     })
   }

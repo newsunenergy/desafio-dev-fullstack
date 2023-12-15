@@ -29,8 +29,6 @@ export class LeadController {
 
   @Get('/listagem')
   async getAllLeads(@Query() query?: any) {
-    console.log(query)
-
     if (!isNotEmptyObject(query)) {
       return this.leadService.getAllLeads()
     }
