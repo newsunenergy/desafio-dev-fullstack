@@ -11,7 +11,7 @@ export class LoadLeadByIdController implements Controller {
     try {
       if (!request.id) return badRequest(new MissingParamError('id'))
 
-      const lead = await this.loadLeadById.loadById(request)
+      const lead = await this.loadLeadById.loadById({ id: +request.id })
       return ok(lead)
     } catch (err) {
       return serverError(err as Error)
