@@ -10,7 +10,7 @@ import {
 import { FormContent, Form } from './Form'
 import { ProvideSimulationContext } from './context'
 import { Submit } from './Form/SubmitButton'
-import { Link } from 'react-router-dom'
+import { Link } from '../../components/Link'
 
 export default function Simulate() {
     return (
@@ -33,14 +33,7 @@ export default function Simulate() {
                             justifyContent={'space-between'}
                             alignItems={'end'}
                         >
-                            <Link
-                                to="/listagem"
-                                style={{
-                                    textDecoration: 'underline',
-                                }}
-                            >
-                                Visualizar simulações
-                            </Link>
+                            <Link to="/listagem">Visualizar simulações</Link>
                             <Submit />
                         </CardFooter>
                     </Form>

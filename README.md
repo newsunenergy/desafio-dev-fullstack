@@ -59,7 +59,7 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo `l
 ### Backend
 
 - [x] Endpoint para registrar uma nova simulação
-- [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
+- [x] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
 - [x] Endpoint para listar uma simulação baseado no id do lead, etc...
 - [x] Modelar domínio com os agregados a seguir:
 
