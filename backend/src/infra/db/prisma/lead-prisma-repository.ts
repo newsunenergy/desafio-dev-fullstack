@@ -41,7 +41,8 @@ export class LeadPrismaRepository implements AddLeadRepository, LoadLeadReposito
   async load ({ codigoDaUnidadeConsumidora, ...params }: LoadLeadRepository.Params): Promise<LoadLeadRepository.Result> {
     const lead = await prisma.lead.findMany({
       where: {
-        ...params,
+        name: { contains: params.name },
+        email: { contains: params.email },
         unidades: {
           some: {
             codigoDaUnidadeConsumidora: { equals: codigoDaUnidadeConsumidora }
