@@ -14,13 +14,20 @@ export function Form({ children }: Props) {
         const myHeaders = new Headers()
         myHeaders.append('Content-Type', 'multipart/form-data')
 
-        const magicPdfUpload = await uploadToMagicPdf(data.files)
+        const magicPdfUpload = await uploadToMagicPdf(data.files, toast)
 
         delete data.files
-        const response = await axios.post('/api/simulate', {
-            ...data,
-            informacoesDaFatura: magicPdfUpload,
-        })
+        const response = await axios
+            .post('/api/simulate', {
+                ...data,
+                informacoesDaFatura: magicPdfUpload,
+            })
+            .catch(() => ({
+                data: {
+                    message: 'Não foi possível processar a simulação',
+                    error: true,
+                },
+            }))
 
         const simulationResponse = response.data
 
@@ -35,14 +42,7 @@ export function Form({ children }: Props) {
         for (let message of responseMessages) {
             toast({
                 description: message,
-                duration: 5_000,
-                isClosable: true,
                 status: simulationResponse.error ? 'error' : 'success',
-                position: 'top',
-                containerStyle: {
-                    width: '90%',
-                    maxWidth: '450px',
-                },
             })
         }
     }

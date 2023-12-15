@@ -6,13 +6,17 @@ import { File } from './File'
 import { SimulationContext } from '../context'
 
 export function FormContent() {
-    const { register } = useContext(SimulationContext)
+    const {
+        register,
+        formState: { isSubmitting },
+    } = useContext(SimulationContext)
 
     return (
         <Box display="flex" flexDirection="column" gap="20px">
             <FormControl isRequired>
                 <FormLabel>Nome completo:</FormLabel>
                 <Input
+                    isDisabled={isSubmitting}
                     type="text"
                     {...register('nomeCompleto', {
                         required: true,
@@ -24,6 +28,7 @@ export function FormContent() {
                 <FormLabel>Email:</FormLabel>
                 <Input
                     type="email"
+                    isDisabled={isSubmitting}
                     {...register('email', {
                         required: true,
                     })}
@@ -37,6 +42,7 @@ export function FormContent() {
                     mask="+55 (99) 999999999"
                     maskChar=""
                     type="text"
+                    isDisabled={isSubmitting}
                     {...register('telefone', {
                         required: true,
                     })}

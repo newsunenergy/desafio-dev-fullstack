@@ -44,8 +44,7 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo `l
 > Endpoint utilizado para decodificação da conta de energia. <br/>
 > Sem autenticação, apenas realizar um POST com `multipart/form-data`<br/> o body deve ter o campo `"file"` contendo a conta de energia <br/>
 > POST https://magic-pdf.solarium.newsun.energy/v1/magic-pdf <br/><br/>
-> Content-Type: multipart/form-data <br />
-> ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
+> Content-Type: multipart/form-data <br /> > ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
 
 > [!CAUTION]
 > Não há necessidade de salvar o arquivo da conta de energia. Não será utilizado como critério de avaliação
@@ -61,13 +60,13 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo `l
 
 - [x] Endpoint para registrar uma nova simulação
 - [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
-- [ ] Endpoint para listar uma simulação baseado no id do lead, etc...
+- [x] Endpoint para listar uma simulação baseado no id do lead, etc...
 - [x] Modelar domínio com os agregados a seguir:
 
 ### Diferencial
 
 - [x] Fazer validação dos dados transitados na API.
-- [ ] Configurar ambiente docker para rodar a aplicação.
+- [x] Configurar ambiente docker para rodar a aplicação.
 
 ```ts
 export abstract class Lead {

@@ -25,6 +25,7 @@ model Unit {
   codigoDaUnidadeConsumidora String        @unique
   modeloFasico               PhaseModel
   enquadramento              ChargingModel
+  consumoEmReais             Int
   Lead                       Lead?         @relation(fields: [leadId], references: [id])
   leadId                     String       @db.VarChar(36)
   Consumo                    Consumo[]

@@ -6,7 +6,11 @@ import { FaFilePdf } from 'react-icons/fa6'
 import { IoMdCloudUpload } from 'react-icons/io'
 
 export function File() {
-    const { register, control } = useContext(SimulationContext)
+    const {
+        control,
+        register,
+        formState: { isSubmitting },
+    } = useContext(SimulationContext)
 
     return (
         <>
@@ -15,6 +19,7 @@ export function File() {
                 type="file"
                 accept=".pdf"
                 multiple
+                isDisabled={isSubmitting}
                 style={{
                     opacity: 0,
                     position: 'fixed',

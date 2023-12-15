@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
@@ -20,13 +20,25 @@ export class UnitService {
       cursor,
       where,
       orderBy,
+      include: {
+        Lead: true,
+      },
     });
   }
 
-  async createManyUnits(data: Prisma.UnitCreateManyInput[]) {
-    return this.prisma.unit.createMany({
+  async createUnit(data: Prisma.UnitUncheckedCreateInput) {
+    const alreadyExistUnit = await this.prisma.unit.findFirst({
+      where: {
+        codigoDaUnidadeConsumidora: data.codigoDaUnidadeConsumidora,
+      },
+    });
+
+    if (alreadyExistUnit) {
+      return null;
+    }
+
+    return this.prisma.unit.create({
       data,
-      skipDuplicates: true,
     });
   }
 }
