@@ -6,7 +6,7 @@ services:
     build: { context: ./frontend }
     entrypoint: bash frontend/entrypoint.sh
     depends_on:
-      - db
+      - backend
     volumes:
       - ./:/home/frontend
     ports:
@@ -17,7 +17,8 @@ services:
     build: { context: ./backend }
     entrypoint: bash backend/entrypoint.sh
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./:/home/backend
     ports:
