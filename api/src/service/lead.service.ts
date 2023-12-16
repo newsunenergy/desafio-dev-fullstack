@@ -15,7 +15,7 @@ export class LeadService {
     private readonly consumoService: ConsumoService,
     private readonly unidadeService: UnidadeService,
   ) {}
-  async submitLead(file: File, userData: UserDataDTO) {
+  async submitLead(file: any, userData: UserDataDTO) {
     const url = 'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf'
     const fileFormData = FileDTO.mapToPdfFormData(file)
     const response = await axios.post(url, fileFormData, fileFormData)

@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+    volumes:
+      - meu-volume:/var/lib/mysql
+    networks:
+      - new-sun-api_default
+  
+  api:
+    container_name: new-sun-api
+    build: ./api
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL="mysql://root:root@localhost:3306/new_sun"
+      - PRISMA_CLIENT_ENGINE_TYPE="src/infra/prisma/schema.prisma"
+    volumes:
+      - meu-volume:/var/lib/mysql
+    networks:
+      - new-sun-api_default
+
+    depends_on:
+      - mariadb
+volumes:
+  meu-volume:
+
+networks:
+  new-sun-api_default:
+
+  

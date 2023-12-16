@@ -13,7 +13,7 @@ export class LeadController {
   @UseInterceptors(FileFieldsInterceptor([{ name: 'file' }]))
   async submitLead(
     @UploadedFiles()
-    requestFile: File,
+    requestFile: any,
     @Body() user: UserDataDTO,
   ) {
     if (isEmpty(user)) {
