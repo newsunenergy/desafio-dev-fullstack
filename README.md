@@ -54,7 +54,7 @@ Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo `l
 ### Frontend
 
 - [x] Página para submissão do formulário `/simular`
-- [ ] Página de consulta `/listagem`
+- [x] Página de consulta `/listagem`
 
 ### Backend
 
