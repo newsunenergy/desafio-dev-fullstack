@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: root  
+    volumes:
+      - dbvolume:/var/lib/mysql
+
+  desafioapi:
+    container_name: desafioapi
+    build: 
+      context: ./api
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: mysql://root:root@mariadb:3306/new_sun
+
+    depends_on:
+      - mariadb
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+
+    ports:
+      - 5173:5173
+
+    restart: always
+      
+volumes:
+  dbvolume:
+
