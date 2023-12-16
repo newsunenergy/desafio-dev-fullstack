@@ -32,5 +32,10 @@ services:
       MYSQL_PASSWORD: devpass
       MYSQL_USER: dev
       MYSQL_DATABASE: challenge
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     ports:
       - 9902:3306
