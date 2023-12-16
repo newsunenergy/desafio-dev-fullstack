@@ -33,7 +33,9 @@ export function ListagemPage() {
             setLeads(response.data)
         })
     }, [])
-    return (
+
+        const navigate = useNavigate()
+        return(
         <Box width='full'>
             <Heading>Listagem de Leads</Heading>
             <Table width='full'>
@@ -124,6 +126,7 @@ export function ListagemPage() {
                     </ModalBody>
 
                     <ModalFooter>
+                        <Button onClick={() => { navigate('/') }}>Voltar</Button>
                         <Button colorScheme='blue' mr={3} onClick={() => {
                             setSelectedLead(null)
                             onClose()

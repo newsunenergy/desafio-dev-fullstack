@@ -8,32 +8,33 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MARIADB_ROOT_PASSWORD=root
+      MARIADB_ROOT_PASSWORD: root  
     volumes:
-      - meu-volume:/var/lib/mysql
-    networks:
-      - new-sun-api_default
-  
-  api:
-    container_name: new-sun-api
-    build: ./api
+      - dbvolume:/var/lib/mysql
+
+  desafioapi:
+    container_name: desafioapi
+    build: 
+      context: ./api
     restart: always
     ports:
       - 3000:3000
     environment:
-      - DATABASE_URL="mysql://root:root@localhost:3306/new_sun"
-      - PRISMA_CLIENT_ENGINE_TYPE="src/infra/prisma/schema.prisma"
-    volumes:
-      - meu-volume:/var/lib/mysql
-    networks:
-      - new-sun-api_default
+      DATABASE_URL: mysql://root:root@mariadb:3306/new_sun
 
     depends_on:
       - mariadb
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+
+    ports:
+      - 5173:5173
+
+    restart: always
+      
 volumes:
-  meu-volume:
+  dbvolume:
 
-networks:
-  new-sun-api_default:
-
-  
