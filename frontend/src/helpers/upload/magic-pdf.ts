@@ -21,6 +21,13 @@ export async function uploadToMagicPdf(
                 })
 
             if (!uploadResponse) return
+            if (uploadResponse.data.invoice.length < 12) {
+                toast({
+                    description: `Não será possível enviar a conta "${file.name}", ela não tem o histórico de consumo dos últimos 12 meses`,
+                    status: 'info',
+                })
+                return
+            }
 
             return {
                 codigoDaUnidadeConsumidora: uploadResponse.data.unit_key,

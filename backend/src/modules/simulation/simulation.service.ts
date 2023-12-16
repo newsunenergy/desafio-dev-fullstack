@@ -3,7 +3,6 @@ import { Prisma } from '@prisma/client';
 
 import { OutputCreateSimulationDto } from './simulation.dto';
 
-import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { UnitService } from 'src/modules/unit/unit.service';
 import { LeadService } from 'src/modules/lead/lead.service';
 import { InputCreateLeadDto } from 'src/modules/lead/lead.dto';
@@ -22,7 +21,7 @@ export class SimulationService {
     search?: string;
     orderBy?: Prisma.UnitOrderByWithRelationInput;
   }) {
-    const { orderBy, search, leadId } = params;
+    const { orderBy, leadId } = params;
 
     let where;
 
@@ -31,12 +30,6 @@ export class SimulationService {
         leadId,
       };
     }
-
-    // if (search) {
-    //   where = {
-    //     nomeCompleto:
-    //   }
-    // }
 
     return this.unit.listUnits({
       where,

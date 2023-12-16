@@ -1,10 +1,10 @@
 FROM node:alpine
 
-WORKDIR /home/app
+WORKDIR /home/backend
 
 RUN apk update
+RUN apk add bash
 
-RUN npm install pm2 -g
 RUN npm install @nestjs/cli -g
 
 ENTRYPOINT tail -f /dev/null

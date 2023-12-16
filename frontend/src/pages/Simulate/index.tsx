@@ -20,8 +20,11 @@ export default function Simulate() {
                     sm: 'full',
                     md: '4xl',
                 }}
+                height={'100vh'}
+                display={'flex'}
+                alignItems={'center'}
             >
-                <Card>
+                <Card width={'100%'}>
                     <Form>
                         <CardHeader>
                             <Heading size="lg">Realize sua simulação!</Heading>

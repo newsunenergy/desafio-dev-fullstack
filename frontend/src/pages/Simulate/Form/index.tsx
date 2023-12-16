@@ -14,7 +14,17 @@ export function Form({ children }: Props) {
         const myHeaders = new Headers()
         myHeaders.append('Content-Type', 'multipart/form-data')
 
-        const magicPdfUpload = await uploadToMagicPdf(data.files, toast)
+        let magicPdfUpload = await uploadToMagicPdf(data.files, toast)
+        magicPdfUpload = magicPdfUpload.filter((response) => response)
+
+        if (magicPdfUpload.length == 0) {
+            toast({
+                description: 'Não será possível realizar a simulação',
+                status: 'error',
+            })
+
+            return
+        }
 
         delete data.files
         const response = await axios

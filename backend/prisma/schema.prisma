@@ -19,13 +19,13 @@ model Lead {
 model Unit {
   id                         String        @id @default(uuid()) @db.VarChar(36)
   createdAt                  DateTime      @default(now())
-  codigoDaUnidadeConsumidora String        @unique
+  codigoDaUnidadeConsumidora String        @db.VarChar(50) @unique
   modeloFasico               PhaseModel
   enquadramento              ChargingModel
   leadId                     String        @db.VarChar(36)
   consumoEmReais             Int
-  Consumo                    Consumo[]
-  Lead                       Lead          @relation(fields: [leadId], references: [id])
+  consumo                    Consumo[]
+  lead                       Lead          @relation(fields: [leadId], references: [id])
 
   @@index([leadId], map: "Unit_leadId_fkey")
 }
@@ -35,7 +35,7 @@ model Consumo {
   consumoForaPontaEmKWH Int
   mesDoConsumo          DateTime
   unitId                String   @db.VarChar(36)
-  Unit                  Unit     @relation(fields: [unitId], references: [id])
+  unit                  Unit     @relation(fields: [unitId], references: [id])
 
   @@index([unitId], map: "Consumo_unitId_fkey")
 }

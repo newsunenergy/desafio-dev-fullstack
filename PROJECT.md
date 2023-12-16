@@ -2,15 +2,9 @@
 
 ## Como rodar o projeto
 
-#### Produção:
-
 ```
-docker build -t challenge .
-docker run challenge
-```
-
-#### Desenvolvimento:
-
-```
+yarn
 docker compose up -d
 ```
+
+Após rodar os comandos acima, seria somente acessar http://localhost:9900

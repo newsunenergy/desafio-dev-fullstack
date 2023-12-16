@@ -12,7 +12,7 @@ export const SortingPropertyParams = createParamDecorator(
     let orderDirection = (req.query.orderDirection || 'asc') as string;
     let orderBy = req.query.orderBy as string;
 
-    if (!orderBy) return null;
+    if (!orderBy) return;
 
     if (!Array.isArray(validParams))
       throw new BadRequestException(

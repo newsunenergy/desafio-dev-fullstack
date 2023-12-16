@@ -4,22 +4,22 @@ services:
   frontend:
     container_name: "challenge_fe"
     build: { context: ./frontend }
-    entrypoint: yarn frontend dev
+    entrypoint: bash frontend/entrypoint.sh
     depends_on:
       - db
     volumes:
-      - ./:/home/app
+      - ./:/home/frontend
     ports:
       - 9900:5173
 
   backend:
     container_name: "challenge_be"
     build: { context: ./backend }
-    entrypoint: yarn backend start:dev
+    entrypoint: bash backend/entrypoint.sh
     depends_on:
       - db
     volumes:
-      - ./:/home/app
+      - ./:/home/backend
     ports:
       - 9901:3000
 

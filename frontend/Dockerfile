@@ -1,5 +1,7 @@
 FROM node:alpine
 
-WORKDIR /home/app
+WORKDIR /home/frontend
+
+RUN apk add bash
 
 ENTRYPOINT tail -f /dev/null

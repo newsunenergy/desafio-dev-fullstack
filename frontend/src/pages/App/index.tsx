@@ -26,14 +26,7 @@ function App() {
                 maxWidth={'400px'}
                 textAlign={'center'}
             >
-                <Link
-                    to="/listagem"
-                    style={{
-                        textDecoration: 'underline',
-                    }}
-                >
-                    Visualizar simulações criadas
-                </Link>
+                <Link to="/listagem">Visualizar simulações criadas</Link>
             </Card>
         </Box>
     )
