@@ -1,0 +1,34 @@
+{
+    "name": "app",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": {
+        "packages": [
+            "backend",
+            "frontend"
+        ]
+    },
+    "scripts": {
+        "build": "yarn workspaces run build",
+        "test": "yarn workspaces run test",
+        "lint": "yarn workspaces run lint",
+        "backend": "yarn workspace @challenge/backend",
+        "backend:build": "yarn backend build",
+        "backend:lint": "yarn backend lint",
+        "backend:test": "yarn backend test",
+        "backend:dev": "yarn backend start:dev",
+        "backend:start": "yarn backend start:prod",
+        "frontend": "yarn workspace @challenge/frontend",
+        "frontend:build": "yarn frontend build",
+        "frontend:lint": "yarn frontend lint",
+        "frontend:test": "yarn frontend test",
+        "frontend:dev": "yarn frontend dev",
+        "frontend:start": "yarn frontend start"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@challenge/backend": "^0.0.1",
+        "@challenge/frontend": "^0.0.1"
+    }
+}
