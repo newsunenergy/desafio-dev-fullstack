@@ -1,5 +1,3 @@
-yarn
-
 if [[ ! -f "backend/.env" ]]; then
     cp backend/.env.example backend/.env
 fi
