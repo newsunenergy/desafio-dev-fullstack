@@ -25,7 +25,7 @@ export interface LeadPDF {
   chargingModel: string;
   phaseModel: string;
   unit_key: string;
-  invoice: [invoicePDF];
+  invoice: invoicePDF[];
   energy_company_id: string;
 }
 
