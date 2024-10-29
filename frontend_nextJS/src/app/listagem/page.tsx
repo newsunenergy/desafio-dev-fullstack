@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react";
 import axios from "axios"; // Adjust the import path as necessary
 import { Lead } from "../leadmodel";
