@@ -20,34 +20,34 @@ const Listagem = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Leads List</h1>
-      <table>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4 text-white">Leads List</h1>
+      <table className="min-w-full bg-white border border-gray-200 text-black">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nome Completo</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Unidades</th>
+            <th className="py-2 px-4 border-b">ID</th>
+            <th className="py-2 px-4 border-b">Nome Completo</th>
+            <th className="py-2 px-4 border-b">Email</th>
+            <th className="py-2 px-4 border-b">Telefone</th>
+            <th className="py-2 px-4 border-b">Unidades</th>
           </tr>
         </thead>
         <tbody>
           {leads.map((lead) => (
-            <tr key={lead.id}>
-              <td>{lead.id}</td>
-              <td>{lead.nomeCompleto}</td>
-              <td>{lead.email}</td>
-              <td>{lead.telefone}</td>
-              <td>
+            <tr key={lead.id} className="hover:bg-gray-100">
+              <td className="py-2 px-4 border-b">{lead.id}</td>
+              <td className="py-2 px-4 border-b">{lead.nomeCompleto}</td>
+              <td className="py-2 px-4 border-b">{lead.email}</td>
+              <td className="py-2 px-4 border-b">{lead.telefone}</td>
+              <td className="py-2 px-4 border-b">
                 {lead.unidades.map((unidade) => (
-                  <div key={unidade.id}>
+                  <div key={unidade.id} className="mb-2">
                     <p>Unidade ID: {unidade.id}</p>
                     <p>Código: {unidade.codigoDaUnidadeConsumidora}</p>
                     <p>Modelo Fásico: {unidade.modeloFasico}</p>
                     <p>Enquadramento: {unidade.enquadramento}</p>
                     <p>Histórico de Consumo:</p>
-                    <ul>
+                    <ul className="list-disc list-inside">
                       {unidade.historicoDeConsumoEmKWH.map((consumo, index) => (
                         <li key={index}>
                           {consumo.mesDoConsumo.toLocaleDateString()}:{" "}
