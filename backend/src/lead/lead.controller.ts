@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { LeadService } from './lead.service';
-import { Prisma } from '@prisma/client';
 import { CreateLeadDto } from './dto/create-lead.dto';
+import { FindLeadDto } from './dto/create-lead.dto';
 
 @Controller('lead')
 export class LeadController {
@@ -14,8 +22,8 @@ export class LeadController {
   }
 
   @Get()
-  findAll() {
-    return this.leadService.findAll();
+  findAll(@Query() findLeadDto: FindLeadDto) {
+    return this.leadService.findAll(findLeadDto);
   }
 
   @Get(':id')

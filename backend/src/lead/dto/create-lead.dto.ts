@@ -1,6 +1,28 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateNested, ArrayMinSize, IsEnum, IsDate } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+  ArrayMinSize,
+  IsEnum,
+  IsDate,
+  IsOptional,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
+export class FindLeadDto {
+  @IsOptional()
+  @IsString()
+  nome?: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  codigoDaUnidadeConsumidora?: string;
+}
 export class ConsumoDto {
   @IsNotEmpty()
   consumoForaPontaEmKWH: number;

@@ -58,8 +58,28 @@ export class LeadService {
     }
   }
 
-  async findAll() {
+  async findAll(filters?: {
+    nome?: string;
+    email?: string;
+    codigoDaUnidadeConsumidora?: string;
+  }) {
     return this.databaseService.lead.findMany({
+      where: {
+        AND: [
+          filters?.nome ? { nomeCompleto: { contains: filters.nome } } : {},
+          filters?.email ? { email: { equals: filters.email } } : {},
+          filters?.codigoDaUnidadeConsumidora
+            ? {
+                unidades: {
+                  some: {
+                    codigoDaUnidadeConsumidora:
+                      filters.codigoDaUnidadeConsumidora,
+                  },
+                },
+              }
+            : {},
+        ],
+      },
       include: {
         unidades: {
           include: {
