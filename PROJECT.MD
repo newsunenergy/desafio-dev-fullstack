@@ -4,7 +4,7 @@ Foi realizado o deploy do projeto, para que possa ser testado no ar, com todas a
 [Clique aqui para conferir o aplicativo no ar](https://lrfcodesteal.vercel.app/) 
 
 <p><strong><span style="color: red;">COLD START:</span> A PRIMEIRA REQUISIÇÃO DO DEPLOY LIGA O SERVIDOR</strong></p>
-**Aviso importante:**A API do projeto foi hospedada na Render e o frontend na Vercel. Como o backend está sendo executado no plano gratuito da Render, o servidor pode levar **até** 60 segundos para iniciar após a primeira solicitação. Para garantir que o servidor seja ativado corretamente, é necessário realizar uma requisição ao backend (como enviar uma conta no formulário de simulação — essa vai falhar, pois o servidor ainda não foi ligado) e aguardar aproximadamente 1 minuto e 30 segundos para que o sistema esteja totalmente disponível.
+**Aviso importante:** A API do projeto foi hospedada na Render e o frontend na Vercel. Como o backend está sendo executado no plano gratuito da Render, o servidor pode levar **até** 60 segundos para iniciar após a primeira solicitação. Para garantir que o servidor seja ativado corretamente, é necessário realizar uma requisição ao backend (como enviar uma conta no formulário de simulação — essa vai falhar, pois o servidor ainda não foi ligado) e aguardar aproximadamente 1 minuto e 30 segundos para que o sistema esteja totalmente disponível.
 
 Após esse tempo, você poderá acessar e testar todas as funcionalidades do projeto online.
 
