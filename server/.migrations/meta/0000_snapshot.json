@@ -1,0 +1,164 @@
+{
+  "id": "a0f91662-87b8-4234-9b23-7a37c4a9d883",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Consumo": {
+      "name": "Consumo",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "consumoForaPontaEmKWH": {
+          "name": "consumoForaPontaEmKWH",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mesDoConsumo": {
+          "name": "mesDoConsumo",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unidadeId": {
+          "name": "unidadeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Consumo_unidadeId_mesDoConsumo_unique": {
+          "name": "Consumo_unidadeId_mesDoConsumo_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "unidadeId",
+            "mesDoConsumo"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Lead": {
+      "name": "Lead",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "nomeCompleto": {
+          "name": "nomeCompleto",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "telefone": {
+          "name": "telefone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Lead_email_unique": {
+          "name": "Lead_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Unidade": {
+      "name": "Unidade",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "codigoDaUnidadeConsumidora": {
+          "name": "codigoDaUnidadeConsumidora",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "modeloFasico": {
+          "name": "modeloFasico",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "enquadramento": {
+          "name": "enquadramento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "leadId": {
+          "name": "leadId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Unidade_codigoDaUnidadeConsumidora_unique": {
+          "name": "Unidade_codigoDaUnidadeConsumidora_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "codigoDaUnidadeConsumidora"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
