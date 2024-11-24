@@ -12,9 +12,9 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="w-full flex items-center">
+    <header className="relative w-full flex items-center">
       <Image src={logo} alt="logo" />
-      <div className="flex gap-2 mx-auto my-0">
+      <div className="absolute left-0 right-0 flex gap-2 w-fit mx-auto my-0">
         <Button
           className={`${
             pathname === general_routes.simulate
