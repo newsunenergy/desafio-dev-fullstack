@@ -2,7 +2,6 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import filter from "@/public/svgs/filter.svg";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
