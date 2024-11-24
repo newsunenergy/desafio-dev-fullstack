@@ -15,6 +15,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { Input } from "@/components/ui/input";
 import { useFormService } from "@/services/Simulate/formSimulate.service";
 import ItemFile from "@/components/modules/Simulate/ItemFile/ItemFile";
@@ -34,11 +42,26 @@ const FormSimulate = () => {
               Simulação de compensação energertica
             </h3>
             <p className="max-w-[300px] text-xs text-textGrey">
-              Simule a sua energia para deademio deai dimdea mid i daeimd mied
-              emi
+              Calcule como otimizar sua energia com eficiência
             </p>
           </div>
-          <Image src={helpSimulate} alt="ajuda" className="cursor-pointer" />
+          <TooltipProvider>
+            <Tooltip delayDuration={400}>
+              <TooltipTrigger asChild>
+                <Image
+                  src={helpSimulate}
+                  alt="ajuda"
+                  className="cursor-pointer"
+                />
+              </TooltipTrigger>
+              <TooltipContent className="bg-box text-white border-textInput max-w-[230px]">
+                <p>
+                  Esta simulação ajuda a estimar o potencial de compensação
+                  energética para sua unidade consumidora.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <div className="flex flex-col gap-3">
           <FormField
@@ -95,7 +118,7 @@ const FormSimulate = () => {
                 className="hidden"
                 accept="application/pdf"
               />
-              <span className="max-w-[115px] flex items-center gap-2 border border-dashed border-textInput rounded-xl p-2 text-xs font-bold cursor-pointer">
+              <span className="max-w-[115px] flex items-center gap-2 border border-dashed border-textInput rounded-xl p-2 text-xs font-bold cursor-pointer hover:border-white transition-all ">
                 Enviar conta
                 <Image src={uploadFile} alt="enviar conta" />
               </span>
