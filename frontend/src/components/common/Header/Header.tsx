@@ -23,7 +23,7 @@ const Header = () => {
           } py-4 px-7 hover:bg-boxColor`}
           asChild
         >
-          <Link href={"/simular"}>Simular</Link>
+          <Link href={general_routes.simulate}>Simular</Link>
         </Button>
         <Button
           className={`${
@@ -33,7 +33,7 @@ const Header = () => {
           } hover:bg-[#1C1A2B] py-4 px-7`}
           asChild
         >
-          <Link href={"/listagem"}>Listagem</Link>
+          <Link href={general_routes.listing}>Listagem</Link>
         </Button>
       </div>
     </header>
