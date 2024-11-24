@@ -5,7 +5,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  padding: 1.875rem;
+  padding: 1.875rem !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 
