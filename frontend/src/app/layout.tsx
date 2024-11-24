@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 import Header from "@/components/common/Header/Header";
+import Provider from "@/utils/Provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,8 +24,11 @@ export default function RootLayout({
     <html lang="pt">
       <body className={`${inter.className}`}>
         <Header />
-        <main className="flex justify-center items-center h-full">{children}</main>
-        <Toaster position="top-right" richColors/>
+        <main className="flex justify-center items-center h-full">
+          {" "}
+          <Provider>{children}</Provider>
+        </main>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
