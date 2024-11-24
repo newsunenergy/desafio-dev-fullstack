@@ -36,7 +36,6 @@ const ModalLeadDetails = ({ id, closeModal }: ModalLeadDetailsProps) => {
     enabled: Boolean(id),
   });
 
-
   const fields = [
     {
       name: "Nome:",
@@ -124,7 +123,7 @@ const ModalLeadDetails = ({ id, closeModal }: ModalLeadDetailsProps) => {
             </li>
           ))}
         </ul>
-        <div>
+        <div className="overflow-auto">
           <p className="font-bold">Unidades asociadas:</p>
           <Table className="bg-textInput rounded-lg mt-3">
             <TableHeader>

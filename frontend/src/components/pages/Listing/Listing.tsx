@@ -10,7 +10,7 @@ const Listing = () => {
     useListingService();
 
   return (
-    <div className="mt-28 w-[900px] h-[600px] bg-box rounded-xl border border-textInput">
+    <div className="mt-28 w-[900px] h-[600px] bg-box rounded-xl border border-textInput overflow-auto">
       <FilterSimulation
         filterValue={filterLeads}
         setFilterValue={handleFilterChange}
