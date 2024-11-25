@@ -52,7 +52,7 @@ const SimulationTable = ({
         <TableBody>
           {tableData?.map((invoice) => (
             <TableRow key={invoice.id} className="border-textInput" onClick={() => handleModalLead(invoice.id as string)}>
-              <TableCell className="font-medium text-xs py-[10px] px-7">
+              <TableCell className="font-medium text-xs py-[10px] px-7 capitalize">
                 {invoice.nomeCompleto}
               </TableCell>
               <TableCell className="text-left text-xs py-[10px] px-7">

@@ -13,7 +13,10 @@ const Header = () => {
 
   return (
     <header className="relative w-full flex items-center">
-      <Image src={logo} alt="logo" />
+      <Link href={"/"}>
+        {" "}
+        <Image src={logo} alt="logo" className="cursor-pointer" />
+      </Link>
       <p className="ml-[10px] text-2xl font-bold text-[#EBEBEB]">NewSun</p>
       <div className="absolute left-0 right-0 flex gap-2 w-fit mx-auto my-0 max-[730px]:top-14">
         <Button

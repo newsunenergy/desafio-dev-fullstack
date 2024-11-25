@@ -37,7 +37,7 @@ model Unidade {
 
 model Consumo {
   id                    String  @id @default(uuid())
-  consumoForaPontaEmKWH Float
+  consumoForaPontaEmKWH Int
   mesDoConsumo          String
   unidadeId             String
   unidade               Unidade @relation(fields: [unidadeId], references: [id])

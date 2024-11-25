@@ -5,8 +5,10 @@ import { Filter } from "@/components/modules/Listing/FilterSimulation/Typing";
 import { Lead } from "@/types/lead";
 
 import apiClient from "@/src/services/api/apiClient.service";
+import { useRouter } from "next/navigation";
 
 export const useListingService = () => {
+  const router = useRouter();
   const [filterLeads, setFilterLeads] = useState({
     name: "",
     email: "",
@@ -27,7 +29,11 @@ export const useListingService = () => {
     debouncedUpdate(newFilter);
   };
 
-  const { data: leads, isLoading } = useQuery({
+  const {
+    data: leads,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["leads", debouncedFilter],
     queryFn: async () => {
       const response = await apiClient.get(
@@ -37,7 +43,15 @@ export const useListingService = () => {
     },
     enabled: Boolean(debouncedFilter),
   });
-  return { filterLeads, setFilterLeads, leads, isLoading, handleFilterChange };
+  return {
+    filterLeads,
+    setFilterLeads,
+    leads,
+    isLoading,
+    handleFilterChange,
+    error,
+    router,
+  };
 };
 
 export default useListingService;

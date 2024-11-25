@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFormService } from "@/services/Simulate/formSimulate.service";
 import ItemFile from "@/components/modules/Simulate/ItemFile/ItemFile";
+import { formatPhone } from "@/src/utils/format_document";
 
 const FormSimulate = () => {
   const { form, onSubmit, file, handleUpload, isloading } = useFormService();
@@ -73,7 +74,7 @@ const FormSimulate = () => {
                   Nome
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Joao garcia" {...field} />
+                  <Input placeholder="Joao garcia" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,7 +89,7 @@ const FormSimulate = () => {
                   Email
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Joao@gmail.com" {...field} />
+                  <Input placeholder="Joao@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,7 +104,14 @@ const FormSimulate = () => {
                   Telefone
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: (11) 94635-1098" {...field} />
+                  <Input
+                    placeholder="(11) 94635-1098"
+                    {...field}
+                    value={formatPhone(field.value)}
+                    onChange={(e) =>
+                      field.onChange(formatPhone(e.target.value))
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,12 +131,15 @@ const FormSimulate = () => {
                 <Image src={uploadFile} alt="enviar conta" />
               </span>
             </label>
-            {file &&
-              file.map((file) => (
-                <React.Fragment key={file}>
-                  <ItemFile name={file} />
-                </React.Fragment>
-              ))}
+            {file && (
+              <div className="flex flex-col gap-3 overflow-auto max-h-36">
+                {file.map((file) => (
+                  <React.Fragment key={file}>
+                    <ItemFile name={file} />
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

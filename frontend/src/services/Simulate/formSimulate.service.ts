@@ -10,8 +10,11 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Lead } from "@/types/lead";
 import apiClient from "@/services/api/apiClient.service";
+import { useRouter } from "next/navigation";
+import { general_routes } from "@/src/routes/general";
 
 export const useFormService = () => {
+  const router = useRouter();
   const [file, setFile] = useState<string[]>([]);
   const [isloading, setIsloading] = useState(false);
   const [uploadFileData, setUploadFileData] = useState<Unidade[]>([]);
@@ -32,7 +35,7 @@ export const useFormService = () => {
       );
     }
     const submitData: Lead = {
-      nomeCompleto: values?.name,
+      nomeCompleto: values?.name?.trim()?.toLowerCase(),
       email: values?.email,
       telefone: values?.phone,
       unidades: uploadFileData,
@@ -44,6 +47,7 @@ export const useFormService = () => {
       if (leadPost) {
         toast.success("Simulação realizada com sucesso");
       }
+      router.push(general_routes.listing);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -81,7 +85,7 @@ export const useFormService = () => {
       setFile((prev) => [...prev, nameFile]);
     } catch (error) {
       toast.error(
-        "Erro ao adicionar a conta. Por favor verifique se a conta enviada é valida",
+        "Erro ao adicionar a conta. Por favor, verifique se a conta enviada é valida",
       );
       console.log(error);
     }

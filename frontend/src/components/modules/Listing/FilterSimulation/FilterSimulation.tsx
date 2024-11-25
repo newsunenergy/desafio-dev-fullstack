@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import filter from "@/public/svgs/filter.svg";
+import help from "@/public/svgs/helpIcon.svg";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import {
@@ -8,6 +9,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { FilterSimulationProps } from "./Typing";
 
 const FilterSimulation = ({
@@ -22,7 +29,7 @@ const FilterSimulation = ({
     (value) => value.trim() !== "",
   );
   return (
-    <div className="flex justify-end py-[10px] px-7 border-b border-textInput">
+    <div className="flex justify-end py-[10px] px-7 border-b border-textInput gap-4">
       <Popover>
         <PopoverTrigger asChild>
           <div className="relative bg-boxColor p-3 rounded-lg cursor-pointer">
@@ -71,6 +78,20 @@ const FilterSimulation = ({
           </div>
         </PopoverContent>
       </Popover>
+      <TooltipProvider>
+        <Tooltip delayDuration={400}>
+          <TooltipTrigger asChild>
+            <div className="bg-boxColor p-3 rounded-lg cursor-pointer">
+              <Image src={help} alt="filtro" width={15} height={15} />{" "}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-box text-white border-textInput max-w-[230px]">
+            <p>
+            Clique sobre um lead para visualizar detalhes completos, incluindo unidades associadas e histórico de consumo. Utilize as ações disponíveis para gerenciar os registros.
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };

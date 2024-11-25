@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { ModalLeadDetailsProps } from "./Typing";
-import { useQuery } from "@tanstack/react-query";
-import { Lead, Consumo } from "@/types/lead";
+
 import {
   Table,
   TableBody,
@@ -13,59 +12,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
-import apiClient from "@/src/services/api/apiClient.service";
-
-interface ConsumoModal {
-  consumoForaPontaEmKWH: number;
-  mesDoConsumo: string;
-}
+import { useModalLeadDetails } from "@/services/Listing/modalLeadDetails.service";
 
 const ModalLeadDetails = ({ id, closeModal }: ModalLeadDetailsProps) => {
-  const [consume, setConsume] = useState<ConsumoModal[]>([]);
-  const [openConsume, setOpenConsume] = useState(false);
-
-  const { data: leadsDetails } = useQuery({
-    queryKey: ["leadsDetails", id],
-    queryFn: async () => {
-      const response = await apiClient.get(`/lead/${id}`);
-      return response.data as Lead;
-    },
-    enabled: Boolean(id),
-  });
-
-  const fields = [
-    {
-      name: "Nome:",
-      value: leadsDetails?.nomeCompleto || "-",
-    },
-    {
-      name: "Email:",
-      value: leadsDetails?.email || "-",
-    },
-    {
-      name: "Telefone:",
-      value: leadsDetails?.telefone || "-",
-    },
-  ];
-
-  const handleConsume = (consumeArr: Consumo[]) => {
-    setConsume(() => {
-      const newDate = consumeArr.map((item) => {
-        const mesDoConsumo = format(new Date(item.mesDoConsumo), "MMMM", {
-          locale: ptBR,
-        });
-        return {
-          mesDoConsumo: mesDoConsumo,
-          consumoForaPontaEmKWH: item.consumoForaPontaEmKWH,
-        };
-      });
-      return newDate;
-    });
-    setOpenConsume(true);
-  };
+  const {
+    consume,
+    fields,
+    openConsume,
+    setOpenConsume,
+    leadsDetails,
+    handleConsume,
+  } = useModalLeadDetails(id);
 
   return (
     <>
