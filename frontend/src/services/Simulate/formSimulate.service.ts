@@ -59,6 +59,7 @@ export const useFormService = () => {
 
     const fd = new FormData();
     fd.append("file", e?.target?.files[0]);
+    const nameFile = e?.target?.files[0]?.name;
 
     try {
       const { data } = await axios.post<EnergyConsumption>(
@@ -77,7 +78,7 @@ export const useFormService = () => {
       };
       setUploadFileData((prev) => [...prev, newData]);
 
-      setFile((prev) => [...prev, e?.target?.files[0]?.name]);
+      setFile((prev) => [...prev, nameFile]);
     } catch (error) {
       toast.error(
         "Erro ao adicionar a conta. Por favor verifique se a conta enviada é valida",
