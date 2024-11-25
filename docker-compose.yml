@@ -1,0 +1,30 @@
+
+services:
+  backend:
+    image: node:16
+    container_name: simulacao-energia-backend
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - simulacao-net
+    command: npm start
+
+  mongo:
+    image: mongo:latest
+    container_name: simulacao-energia-mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - simulacao-net
+
+networks:
+  simulacao-net:
+    driver: bridge
+
+volumes:
+  mongo_data:
