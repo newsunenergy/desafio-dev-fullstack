@@ -1,0 +1,10 @@
+services:
+  backend:
+    image: api
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: newsun-front
+    ports:
+      - "80:80"

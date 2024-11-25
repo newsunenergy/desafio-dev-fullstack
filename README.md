@@ -1,7 +1,7 @@
 # NewSun Energy Brazil
 ## Processo de recrutamento
 
-Olá dev, bem vindo ao nosso processo de recrutamento para desenvolvedor Full Stack!
+Olá dev, bem vindo ao nosso processo de recrutamento para desenvolvedor Full Stack
 
 ### Sobre a vaga
 * 100% Remoto
