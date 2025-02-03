@@ -1,143 +1,121 @@
-# NewSun Energy Brazil
-## Processo de recrutamento
+# Projeto: Simulação de Compensação Energética
 
-Olá dev, bem vindo ao nosso processo de recrutamento para desenvolvedor Full Stack!
+Este projeto foi desenvolvido para atender aos requisitos do desafio técnico, implementando uma aplicação com "frontend" em Next.js e "backend" em Nest.js. 
+O sistema permite que os usuários realizem simulações de planos de compensação energética e acessem os dados registrados de forma eficiente.
 
-### Sobre a vaga
-* 100% Remoto
-* Flexibilidade no horário de trabalho
+### **Tecnologias Utilizadas**
 
-### Requisitos para a vaga
-Conhecimentos sólidos em:
+**Frontend**: React.js
 
-* Typescript (com nodejs)
-* ReactJS/NextJS
-* Estilização com tailwindCSS ou @chakra-ui
-* MySQL (utilizando algum ORM: prisma, typeORM, etc...)
-* Consumir e Servir aplicações RESTful
+**Backend**: Nest.js
 
-Desejável:
-* NestJS
-* Docker
-* Noções de Clean Architeture 
+**Banco de Dados**: PostgreSQL
 
-# Resumo
-### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
-### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
+**ORM**: Prisma
 
+**Upload de Arquivos**: Multer
 
-# O Desafio:
-Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. <br/>
-O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).<br/><br/>
-Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo ```lead``` contendo as informações cadastrais do author, juntamente aos dados decodificados da conta de energia.
-#
-# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
+**Integração com API Externa**: Axios
 
-> [!TIP]
-> A escolha de tecnologia é livre. O único requisito é que seja feito em Typescript e que o frontend seja feito em ReactJS ou NextJS. Pode adicionar frameworks ou bibliotecas da sua escolha!<br/>
+### **Frontend**
 
->[!NOTE]
->Endpoint utilizado para decodificação da conta de energia. <br/>
->Sem autenticação, apenas realizar um POST com `multipart/form-data`<br/> o body deve ter o campo `"file"` contendo a conta de energia <br/>
->POST https://magic-pdf.solarium.newsun.energy/v1/magic-pdf <br/><br/>
->Content-Type: multipart/form-data <br />
-![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
+- Página de formulário para submissão de simulações (`/simular`).
+- Página de listagem de simulações (`/listagem`), com filtros por nome, email e com botão para mostras mais detalhes como código da unidade consumidora e etc.
+- Integração com o backend para enviar e buscar dados.
 
+### **Backend**
 
->[!CAUTION]
-> Não há necessidade de salvar o arquivo da conta de energia. Não será utilizado como critério de avaliação
+- **Endpoints disponíveis**:
 
-# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
+  1. **Registrar Simulação**: Recebe os dados do formulário e processa as informações.
+  2. **Listar Simulações**: Retorna todas as simulações, com suporte a filtros.
+  3. **Buscar Simulação por ID**: Retorna os detalhes de uma simulação específica.
+  4. **Delete**: Delete colocado para caso precisa deletar para fazer outro teste
 
-### Frontend
-- [ ] Página para submissão do formulário ```/simular```
-- [ ] Página de consulta ```/listagem```
+    #### **Banco de Dados: postgresql**
 
-### Backend
-- [ ] Endpoint para registrar uma nova simulação
-- [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
-- [ ] Endpoint para listar uma simulação baseado no id do lead, etc...
-- [ ] Modelar domínio com os agregados a seguir:
+     O projeto utiliza **postgresql** como banco de dados, uma solução leve e eficiente que não requer configuração de servidor.
 
-### Diferencial
-- [ ] Fazer validação dos dados transitados na API.
-- [ ] Configurar ambiente docker para rodar a aplicação.
+### **Serviço de Leads**
 
+O LeadsService gerencia as operações relacionadas à simulação de compensação energética, incluindo:
 
-      
-```ts
-export interface Lead {
-  id: string
-  nomeCompleto: string
-  email: string 
-  telefone: string
-  unidades: Unidade[]
-}
+**Decodificação de Conta de Energia**: Processamento do PDF enviado pelo usuário, extraindo dados relevantes via API externa.
 
-export interface Unidade {
-  id: string
-  codigoDaUnidadeConsumidora: string
-  modeloFasico: 'monofasico' | 'bifasico' | 'trifasico'
-  enquadramento: 'AX' | 'B1' | 'B2' | 'B3'
-  historicoDeConsumoEmKWH: Consumo[]
-}
+**Criação de Leads**: Armazena os dados extraídos e as informações fornecidas pelo usuário.
 
-export interface Consumo {
-  consumoForaPontaEmKWH: number
-  mesDoConsumo: Date
-}
+**Filtragem e Listagem**: Retorna os registros com opções de filtragem dinâmicas.
 
-```
->[!NOTE]
-> DICA<br/>
-> ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/1601b2e4-f1b9-4b40-a2ae-020e342c7796)<br/>
-> `unit_key` representa `codigoDaUnidadeConsumidora` no nosso domínio<br/>
-> `chargingModel` representa `unit.enquadramento` no nosso domínio<br/>
-> `phaseModel` representa  `unit.modeloFasico` no nosso domínio<br/>
-> `consumo_fp` representa `unit.historicoDeConsumoEmKWH.consumoForaPontaEmKWH`<br/>
-> `consumo_date` representa `mesDoConsumo` <br/><br/>
+**Histórico de Consumo**: Organiza os dados de consumo por período.
 
-#
+## **Utilitário Moth**
 
-# Regras
-* O email deverá ser único por `lead`
-* O codigoDaUnidadeConsumidora deve ser único.
-* Um lead deve ter no mínimo 1 `unidade`.
-* Uma `unidade` deve ter exatamente o `historicoDeConsumoEmKWH` do `Consumo` dos últimos 12 meses. Em outras palavras, `${unit.historicoDeConsumoEmKWH}` length tem que ser 12.
+A função Moth organiza os registros de consumo de energia, garantindo que os dados sejam ordenados corretamente e limitando a quantidade de resultados retornados.
 
-```ts
-export interface SolicitarSimulacaoDeCompensacaoEnergeticaInput {
-  nomeCompleto: string
-  email: string
-  telefone: string
-  informacoesDaFatura: InformacaoDaFatura[]
-}
+```javascript
+export const Moth = <T extends string>(
+  field: T,
+  limit: number = 12,
+): { orderBy: { [key in T]: 'desc' }; take: number } => {
+  if (typeof field !== 'string' || field.trim() === '') {
+    throw new Error('Field must be a non-empty string.');
+  }
 
-export interface InformacaoDaFatura {
-    codigoDaUnidadeConsumidora: string
-    modeloFasico: string
-    enquadramento: string
-    mesDeReferencia: Date
-    consumoEmReais: number
-    historicoDeConsumoEmKWH: {
-      consumoForaPontaEmKWH: number
-      mesDoConsumo: Date
-    }[]
-}
+  if (typeof limit !== 'number' || limit <= 0) {
+    throw new Error('Limit must be a positive number.');
+  }
+
+  return {
+    orderBy: { [field]: 'desc' } as { [key in T]: 'desc' },
+    take: limit,
+  };
+};
 ```
 
-# Resumo
-### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
-### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
+## Como Executar o Projeto
 
-#
+### **Pré-requisitos**
 
-# Comece
-O processo do desafio deve ser: <br />
+- Node.js 21 ou superior.
+- Docker (opcional, para execução em contêiner).
 
-+ Faça o fork do desafio.
-+ Crie um PROJECT.md com a explicação de como devemos executar o projeto e com o máximo de detalhes possível do que foi feito.
-+ Após concluir faça um pull request
+## **Configuração do Ambiente**
+O projeto usa variáveis de ambiente definidas no arquivo **.env.local**:
+```.env
+PORT=3000
 
-Qualquer dúvida entre em contato por email.
-paulo.santana@newsun.energy
+DB_HOST=localhost
+DB_PORT=5436
+DB_USER=test
+DB_PASS=admin
+DB_NAME=newsun
+REDIS_PORT=6379
+
+DATABASE_URL=postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=public
+```
+
+A conexão com o banco de dados PostgreSQL é feita por meio da variável **DATABASE_URL**.
+O Redis também está configurado para rodar na porta **6379**.
+
+##  **Execução com Docker**
+O projeto pode ser executado facilmente usando Docker. Para subir os serviços, basta rodar:
+```sh
+docker-compose up -d
+```
+Isso inicializará o banco de dados PostgreSQL e o Redis dentro de contêineres, garantindo que os serviços estejam prontos para o uso.
+
+## Frontend
+
+#### Tecnologias utilizadas:
+
+-Next.js
+-Tailwind CSS
+-Zod
+-Fetch API
+
+**Conclusão**
+
+O projeto de Simulação de Compensação Energética implementa uma solução eficiente para registrar, listar e buscar simulações de consumo de energia.
+ Com uma arquitetura bem estruturada e tecnologias modernas, ele proporciona uma experiência fluida e eficiente para os usuários.
+
+
