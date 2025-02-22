@@ -39,12 +39,12 @@ model Unit {
 }
 
 model Comsumption {
-  id                 String   @id @default(uuid())
-  offPeakInKWH       Float
-  monthOfConsumption DateTime
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  unitId             String
+  id              String   @id @default(uuid())
+  offPeakInKWH    Float
+  comsuptiomMonth Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  Unit Unit @relation(fields: [unitId], references: [id])
+  unitId String
+  Unit   Unit   @relation(fields: [unitId], references: [id])
 }
