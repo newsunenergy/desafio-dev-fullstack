@@ -2,15 +2,15 @@ import { Optional } from '../../../../core/types/optional';
 import { Entity } from '../../../../core/entities/entity';
 import { UniqueEntityID } from '../../../../core/entities/unique-entity-id';
 
-export interface ComsumptionProps {
+export interface ConsumptionProps {
   offPeakInKWH: number;
-  comsuptiomMonth: number;
+  consumptionMonth: number;
   unitId: string;
   updatedAt?: Date | null;
   createdAt: Date;
 }
 
-export class Comsumption extends Entity<ComsumptionProps> {
+export class Consumption extends Entity<ConsumptionProps> {
   get offPeakInKWH() {
     return this.props.offPeakInKWH;
   }
@@ -20,12 +20,12 @@ export class Comsumption extends Entity<ComsumptionProps> {
     this.touch();
   }
 
-  get comsuptiomMonth() {
-    return this.props.comsuptiomMonth;
+  get consumptionMonth() {
+    return this.props.consumptionMonth;
   }
 
-  set comsuptiomMonth(comsuptiomMonth: number) {
-    this.props.comsuptiomMonth = comsuptiomMonth;
+  set consumptionMonth(consumptionMonth: number) {
+    this.props.consumptionMonth = consumptionMonth;
     this.touch();
   }
 
@@ -51,10 +51,10 @@ export class Comsumption extends Entity<ComsumptionProps> {
   }
 
   static create(
-    props: Optional<ComsumptionProps, 'createdAt'>,
+    props: Optional<ConsumptionProps, 'createdAt'>,
     id?: UniqueEntityID,
   ) {
-    const comsumption = new Comsumption(
+    const consumption = new Consumption(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
@@ -62,6 +62,6 @@ export class Comsumption extends Entity<ComsumptionProps> {
       id,
     );
 
-    return comsumption;
+    return consumption;
   }
 }
