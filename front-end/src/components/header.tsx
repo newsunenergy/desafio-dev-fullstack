@@ -14,7 +14,7 @@ export function Header() {
 						Minhas Simulações
 					</Link>
 					<Link
-						href="/new-simulate"
+						href="/create-simulate"
 						className="text-sm hover:text-blue-600 font-medium transition"
 					>
 						Nova Simulação
