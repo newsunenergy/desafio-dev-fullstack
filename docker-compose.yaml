@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     DATABASE_URL: "mysql://root:password@db:3306/newsun"
+  #     MAGIC_PDF_API_URL: ${MAGIC_PDF_API_URL}
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'newsun'   
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'      
+      MYSQL_ROOT_PASSWORD: 'password'
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    ports:
+      - '3306:3306'
+    volumes:
+      - './.mysql-data/db:/var/lib/mysql'
