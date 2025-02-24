@@ -3,12 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface CreateSimulateFormData {
-	name: string;
+	fullName: string;
 	email: string;
-	phone: string;
+	phoneNumber: string;
 	files: FileList;
 }
 
@@ -16,20 +18,46 @@ export function CreateSimulateForm() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<CreateSimulateFormData>();
+
+	const [isLoading, setIsLoading] = useState(false);
+
+	const router = useRouter();
 
 	const onSubmit = async (data: CreateSimulateFormData) => {
 		const formData = new FormData();
 
-		formData.append("name", data.name);
+		formData.append("fullName", data.fullName);
 		formData.append("email", data.email);
-		formData.append("phone", data.phone);
+		formData.append("phoneNumber", data.phoneNumber);
 
 		if (data.files?.length) {
 			for (const file of data.files) {
 				formData.append("files", file);
 			}
+		}
+
+		try {
+			setIsLoading(true);
+
+			const response = await fetch("http://localhost:3333/lead/create", {
+				method: "POST",
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error(`Erro ao enviar dados: ${response.statusText}`);
+			}
+
+			await response.json();
+			reset();
+			router.push("/");
+		} catch (error) {
+			console.error("Erro ao enviar formulário:", error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -40,7 +68,7 @@ export function CreateSimulateForm() {
 				<Input
 					id="name"
 					type="text"
-					{...register("name", { required: true })}
+					{...register("fullName", { required: true })}
 				/>
 			</div>
 
@@ -58,7 +86,7 @@ export function CreateSimulateForm() {
 				<Input
 					id="phone"
 					type="tel"
-					{...register("phone", { required: true })}
+					{...register("phoneNumber", { required: true })}
 				/>
 			</div>
 
@@ -76,7 +104,7 @@ export function CreateSimulateForm() {
 
 			<div>
 				<Button type="submit" className="w-full mt-4">
-					Enviar simulação
+					{isLoading ? "Carregando..." : "Enviar simulação"}
 				</Button>
 			</div>
 		</form>
