@@ -65,18 +65,19 @@ export class CreateLeadUseCase {
       bills.map((bill) => this.getEnergyBillInformation(bill)),
     );
 
-    return billInformationArray.map((decodedData) => {
+    return billInformationArray.map((billInformation) => {
       return {
         unit: Unit.create({
-          consumerUnitCode: decodedData.unit_key,
-          phaseModel: decodedData.phaseModel,
-          framing: decodedData.chargingModel,
+          consumerUnitCode: billInformation.unit_key,
+          phaseModel: billInformation.phaseModel,
+          framing: billInformation.chargingModel,
         }),
-        consumptions: decodedData.invoice.map(({ consumo_fp, consumo_date }) =>
-          Consumption.create({
-            offPeakInKWH: Number(consumo_fp),
-            consumptionMonth: new Date(consumo_date),
-          }),
+        consumptions: billInformation.invoice.map(
+          ({ consumo_fp, consumo_date }) =>
+            Consumption.create({
+              offPeakInKWH: Number(consumo_fp),
+              consumptionMonth: new Date(consumo_date),
+            }),
         ),
       };
     });
