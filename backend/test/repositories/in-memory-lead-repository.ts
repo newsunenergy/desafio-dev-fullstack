@@ -42,4 +42,8 @@ export class InMemoryLeadRepository implements LeadRepository {
   async findById(id: string): Promise<LeadWithUnitsDTO | null> {
     return this.items.find((lead) => lead.lead.id.toString() === id) || null;
   }
+
+  async findByEmail(email: string): Promise<LeadWithUnitsDTO | null> {
+    return this.items.find((lead) => lead.lead.email === email) || null;
+  }
 }

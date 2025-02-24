@@ -41,7 +41,7 @@ model Unit {
 model Consumption {
   id               String   @id @default(uuid())
   offPeakInKWH     Float
-  consumptionMonth Int
+  consumptionMonth DateTime
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

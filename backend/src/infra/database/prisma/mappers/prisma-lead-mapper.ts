@@ -28,7 +28,6 @@ export class PrismaLeadMapper {
               {
                 offPeakInKWH: consumption.offPeakInKWH,
                 consumptionMonth: consumption.consumptionMonth,
-                unitId: consumption.unitId,
                 createdAt: consumption.createdAt,
                 updatedAt: consumption.updatedAt,
               },
@@ -41,7 +40,6 @@ export class PrismaLeadMapper {
             consumerUnitCode: unit.consumerUnitCode,
             framing: unit.framing,
             phaseModel: unit.phaseModel,
-            leadId: unit.leadId,
             createdAt: unit.createdAt,
             updatedAt: unit.updatedAt,
           },

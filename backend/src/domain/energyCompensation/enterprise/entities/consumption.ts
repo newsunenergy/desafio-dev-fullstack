@@ -4,8 +4,7 @@ import { UniqueEntityID } from '../../../../core/entities/unique-entity-id';
 
 export interface ConsumptionProps {
   offPeakInKWH: number;
-  consumptionMonth: number;
-  unitId: string;
+  consumptionMonth: Date;
   updatedAt?: Date | null;
   createdAt: Date;
 }
@@ -24,17 +23,8 @@ export class Consumption extends Entity<ConsumptionProps> {
     return this.props.consumptionMonth;
   }
 
-  set consumptionMonth(consumptionMonth: number) {
+  set consumptionMonth(consumptionMonth: Date) {
     this.props.consumptionMonth = consumptionMonth;
-    this.touch();
-  }
-
-  get unitId() {
-    return this.props.unitId;
-  }
-
-  set unitId(unitId: string) {
-    this.props.unitId = unitId;
     this.touch();
   }
 

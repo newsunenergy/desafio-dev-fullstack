@@ -76,4 +76,25 @@ export class PrismaLeadRepository implements LeadRepository {
       lead.units.flatMap((unit) => unit.consumptionHistory),
     );
   }
+
+  async findByEmail(email: string): Promise<LeadWithUnitsDTO | null> {
+    const lead = await this.prismaService.lead.findUnique({
+      where: { email },
+      include: {
+        units: {
+          include: {
+            consumptionHistory: true,
+          },
+        },
+      },
+    });
+
+    if (!lead) return null;
+
+    return PrismaLeadMapper.toDomain(
+      lead,
+      lead.units,
+      lead.units.flatMap((unit) => unit.consumptionHistory),
+    );
+  }
 }

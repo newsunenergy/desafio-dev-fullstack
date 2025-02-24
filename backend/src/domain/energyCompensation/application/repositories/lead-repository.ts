@@ -23,4 +23,5 @@ export abstract class LeadRepository {
   abstract create(lead: LeadWithUnitsDTO): Promise<void>;
   abstract findAll(filter: FilterProps): Promise<LeadWithUnitsDTO[] | null>;
   abstract findById(id: string): Promise<LeadWithUnitsDTO | null>;
+  abstract findByEmail(email: string): Promise<LeadWithUnitsDTO | null>;
 }

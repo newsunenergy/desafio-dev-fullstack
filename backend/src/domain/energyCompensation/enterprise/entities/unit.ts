@@ -6,7 +6,6 @@ export interface UnitProps {
   consumerUnitCode: string;
   framing: string;
   phaseModel: string;
-  leadId: string;
   updatedAt?: Date | null;
   createdAt: Date;
 }
@@ -36,15 +35,6 @@ export class Unit extends Entity<UnitProps> {
 
   set phaseModel(phaseModel: string) {
     this.props.phaseModel = phaseModel;
-    this.touch();
-  }
-
-  get leadId() {
-    return this.props.leadId;
-  }
-
-  set leadId(leadId: string) {
-    this.props.leadId = leadId;
     this.touch();
   }
 
