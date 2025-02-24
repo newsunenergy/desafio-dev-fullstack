@@ -14,4 +14,4 @@ import { PrismaLeadRepository } from './repositories/prisma-lead-repository';
   ],
   exports: [PrismaService, LeadRepository],
 })
-export class DatabaseModule {}
+export class PrismaModule {}
