@@ -17,19 +17,19 @@ export class InMemoryLeadRepository implements LeadRepository {
       const { lead, units } = leadWithUnits;
 
       const matchesName = filter.name
-        ? lead.fullName.includes(filter.name)
+        ? lead.fullName.toLowerCase().includes(filter.name.toLowerCase())
         : true;
       const matchesEmail = filter.email
-        ? lead.email.includes(filter.email)
+        ? lead.email.toLowerCase().includes(filter.email.toLowerCase())
         : true;
       const matchesPhone = filter.phone
-        ? lead.phone.includes(filter.phone)
+        ? lead.phone.toLowerCase().includes(filter.phone.toLowerCase())
         : true;
       const matchesConsumerUnitCode = filter.consumerUnitCode
         ? units.some((unitWithConsumptions) =>
-            unitWithConsumptions.unit.consumerUnitCode.includes(
-              filter.consumerUnitCode ?? '',
-            ),
+            unitWithConsumptions.unit.consumerUnitCode
+              .toLowerCase()
+              .includes(filter.consumerUnitCode.toLowerCase()),
           )
         : true;
 

@@ -34,7 +34,7 @@ export class FetchLeadsUseCase {
     });
 
     return right({
-      leadWithUnits: leadsWithUnits ?? [],
+      leadWithUnits: leadsWithUnits || [],
     });
   }
 }
