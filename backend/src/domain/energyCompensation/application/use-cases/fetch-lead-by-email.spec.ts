@@ -16,8 +16,6 @@ describe('Fetch lead by email', () => {
 
     await inMemoryLeadRepository.create(fakeLead);
 
-    console.log(fakeLead);
-
     const result = await sut.execute({ email: 'pedro@example.com' });
 
     expect(result.isRight()).toBe(true);
