@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:8.0 
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123           
+      MYSQL_DATABASE: my-db  
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "4444:3306" 
+    networks:
+      - backend-network
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  backend-network:
+    driver: bridge
+

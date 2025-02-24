@@ -10,7 +10,7 @@ import { Unit } from 'src/lead/entities/unit.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: 4444,
       username: 'root',
       password: '123',
       database: 'my-db',
