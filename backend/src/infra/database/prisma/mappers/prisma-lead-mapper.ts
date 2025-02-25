@@ -5,13 +5,13 @@ import {
   Unit as PrismaUnit,
   Consumption as PrismaConsumption,
 } from '@prisma/client';
-import { Lead } from '../../../../../src/domain/energyCompensation/enterprise/entities/lead';
-import { Unit } from '../../../../../src/domain/energyCompensation/enterprise/entities/unit';
-import { Consumption } from '../../../../../src/domain/energyCompensation/enterprise/entities/consumption';
 import {
   LeadWithUnitsDTO,
   UnitWithConsumptionsDTO,
 } from '../../../../../src/domain/energyCompensation/application/repositories/lead-repository';
+import { Lead } from '../../../../../src/domain/energyCompensation/enterprise/entities/lead';
+import { Unit } from '../../../../../src/domain/energyCompensation/enterprise/entities/unit';
+import { Consumption } from '../../../../../src/domain/energyCompensation/enterprise/entities/consumption';
 
 export class PrismaLeadMapper {
   static toDomain(

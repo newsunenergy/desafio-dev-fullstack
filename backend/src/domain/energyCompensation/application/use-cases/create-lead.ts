@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Either, left, right } from '../../../../core/either';
 import {
   LeadRepository,
@@ -54,7 +54,9 @@ export class CreateLeadUseCase {
       return response.data;
     } catch (error) {
       console.error(error);
-      throw new Error('500');
+      throw new InternalServerErrorException(
+        'Erro ao processar arquivo de fatura de energia. Tente novamente mais tarde.',
+      );
     }
   }
 
@@ -89,9 +91,9 @@ export class CreateLeadUseCase {
     phone,
     bills,
   }: CreateLeadUseCaseRequest): Promise<CreateLeadUseCaseResponse> {
-    const leadExists = await this.leadRepository.findByEmail(email);
+    const leadEmailExists = await this.leadRepository.findByEmail(email);
 
-    if (leadExists) {
+    if (leadEmailExists) {
       return left(new Error('409'));
     }
 

@@ -18,15 +18,15 @@ describe('Fetch lead by ID', () => {
     const result = await sut.execute({ id: fakeLead.lead.id.toString() });
 
     expect(result.isRight()).toBe(true);
-    expect(result.value.leadWithUnits.lead.id.toString()).toEqual(
-      fakeLead.lead.id.toString(),
-    );
+    expect(
+      result.isRight() && result.value.leadWithUnits.lead.id.toString(),
+    ).toEqual(fakeLead.lead.id.toString());
   });
 
   it('should return null if lead does not exist', async () => {
     const result = await sut.execute({ id: '1234' });
 
     expect(result.isRight()).toBe(true);
-    expect(result.value.leadWithUnits).toBeNull();
+    expect(result.isRight() && result.value.leadWithUnits).toBeNull();
   });
 });

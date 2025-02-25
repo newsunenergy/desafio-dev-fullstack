@@ -4,9 +4,10 @@ import { CreateLeadUseCase } from '../../../src/domain/energyCompensation/applic
 import { FetchLeadsUseCase } from '../../../src/domain/energyCompensation/application/use-cases/fetch-leads';
 import { FetchLeadByEmailUseCase } from '../../../src/domain/energyCompensation/application/use-cases/fetch-lead-by-email';
 import { FetchLeadByIdUseCase } from '../../../src/domain/energyCompensation/application/use-cases/fetch-lead-by-id';
+import { LeadController } from './controllers/lead.controller';
 
 @Module({
-  controllers: [],
+  controllers: [LeadController],
   imports: [PrismaModule],
   providers: [
     CreateLeadUseCase,

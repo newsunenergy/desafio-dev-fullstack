@@ -3,14 +3,14 @@ import {
   LeadRepository,
   LeadWithUnitsDTO,
 } from '../repositories/lead-repository';
-import { Either, right } from '../../../../../src/core/either';
+import { Either, left, right } from '../../../../../src/core/either';
 
 interface FetchLeadByIdUseCaseRequest {
   id: string;
 }
 
 type FetchLeadByIdUseCaseResponse = Either<
-  null,
+  Error,
   { leadWithUnits: LeadWithUnitsDTO }
 >;
 @Injectable()
@@ -21,6 +21,10 @@ export class FetchLeadByIdUseCase {
     id,
   }: FetchLeadByIdUseCaseRequest): Promise<FetchLeadByIdUseCaseResponse> {
     const leadWithUnits = await this.leadRepository.findById(id);
+
+    if (!leadWithUnits) {
+      return left(new Error('404'));
+    }
 
     return right({
       leadWithUnits,

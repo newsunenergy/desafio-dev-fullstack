@@ -6,24 +6,37 @@ import {
 } from '../../../../../src/domain/energyCompensation/application/repositories/lead-repository';
 import { PrismaService } from '../prisma.service';
 import { PrismaLeadMapper } from '../mappers/prisma-lead-mapper';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { UnitCodeAlreadyExistsException } from '../errors/UnitCodeAlreadyExistsException';
 
 @Injectable()
 export class PrismaLeadRepository implements LeadRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(leadWithUnits: LeadWithUnitsDTO): Promise<void> {
-    const data = PrismaLeadMapper.toPersistence(leadWithUnits);
+    try {
+      const data = PrismaLeadMapper.toPersistence(leadWithUnits);
 
-    await this.prismaService.lead.create({
-      data,
-      include: {
-        units: {
-          include: {
-            consumptionHistory: true,
+      await this.prismaService.lead.create({
+        data,
+        include: {
+          units: {
+            include: {
+              consumptionHistory: true,
+            },
           },
         },
-      },
-    });
+      });
+    } catch (error) {
+      console.error(error);
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new UnitCodeAlreadyExistsException(
+            'O código da unidade já existe.',
+          );
+        }
+      }
+    }
   }
 
   async findAll(filter: FilterProps): Promise<LeadWithUnitsDTO[]> {
