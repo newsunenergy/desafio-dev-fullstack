@@ -9,7 +9,6 @@ export class InvalidDataValidationPipe implements PipeTransform {
       return this.schema.parse(value);
     } catch (error) {
       if (error instanceof ZodError) {
-        console.log(error);
         throw new BadRequestException({
           error_description:
             'Os dados fornecidos para a requisição são inválidos',
