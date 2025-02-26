@@ -63,14 +63,19 @@ export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
               type="file"
               accept="application/pdf"
               hidden
+              multiple
               onChange={params.handleFileChange}
             />
           </Button>
 
-          {params.selectedFile && (
-            <Typography variant="body2" color="textSecondary">
-              Arquivo selecionado: {params.selectedFile.name}
-            </Typography>
+          {params.selectedFile?.length > 0 && (
+            <Box>
+              {params.selectedFile.map((file: File, index: number) => (
+                <Typography key={index} variant="body2" color="textSecondary">
+                  {file.name}
+                </Typography>
+              ))}
+            </Box>
           )}
 
           <DialogActions sx={{ justifyContent: "center", mt: 2 }}>

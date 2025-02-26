@@ -25,7 +25,7 @@ export class ClientsService {
       }
       if (data.unidades) {
         for (const unidade of data.unidades) {
-          const existingUnit = await this.prisma.unidade.findUnique({
+          const existingUnit = await this.prisma.unidade.findMany({
             where: {
               codigoDaUnidadeConsumidora: unidade.codigoDaUnidadeConsumidora,
             },
@@ -71,7 +71,8 @@ export class ClientsService {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new InternalServerErrorException('Erro ao criar lead.', error);
+      console.error('Erro ao criar lead:', error);
+      throw new InternalServerErrorException('Erro ao criar lead.');
     }
   }
 

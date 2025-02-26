@@ -11,7 +11,7 @@ export const HomeParams = (props: IHomeProps): IHomeParams => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<any>();
   const [severity, setSeverity] = useState<any>("success");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File[] | null>(null);
   const [formData, setFormData] = useState<any>({
     nome: "",
     email: "",
@@ -28,7 +28,7 @@ export const HomeParams = (props: IHomeProps): IHomeParams => {
     }
 
     const formDataToSend = new FormData();
-    formDataToSend.append("file", selectedFile);
+    selectedFile.forEach((file) => { formDataToSend.append(`files`, file) });
     formDataToSend.append("nome", formData.nome);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("telefone", formData.telefone);
@@ -68,8 +68,12 @@ export const HomeParams = (props: IHomeProps): IHomeParams => {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
+    const newFiles = event.target.files ? Array.from(event.target.files) : [];
+  
+    setSelectedFile((prevFiles) => {
+      const updatedFiles = [...(prevFiles || []), ...newFiles];
+      return updatedFiles;
+    });
   };
 
   return {
