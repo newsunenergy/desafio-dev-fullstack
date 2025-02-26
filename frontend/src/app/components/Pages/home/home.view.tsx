@@ -30,6 +30,7 @@ export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
             onChange={params.handleChange}
             fullWidth
             variant="outlined"
+            required
             sx={{ borderRadius: 2 }}
           />
           <TextField
@@ -40,6 +41,7 @@ export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
             onChange={params.handleChange}
             fullWidth
             variant="outlined"
+            required
             sx={{ borderRadius: 2 }}
           />
           <TextField
@@ -50,6 +52,7 @@ export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
             onChange={params.handleChange}
             fullWidth
             variant="outlined"
+            required
             sx={{ borderRadius: 2 }}
           />
 

@@ -11,32 +11,32 @@ export type ModalListComponentProps = ModalListProps &
   HTMLAttributes<ModalListProps>;
 
 export interface IModalListParams {
-  formData?: ICliente,
+  formData?: IClient,
   loading: boolean;
   id: string;
 }
 
-export interface IHistoricoConsumo {
+export interface IConsumptionHistory {
   id: string;
   consumoForaPontaEmKWH: number;
   mesDoConsumo: string;
   unidadeId: string;
 }
 
-export interface IUnidadeConsumidora {
+export interface IConsumerUnit {
   id: string;
   codigoDaUnidadeConsumidora: string;
   modeloFasico: string;
   enquadramento: string;
   clientId: string;
-  historicoDeConsumoEmKWH: IHistoricoConsumo[];
+  historicoDeConsumoEmKWH: IConsumptionHistory[];
 }
 
-export interface ICliente {
-  id: string;
+export interface IClient {
+  id?: string;
   nome: string;
   email: string;
   telefone: string;
-  unidades: IUnidadeConsumidora[];
+  unidades?: IConsumerUnit[];
 }
 

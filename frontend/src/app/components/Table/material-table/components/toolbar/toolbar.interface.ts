@@ -16,4 +16,4 @@ export interface IToolbarProps {
 export type IToolbarComponentProps = IToolbarProps &
   HTMLAttributes<IToolbarProps>;
 
-export interface IToolbarParams {}
+export type IToolbarParams = unknown

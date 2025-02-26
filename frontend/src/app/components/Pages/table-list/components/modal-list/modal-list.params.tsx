@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { TableListPageService } from "../../table-list.service";
-import { ICliente, IModalListParams, ModalListProps } from "./modal-list.interface";
+import { IClient, IModalListParams, ModalListProps } from "./modal-list.interface";
 
 export const ModalListParams = (props: ModalListProps): IModalListParams => {
   const { id } = props;
 
   const listService = new TableListPageService();
 
-  const [formData, setFormData] = useState<ICliente | undefined>();
+  const [formData, setFormData] = useState<IClient | undefined>();
   const [loading, setLoading] = useState(false);
 
   const fethDataID = async () => {

@@ -24,7 +24,7 @@ export const ModalListView: React.FC<ModalListProps> = (props) => {
             <Typography><strong>Telefone:</strong> {formData?.telefone}</Typography>
 
             <Typography variant="h6" sx={{ mt: 2 }}>Unidades</Typography>
-            {formData?.unidades.map((unidade, index) => (
+            {formData?.unidades && formData?.unidades.map((unidade, index) => (
               <Accordion key={unidade.id}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography>Unidade {index + 1}: {unidade.codigoDaUnidadeConsumidora}</Typography>

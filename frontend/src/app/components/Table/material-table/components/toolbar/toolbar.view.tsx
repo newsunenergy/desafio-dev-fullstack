@@ -1,5 +1,4 @@
 import {
-  Button,
   IconButton,
   Toolbar,
   Tooltip,
@@ -8,7 +7,7 @@ import {
 import Link from "next/link";
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { IToolbarComponentProps, IToolbarParams } from "./toolbar.interface";
 import { ToolbarParams } from "./toolbar.params";
 
@@ -24,7 +23,6 @@ export const ToolbarView: React.FC<IToolbarComponentProps> = (
         pr: { xs: 1, sm: 1 },
         justifyContent: "flex-end",
         ...(props.numSelected > 0 && {
-          // bgcolor: (theme) => alpha(theme.customPalette.root.main, 500),
         }),
       }}
     >
@@ -47,25 +45,6 @@ export const ToolbarView: React.FC<IToolbarComponentProps> = (
               )}
             </IconButton>
           </Tooltip>
-          <>
-            {!props.addCollectionIcon ? (
-              ""
-            ) : (
-              <Button
-                size="large"
-                sx={{
-                  fontWeight: "bold",
-                  whiteSpace: "nowrap",
-                  minWidth: "max-content",
-                  marginY: "auto",
-                }}
-                startIcon={<MdAdd />}
-                onClick={() => props.setIsModalOpen(true)}
-              >
-                <span className="mt-1">Criar coleção</span>
-              </Button>
-            )}
-          </>
         </>
       ) : (
         <>

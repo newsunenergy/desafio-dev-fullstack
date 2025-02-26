@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { IHomeParams, IHomeProps } from "./home.interface";
 import { TableListPageService } from "../table-list/table-list.service";
+import { IClient } from "../table-list/components/modal-list/modal-list.interface";
+import { validationFields } from "./home.constants";
 
 export const HomeParams = (props: IHomeProps): IHomeParams => {
   const listService = new TableListPageService();
@@ -12,7 +14,7 @@ export const HomeParams = (props: IHomeProps): IHomeParams => {
   const [message, setMessage] = useState<any>();
   const [severity, setSeverity] = useState<any>("success");
   const [selectedFile, setSelectedFile] = useState<File[] | null>(null);
-  const [formData, setFormData] = useState<any>({
+  const [formData, setFormData] = useState<IClient>({
     nome: "",
     email: "",
     telefone: "",
@@ -25,6 +27,18 @@ export const HomeParams = (props: IHomeProps): IHomeParams => {
       setMessage("Por favor, selecione um arquivo PDF.");
       setOpen(true);
       return;
+    }
+
+    for (const fields in validationFields) {
+      const field = validationFields[fields as keyof typeof validationFields];
+      const value = formData[fields as keyof typeof formData] as string;
+
+      if (!field.validate(value)) {
+        setSeverity("error");
+        setMessage(field.message);
+        setOpen(true);
+        return;
+      }
     }
 
     const formDataToSend = new FormData();
