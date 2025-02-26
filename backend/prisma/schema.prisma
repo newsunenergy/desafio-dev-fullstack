@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id       String    @id @default(uuid())
+  nome     String
+  email    String    @unique
+  telefone String
+  unidades Unidade[]
+}
+
+model Unidade {
+  id                         String    @id @default(uuid())
+  codigoDaUnidadeConsumidora String    @unique
+  modeloFasico               String
+  enquadramento              String
+  clientId                   String
+  historicoDeConsumoEmKWH    Consumo[]
+  client                       Client      @relation(fields: [clientId], references: [id])
+
+  @@index([clientId], map: "Unidade_clientId_fkey")
+}
+
+model Consumo {
+  id                    String   @id @default(uuid())
+  consumoForaPontaEmKWH Float
+  mesDoConsumo          DateTime
+  unidadeId             String
+  unidade               Unidade  @relation(fields: [unidadeId], references: [id])
+
+  @@index([unidadeId], map: "Consumo_unidadeId_fkey")
+}
