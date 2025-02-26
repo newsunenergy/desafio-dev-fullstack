@@ -103,7 +103,7 @@ O projeto rodará em [**http://localhost:3000**](http://localhost:3000) por padr
 
 **Exemplo de uso:**
 ```sh
-GET /clients?page=1&limit=10&search=joao&filter=Bifásico
+GET /clients/all?page=1&limit=10&search=joao&filter=Bifásico
 ```
 
 ### **3. Buscar um cliente por ID**
