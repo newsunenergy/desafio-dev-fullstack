@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   Controller,
   Get,
@@ -33,7 +29,9 @@ export class ClientsController {
     const { nome, email, telefone } = body;
 
     const formData: FormData = new FormData();
-    formData.append('file', file.buffer, { filename: file.originalname });
+    formData.append('file', file.buffer, {
+      filename: file.originalname as string,
+    });
 
     const res = await axios.post<IDataPdf>(
       'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf',
@@ -47,7 +45,7 @@ export class ClientsController {
 
     const dataPdf: IDataPdf = res.data;
 
-    const Data = {
+    const Data: IClient = {
       nome: nome,
       email: email,
       telefone: telefone,
