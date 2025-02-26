@@ -12,7 +12,6 @@ export class LeadPresenter {
       },
       units: leadWithUnits.units.map((unitWithConsumptions) => ({
         unit: {
-          id: unitWithConsumptions.unit.id.toString(),
           consumerUnitCode: unitWithConsumptions.unit.consumerUnitCode,
           name: unitWithConsumptions.unit.name,
           framing: unitWithConsumptions.unit.framing,
@@ -20,7 +19,6 @@ export class LeadPresenter {
           createdAt: unitWithConsumptions.unit.createdAt,
         },
         consumptions: unitWithConsumptions.consumptions.map((consumption) => ({
-          id: consumption.id.toString(),
           offPeakInKWH: consumption.offPeakInKWH,
           consumptionMonth: consumption.consumptionMonth,
         })),
