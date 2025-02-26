@@ -3,11 +3,18 @@ import { FilePdf } from 'phosphor-react';
 
 type MultipleFilesInputProps = {
   onChange: (files: FileList | null) => void;
-  disabled?: boolean;
+  files?: FileList | null;
 };
 
-const MultipleFilesInput: React.FC<MultipleFilesInputProps> = ({ onChange, disabled = false }) => {
-  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+const getDisplayText = (selectedFiles: FileList | null) => {
+  if (!selectedFiles || selectedFiles.length === 0) {
+    return '';
+  }
+  return selectedFiles.length > 1 ? `${selectedFiles[0].name}...` : selectedFiles[0].name;
+};
+
+const MultipleFilesInput: React.FC<MultipleFilesInputProps> = ({ onChange, files }) => {
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(files || null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -17,29 +24,22 @@ const MultipleFilesInput: React.FC<MultipleFilesInputProps> = ({ onChange, disab
     }
   };
 
-  const getDisplayText = () => {
-    if (!selectedFiles || selectedFiles.length === 0) {
-      return 'Eviar contas de energia';
-    }
-    return selectedFiles.length > 1 ? `${selectedFiles[0].name}...` : selectedFiles[0].name;
-  };
-
   return (
-    <label
-      className={`flex items-center gap-2 p-2 border border-gray-600 rounded cursor-pointer bg-white text-black 
-        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}
-    >
-      <FilePdf size={20} className="text-white font-bold" />
-      <span className="truncate">{getDisplayText()}</span>
-      <input
-        type="file"
-        accept="application/pdf"
-        multiple
-        onChange={handleFileChange}
-        disabled={disabled}
-        className="hidden"
-      />
-    </label>
+    <div className="flex gap-3 items-center justify-center">
+      <p className="text-md text-white font-bold">{getDisplayText(selectedFiles)}</p>
+      <label className="max-w-[200px]">
+        <input
+          onChange={handleFileChange}
+          type="file"
+          className="hidden"
+          accept="application/pdf"
+        />
+        <span className="max-w-[200px] text-white flex items-center gap-2 border border-white rounded-xl p-2 font-bold ease-in-out duration-300 cursor-pointer hover:border-amber-600 transition-all ">
+          <FilePdf size={24} className='text-white' />
+          Enviar conta(s)
+        </span>
+      </label>
+    </div>
   );
 };
 

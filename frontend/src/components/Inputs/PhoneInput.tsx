@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatPhone } from '../../utils/formatPhone';
 
 type PhoneInputProps = {
   value: string;
@@ -7,21 +8,11 @@ type PhoneInputProps = {
   disabled?: boolean;
 };
 
-const formatPhoneNumber = (value: string) => {
-  const cleaned = value.replace(/\D/g, '');
-
-  if (cleaned.length <= 10) {
-    return cleaned.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-  } else {
-    return cleaned.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-  }
-};
-
 const PhoneInput: React.FC<PhoneInputProps> = ({ placeholder = 'Digite seu telefone', value, disabled = false, onChange }) => {
-  const [inputValue, setInputValue] = useState(formatPhoneNumber(value));
+  const [inputValue, setInputValue] = useState(value || "");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value);
+    const formatted = formatPhone(e.target.value);
     setInputValue(formatted);
     onChange(formatted);
   };

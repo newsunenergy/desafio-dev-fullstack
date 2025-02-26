@@ -39,7 +39,6 @@ export default function Home() {
             <Button
               label="Simular agora"
               onClick={() => navigate('/simular')}
-              size="large"
             />
           </motion.div>
         </div>
