@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
       style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4)' }}
     >
       <a href="/" className="cursor-pointer">
-        <img alt="Shopper logo" src={Logo} className="bg-transparent cursor-pointer" />
+        <img alt="NewSun logo" src={Logo} className="bg-transparent cursor-pointer" width={180} height={180} />
       </a>
 
       <div>
@@ -54,14 +54,14 @@ const Navbar: React.FC = () => {
           >
 
             <a key={"/simular"} href='/simular'>
-              <p className="block py-2 px-4 text-white font-bold hover:bg-gray-800 transition-all ease-in-out duration-300">
+              <p className="block py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300">
                 Simular
               </p>
             </a>
 
 
             <a key={"Listagem"} href='/listagem'>
-              <p className="block py-2 px-4 text-white font-bold hover:bg-gray-800 transition-all ease-in-out duration-300">
+              <p className="block py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300">
                 Listagem
               </p>
             </a>

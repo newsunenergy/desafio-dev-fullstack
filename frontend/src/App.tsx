@@ -1,10 +1,14 @@
-
+import { BrowserRouter } from "react-router-dom"
+import { Routes } from "./routes"
+import { ToastContainer } from "react-toastify"
 
 function App() {
   return (
     <>
-      <div className="bg-black min-h-screen">
-      </div>
+    <ToastContainer />
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
     </>
   )
 }
