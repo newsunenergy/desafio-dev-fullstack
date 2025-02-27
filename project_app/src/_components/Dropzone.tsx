@@ -1,7 +1,6 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { useCallback, useState } from "react";
 import { LuFilePlus } from "react-icons/lu";
 import { useDropzone } from "react-dropzone";
 import { FaRegFilePdf } from "react-icons/fa";
@@ -9,26 +8,23 @@ import { X } from "lucide-react";
 
 export default function Dropzone({
   className,
-}: Readonly<{ className?: string }>) {
-  const [files, setFiles] = useState<File[]>([]);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles?.length) {
-      setFiles((previousFiles) => [
-        ...previousFiles,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
-    }
-  }, []);
-
+  onFilesChange,
+  files,
+}: Readonly<{
+  className?: string;
+  onFilesChange: (files: File[]) => void;
+  files: File[];
+}>) {
   function removeFile(name: string) {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== name));
+    const updatedFiles = files.filter((file) => file.name !== name);
+    onFilesChange(updatedFiles);
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: (acceptedFiles) => {
+      const newFiles = [...files, ...acceptedFiles];
+      onFilesChange(newFiles);
+    },
     accept: {
       "application/pdf": [".pdf"],
     },
