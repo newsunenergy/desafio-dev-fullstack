@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { LuFilePlus } from "react-icons/lu";
 import { useDropzone } from "react-dropzone";
 import { FaRegFilePdf } from "react-icons/fa";
+import { X } from "lucide-react";
 
 export default function Dropzone({
   className,
@@ -61,10 +62,16 @@ export default function Dropzone({
             {files.map((file, idx) => (
               <div
                 key={idx}
-                className="flex flex-col items-center text-center w-20"
+                className="relative flex flex-col items-center text-center w-20"
               >
                 <FaRegFilePdf className="text-3xl text-red-600" />
                 <p className="text-xs truncate w-full mt-1">{file.name}</p>
+                <button
+                  onClick={() => removeFile(file.name)}
+                  className="absolute -top-1 right-3 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
+                >
+                  <X size={12} />
+                </button>
               </div>
             ))}
           </div>
