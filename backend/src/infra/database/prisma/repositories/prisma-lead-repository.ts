@@ -60,13 +60,22 @@ export class PrismaLeadRepository implements LeadRepository {
       },
     });
 
-    return leads.map((lead) =>
-      PrismaLeadMapper.toDomain(
+    return leads.map((lead) => {
+      const sortedUnits = lead.units.map((unit) => ({
+        ...unit,
+        consumptionHistory: unit.consumptionHistory.sort(
+          (a, b) =>
+            new Date(a.consumptionMonth).getTime() -
+            new Date(b.consumptionMonth).getTime(),
+        ),
+      }));
+
+      return PrismaLeadMapper.toDomain(
         lead,
-        lead.units,
-        lead.units.flatMap((unit) => unit.consumptionHistory),
-      ),
-    );
+        sortedUnits,
+        sortedUnits.flatMap((unit) => unit.consumptionHistory),
+      );
+    });
   }
 
   async findById(id: string): Promise<LeadWithUnitsDTO | null> {
@@ -83,10 +92,19 @@ export class PrismaLeadRepository implements LeadRepository {
 
     if (!lead) return null;
 
+    const sortedUnits = lead.units.map((unit) => ({
+      ...unit,
+      consumptionHistory: unit.consumptionHistory.sort(
+        (a, b) =>
+          new Date(a.consumptionMonth).getTime() -
+          new Date(b.consumptionMonth).getTime(),
+      ),
+    }));
+
     return PrismaLeadMapper.toDomain(
       lead,
-      lead.units,
-      lead.units.flatMap((unit) => unit.consumptionHistory),
+      sortedUnits,
+      sortedUnits.flatMap((unit) => unit.consumptionHistory),
     );
   }
 
