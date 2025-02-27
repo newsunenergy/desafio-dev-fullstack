@@ -52,7 +52,7 @@ export default function UnitTable({ units, onBack }: UnitTableProps) {
               <td className="p-4 align-middle py-[10px] px-7">{unit.unit.framing}</td>
               <td className="p-4 align-middle py-[10px] px-7 flex justify-start">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button label="Ver detalhes" size="small" onClick={() => setSelectedUnit(unit)} />
+                  <Button label="Detalhes de consumo" size="small" onClick={() => setSelectedUnit(unit)} />
                 </motion.div>
               </td>
             </tr>

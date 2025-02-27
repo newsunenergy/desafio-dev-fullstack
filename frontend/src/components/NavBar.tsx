@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { List } from "phosphor-react";
 import Logo from '../assets/site-new-sun.jpg';
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -34,9 +37,9 @@ const Navbar: React.FC = () => {
     <div className="w-full h-24 bg-black flex items-center pl-8 gap-6 justify-between"
       style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4)' }}
     >
-      <a href="/" className="cursor-pointer">
+      <div className="cursor-pointer" onClick={() => navigate('/')}>
         <img alt="NewSun logo" src={Logo} className="bg-transparent cursor-pointer" width={180} height={180} />
-      </a>
+      </div>
 
       <div>
         <button
@@ -53,15 +56,22 @@ const Navbar: React.FC = () => {
             style={{ transform: "translateX(-10%)" }}
           >
 
-            <a key={"/simular"} href='/simular'>
-              <p className="block py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300">
+            <a key={"/simular"}>
+              <p 
+                className="block cursor-pointer py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300"
+                onClick={() => navigate('/simular')}
+              >
+                
                 Simular
               </p>
             </a>
 
 
-            <a key={"Listagem"} href='/listagem'>
-              <p className="block py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300">
+            <a key={"Listagem"}>
+              <p 
+                className="block cursor-pointer py-2 px-4 text-white font-bold hover:bg-amber-600 transition-all ease-in-out duration-300"
+                onClick={() => navigate('/listagem')}
+              >
                 Listagem
               </p>
             </a>

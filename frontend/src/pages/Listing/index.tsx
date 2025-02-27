@@ -1,15 +1,13 @@
 import Navbar from "../../components/NavBar";
-import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import { LeadWithUnitsDTO, UnitWithConsumptionsDTO } from "../../DTOs/lead-DTOs";
-import { formatPhone } from "../../utils/formatPhone";
 import Loader from "../../components/Loader";
-import { motion } from 'framer-motion'
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../lib/axios";
 import FilterModal from "./components/FilterModal";
 import UnitTable from "./components/UnitsTabel";
+import LeadTable from "./components/LeadsTable";
 
 
 interface FilterData {
@@ -35,9 +33,9 @@ export default function Listing() {
 
   const getTextWithoutLeads =
     filters.name || filters.email || filters.phone || filters.consumerUnitCode
-    ? "Você ainda não possui simulações para os filtros informados"
-    : "Você ainda não possui simulações. Que tal simular agora?"
-  
+      ? "Você ainda não possui simulações para os filtros informados"
+      : "Você ainda não possui simulações. Que tal simular agora?"
+
 
   const fetchLeads = async ({ name, email, phone, consumerUnitCode }: FilterData) => {
 
@@ -61,7 +59,7 @@ export default function Listing() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      
+
       console.error(error);
       const message = error?.response?.data?.error_description
         ? error?.response?.data?.error_description :
@@ -138,8 +136,8 @@ export default function Listing() {
             ) : (
               <div className="md:w-[900px] md:h-[600px] w-[500px] h-[400px] bg-box rounded-xl border border-textInput overflow-auto">
                 {unitsDetails.length > 0 ? (
-                  <UnitTable 
-                    units={unitsDetails} 
+                  <UnitTable
+                    units={unitsDetails}
                     onBack={() => {
                       setUnitsDetails([]);
                       setLoading(true);
@@ -149,100 +147,13 @@ export default function Listing() {
                     }}
                   />
                 ) : (
-                  <>
-                    <div className="p-4 flex justify-end items-center border-b border-gray-400">
-                      <Button
-                        label="Filtros"
-                        onClick={() => setFilterModalOpen(true)}
-                      />
-                    </div>
-
-                    <div className="relative w-full overflow-auto">
-                      <table
-                        className="w-full caption-bottom text-sm"
-                      >
-                        <thead className="[&_tr]:border-b">
-                          <th
-                            className=
-                            "h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7"
-                          >
-                            Nome
-                          </th>
-                          <th
-                            className=
-                            "h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7"
-                          >
-                            Email
-                          </th>
-                          <th
-                            className=
-                            "h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7"
-                          >
-                            Telefone
-                          </th>
-                          <th
-                            className=
-                            "h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7"
-                          >
-                            Unidades
-                          </th>
-                        </thead>
-                        <tbody
-                          className="[&_tr:last-child]:border-0"
-                        >
-                          {leadsWithUnits.map((lead) => (
-                            <tr
-                              key={lead.lead.id}
-                              className="border-b transition-colors font-bold text-white hover:bg-amber-600 cursor-pointer"
-                              onClick={() => fetchLeadById(lead.lead.id)}
-                            >
-                              <td
-                                className="p-4 align-middle font-bold py-[10px] px-7 capitalize"
-                              >
-                                {lead.lead.fullName}
-                              </td>
-
-                              <td
-                                className="p-4 align-middle text-left py-[10px] px-7"
-                              >
-                                {lead.lead.email}
-                              </td>
-
-                              <td
-                                className="p-4 align-middle text-left py-[10px] px-7"
-                              >
-                                {formatPhone(lead.lead.phone)}
-                              </td>
-
-                              <td
-                                className="p-4 align-middle font-medium py-[10px] px-7 capitalize"
-                              >
-                                <p className="bg-amber-600 max-w-7 p-1 text-center rounded-lg">
-                                  {lead.units.length}
-                                </p>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {leadsWithUnits?.length === 0 && (
-                      <div className="flex flex-col gap-4 font-bold text-white justify-center items-center w-full h-[80%]">
-                        {getTextWithoutLeads}
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          transition={{ type: 'spring', stiffness: 300 }}
-                        >
-                          <Button
-                            label="Simular agora"
-                            onClick={() => navigate('/simular')}
-                          />
-                        </motion.div>
-                      </div>
-                    )}
-                  </>
+                  <LeadTable
+                    leadsWithUnits={leadsWithUnits}
+                    fetchLeadById={fetchLeadById}
+                    getTextWithoutLeads={getTextWithoutLeads}
+                    navigate={navigate}
+                    setFilterModalOpen={setFilterModalOpen}
+                  />
                 )}
               </div>
             )}
