@@ -1,19 +1,32 @@
 version: '3.3'
 
 services:
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     DATABASE_URL: "mysql://root:password@db:3306/newsun"
-  #     MAGIC_PDF_API_URL: ${MAGIC_PDF_API_URL}
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: "http://localhost:3100"
+    depends_on:
+      backend:
+        condition: service_started
+    command: "npm run dev"
+    volumes:
+      - ./frontend/src:/app/src
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3100:3100"
+    environment:
+      DATABASE_URL: "mysql://root:password@db:3306/newsun"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
 
   db:
     image: mysql:5.7
@@ -25,7 +38,7 @@ services:
       test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
       interval: 5s
       timeout: 10s
-      retries: 5
+      retries: 20
     ports:
       - "3306:3306"
     volumes:

@@ -69,7 +69,7 @@ export default function Simulate() {
       formData.append("files", file);
     });
 
-    setLoading(true)
+    setLoading(true);
     try {
       await api.post("/lead", formData, {
         headers: {
@@ -93,6 +93,8 @@ export default function Simulate() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error)
+      
+      setLoading(false);
 
       const message = error?.response?.data?.error_description
         ? error?.response?.data?.error_description :
@@ -109,8 +111,6 @@ export default function Simulate() {
           fontWeight: "bold",
         },
       });
-    } finally {
-      setLoading(false)
     }
   }
 

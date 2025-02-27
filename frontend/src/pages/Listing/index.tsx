@@ -20,7 +20,7 @@ interface FilterData {
 }
 
 export default function Listing() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true);
   const [leadsWithUnits, setLeadsWithUnits] = useState<LeadWithUnitsDTO[]>([]);
   const [unitsDetails, setUnitsDetails] = useState<UnitWithConsumptionsDTO[]>([]);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
@@ -61,8 +61,8 @@ export default function Listing() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      
       console.error(error);
-
       const message = error?.response?.data?.error_description
         ? error?.response?.data?.error_description :
         "Não foi possível buscar as simulações. Tente novamente mais tarde"
