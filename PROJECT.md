@@ -42,7 +42,7 @@ cd desafio-dev-fullstack
 docker-compose up
 ```
 
-3. Acesse **[http://localhost:5173](http://localhost:5173)** no navegador.
+3. Acesse **[http://localhost:8900](http://localhost:8900)** no navegador.
 
 ### 🛠 Executando Manualmente (Sem Docker)
 
@@ -99,7 +99,7 @@ npm install
 npm run dev
 ```
 
-5. Acesse **[http://localhost:5173](http://localhost:5173)** no navegador.
+5. Acesse **[http://localhost:8900](http://localhost:8900)** no navegador.
 
 ## 📌 Funcionalidades
 
