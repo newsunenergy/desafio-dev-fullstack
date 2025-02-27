@@ -5,6 +5,7 @@ import Loader from "../../components/Loader";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../lib/axios";
+import { motion } from 'framer-motion'
 import FilterModal from "./components/FilterModal";
 import UnitTable from "./components/UnitsTabel";
 import LeadTable from "./components/LeadsTable";
@@ -134,7 +135,11 @@ export default function Listing() {
             {loading ? (
               <Loader />
             ) : (
-              <div className="md:w-[900px] md:h-[600px] w-[500px] h-[400px] bg-box rounded-xl border border-textInput overflow-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="md:w-[800px] md:h-[600px] w-[320px] h-[215px] bg-box rounded-xl border border-textInput overflow-auto">
                 {unitsDetails.length > 0 ? (
                   <UnitTable
                     units={unitsDetails}
@@ -155,7 +160,7 @@ export default function Listing() {
                     setFilterModalOpen={setFilterModalOpen}
                   />
                 )}
-              </div>
+              </motion.div>
             )}
           </div>
         </div>

@@ -34,7 +34,7 @@ export default function Simulate() {
       .string()
       .trim()
       .matches(/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/, "Telefone inválido")
-      .required("Informe seu telefone"),
+      .required("Informe o seu telefone"),
   })
 
   const {

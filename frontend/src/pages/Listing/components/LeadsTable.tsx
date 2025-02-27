@@ -27,7 +27,7 @@ export default function LeadTable({
 
       <div className="relative w-full overflow-auto">
         <table className="w-full caption-bottom text-sm">
-          <thead className="[&_tr]:border-b">
+          <thead>
             <tr>
               <th className="h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7">
                 Nome

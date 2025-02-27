@@ -37,7 +37,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters }: FilterM
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
       onClick={onClose}
     >
@@ -68,26 +68,26 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters }: FilterM
         <TextInput placeholder="Código de Unidade" value={filters.consumerUnitCode} onChange={(e) => handleChange(e, "consumerUnitCode")} />
 
         <div className="mt-4 flex justify-end gap-4">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button 
-              label="Limpar filtros" 
-                onClick={() => {
-                  setFilters({
-                    name: "",
-                    email: "",
-                    phone: "",
-                    consumerUnitCode: "",
-                  });
-                  onApplyFilters({
-                    name: "",
-                    email: "",
-                    phone: "",
-                    consumerUnitCode: "",
-                  })
-                }
-              } 
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              label="Limpar filtros"
+              onClick={() => {
+                setFilters({
+                  name: "",
+                  email: "",
+                  phone: "",
+                  consumerUnitCode: "",
+                });
+                onApplyFilters({
+                  name: "",
+                  email: "",
+                  phone: "",
+                  consumerUnitCode: "",
+                })
+              }
+              }
             />
-        </motion.div>
+          </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button label="Aplicar" onClick={() => onApplyFilters(filters)} />
           </motion.div>
