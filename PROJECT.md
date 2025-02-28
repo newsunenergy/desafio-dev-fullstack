@@ -39,7 +39,7 @@ cd desafio-dev-fullstack
 2. Suba os containers Docker:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 3. Acesse **[http://localhost:8900](http://localhost:8900)** no navegador.
