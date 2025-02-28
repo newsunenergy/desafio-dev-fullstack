@@ -8,6 +8,9 @@ services:
     ports:
       - "8900:5173"
     environment:
+    # AVISO! 
+    # Caso você não rode a aplicação em sua máquina (em uma VPS, por exemplo), 
+    # troque o localhost pelo IP da máquina em que a aplicação está rodando. 
       VITE_API_BASE_URL: "http://localhost:3100"
     depends_on:
       db:

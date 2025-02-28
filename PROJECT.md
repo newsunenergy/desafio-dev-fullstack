@@ -44,6 +44,8 @@ cd desafio-dev-fullstack
 docker compose up
 ```
 
+#### AVISO! Caso você não rode a aplicação em sua máquina (em uma VPS, por exemplo), troque o localhost pelo IP da máquina em que a aplicação está rodando. (Lembre-se de trocar o localhost no docker compose também).
+
 3. Acesse **[http://localhost:8900](http://localhost:8900)** no navegador.
 
 ### 🛠 Executando Manualmente (Sem Docker)
