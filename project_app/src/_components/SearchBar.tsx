@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 interface SearchBarProps {
-  onSearch: (type: "nome" | "email" | "codigoDaUnidade", term: string) => void; // Função para realizar a busca
+  onSearch: (type: "nome" | "email" | "codigoDaUnidade", term: string) => void;
 }
 
 export function SearchBar({ onSearch }: SearchBarProps) {
@@ -19,23 +19,8 @@ export function SearchBar({ onSearch }: SearchBarProps) {
     "nome" | "email" | "codigoDaUnidade"
   >("nome");
 
-  /*  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setSearch(value);
-  }
-
-  function handleSubmit() {
-    onSearch(search);
-  }
-
-  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  } */
-
   const handleSearch = () => {
-    onSearch(searchType, searchTerm); // Chama a função de busca com o tipo e termo
+    onSearch(searchType, searchTerm);
   };
 
   return (
