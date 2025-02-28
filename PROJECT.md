@@ -38,6 +38,8 @@ cd desafio-dev-fullstack
 
 2. Suba os containers Docker:
 
+! Observação: Essa etapa pode demorar alguns minutos (principalmente no pull das imagens e na inicialização do container do banco de dados), então espere até que todos os containeres sejam inicializados.
+
 ```bash
 docker compose up
 ```

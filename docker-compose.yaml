@@ -9,9 +9,6 @@ services:
       - "8900:5173"
     environment:
       VITE_API_BASE_URL: "http://localhost:3100"
-    depends_on:
-      backend:
-        condition: service_started
     command: "npm run dev"
     volumes:
       - ./frontend/src:/app/src
