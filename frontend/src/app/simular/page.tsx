@@ -60,9 +60,9 @@ export default function Home() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     const pdfFiles = files.filter((file) => {
-      const isValid = file.type === "application/pdf" && file.size <= 5 * 1024 * 1024
+      const isValid = file.type === "application/pdf" 
       if (!isValid) {
-        toast.error(`Arquivo "${file.name}" inválido. Use apenas PDFs de até 5MB.`)
+        toast.error(`Arquivo "${file.name}" inválido. Use apenas PDFs.`)
       }
       return isValid
     })
@@ -75,7 +75,7 @@ export default function Home() {
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Cadastro de Usuário</CardTitle>
+        <CardTitle>Simular</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -135,7 +135,7 @@ export default function Home() {
               name="files"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Arquivos (PDF até 5MB)</FormLabel>
+                  <FormLabel>Arquivos (PDF)</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
