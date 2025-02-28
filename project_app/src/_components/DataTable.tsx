@@ -38,7 +38,7 @@ export function DataTable<TData, TValue>({
       <Table className=" min-w-[1000px]">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className=" bg-gray-100 shadow-md ">
+            <TableRow key={headerGroup.id} className=" bg-gray-100 shadow-md">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
