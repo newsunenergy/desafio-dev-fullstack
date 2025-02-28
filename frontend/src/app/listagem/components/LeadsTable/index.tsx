@@ -1,34 +1,16 @@
-"use client"
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/src/components/ui/table"
 import { Button } from "@/src/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/src/components/ui/tooltip"
 import { BookOpen } from "lucide-react"
+import { FullLead } from "@/src/schemas"
+import { LeadsDetails } from "../LeadsDetails"
 
-const users = [
-  {
-    id: 1,
-    name: "João Silva",
-    email: "joao@email.com",
-    phone: "(11) 99999-9999",
-  },
-  {
-    id: 2,
-    name: "Maria Santos",
-    email: "maria@email.com",
-    phone: "(21) 98888-8888",
-  },
-  {
-    id: 3,
-    name: "Pedro Oliveira",
-    email: "pedro@email.com",
-    phone: "(31) 97777-7777",
-  },
-]
+type LeadsTableProps = {
+    leads: FullLead[]
+}
 
-export default function UsersPage() {
-  return (
-    <div className="rounded-md border">
+export function LeadsTable({leads}: LeadsTableProps) {
+    return <>
       <Table>
         <TableHeader>
           <TableRow>
@@ -39,19 +21,17 @@ export default function UsersPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone}</TableCell>
+          {leads.map((lead) => (
+            <>
+              <TableRow key={lead.id}>
+              <TableCell>{lead.nomeCompleto}</TableCell>
+              <TableCell>{lead.email}</TableCell>
+              <TableCell>{lead.telefone}</TableCell>
               <TableCell>
                 <TooltipProvider delayDuration={0}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <BookOpen className="h-4 w-4" />
-                        <span className="sr-only">Mais informações</span>
-                      </Button>
+                      <LeadsDetails data={lead} trigger={<Button><BookOpen /></Button>} />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Ver mais informações</p>
@@ -60,10 +40,11 @@ export default function UsersPage() {
                 </TooltipProvider>
               </TableCell>
             </TableRow>
+            
+            </>
           ))}
         </TableBody>
       </Table>
-    </div>
-  )
+    </>
+    
 }
-

@@ -10,22 +10,22 @@ export function Navigation() {
   return (
     <nav className="flex gap-4 border-b pb-4">
       <Link
-        href="/"
+        href="/simular"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary",
-          pathname === "/" ? "text-primary" : "text-muted-foreground",
+          pathname === "/simular" ? "text-primary" : "text-muted-foreground",
         )}
       >
-        Formulário
+        Simular
       </Link>
       <Link
-        href="/users"
+        href="/listagem"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary",
-          pathname === "/users" ? "text-primary" : "text-muted-foreground",
+          pathname === "/listagem" ? "text-primary" : "text-muted-foreground",
         )}
       >
-        Usuários
+        Leads
       </Link>
     </nav>
   )

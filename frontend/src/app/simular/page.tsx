@@ -8,28 +8,53 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/ca
 import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/components/ui/form"
-import { type UserFormData, userFormSchema } from "@/src/schemas"
+import { type LeadFormData, leadFormSchema } from "@/src/schemas"
 import { useState } from "react"
 import { formatPhoneNumber, truncateFileName } from "@/src/utils"
 import { FileIcon } from "lucide-react"
 import { toast } from "sonner"
+import { useCreateLead } from "@/src/hooks"
 
 export default function Home() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 
-  const form = useForm<UserFormData>({
-    resolver: zodResolver(userFormSchema),
+  const form = useForm<LeadFormData>({
+    resolver: zodResolver(leadFormSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
       email: "",
       phone: "",
       files: [],
     },
   })
 
-  function onSubmit(data: UserFormData) {
-    console.log(data)
-    toast.success("Formulário enviado com sucesso!")
+  const {mutateAsync: createLeadFn} = useCreateLead()
+
+  function onSubmit(data: LeadFormData) {
+    const toastId = toast.loading("Enviando...")  
+
+    createLeadFn(data)
+      .then(() => {
+        toast.success("Lead cadastrado com sucesso", {
+          id: toastId,
+        })
+        form.reset()
+        setSelectedFiles([])
+      })
+      .catch((error) => {
+        const status = error.response?.status || 500
+
+        if (status === 400 || status === 412) {
+          toast.warning(error.response.data.message, {
+            id: toastId,
+          })
+          return
+        }
+        
+        toast.error("Erro ao cadastrar lead", {
+          id: toastId,
+        })
+      })
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +82,7 @@ export default function Home() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="fullName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome Completo</FormLabel>

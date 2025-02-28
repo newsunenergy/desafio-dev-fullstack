@@ -1,4 +1,4 @@
-import { Injectable, PreconditionFailedException } from '@nestjs/common'
+import { BadRequestException, Injectable, InternalServerErrorException, PreconditionFailedException } from '@nestjs/common'
 import axios, { AxiosInstance } from 'axios'
 import { AccountAnalysis, accountAnalysisSchema } from 'src/schemas'
 
@@ -30,6 +30,12 @@ export class AccountAnalyserService {
           },
         })
         .then((r) => accountAnalysisSchema.parse(r.data))
+        .catch((e) => {
+          const status = e.response?.status
+          if (status === 400) throw new BadRequestException('Formato de conta inválido')
+
+          throw new InternalServerErrorException('Erro ao analisar conta')
+        })
     })
 
     const results = await Promise.all(promises)

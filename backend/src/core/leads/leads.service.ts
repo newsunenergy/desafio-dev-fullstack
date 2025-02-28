@@ -34,55 +34,55 @@ export class LeadsService {
     })
   }
 
-  async getLeads({ email, limit, page, unit_code }: LeadsGetDto) {
+  async getLeads({ query }: LeadsGetDto) {
     const where = {} as Prisma.LeadWhereInput
 
-    if (email) {
-      where['email'] = {
-        contains: email,
-      }
-    }
-
-    if (unit_code) {
-      where['unidades'] = {
-        some: {
-          codigoDaUnidadeConsumidora: unit_code,
+    if (query) {
+      where['OR'] = [
+        {
+          email: {
+            contains: query,
+          },
         },
-      }
+        {
+          nomeCompleto: {
+            contains: query,
+          },
+        },
+        {
+          telefone: {
+            contains: query,
+          },
+        },
+        {
+          unidades: {
+            some: {
+              codigoDaUnidadeConsumidora: {
+                contains: query,
+              },
+            },
+          }
+        }
+      ]
     }
 
-    page = page - 1
-
-    const total = await this.leadsRepository.countLeads({ where })
-    const pages = Math.ceil(total / limit)
-
-    const skip = page * limit
-
-    const hasNext = page + 1 < pages
-    const nextPage = hasNext ? page + 2 : null
 
     const results = await this.leadsRepository.findLeads({
-      skip,
-      take: limit,
       where,
       include: {
         unidades: {
           include: {
-            historicoDeConsumoEmKWH: true,
+            historicoDeConsumoEmKWH: {
+              orderBy: {
+                mesDoConsumo: 'asc',
+              }
+            },
           },
         },
       },
     })
 
-    return {
-      paging: {
-        page: page + 1,
-        total,
-        pages,
-        nextPage,
-      },
-      results,
-    }
+    return results
   }
 
   async createLead(body: LeadCreationDto, files: Express.Multer.File[]) {
@@ -122,6 +122,7 @@ export class LeadsService {
         return this.unidadesRepository
           .createUnidade({
             data: {
+              consumoEmReais: file.valor,
               codigoDaUnidadeConsumidora: file.unit_key,
               modeloFasico: file.phaseModel,
               enquadramento: file.chargingModel,

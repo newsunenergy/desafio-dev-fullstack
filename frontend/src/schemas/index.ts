@@ -1,1 +1,1 @@
-export * from './pdf.schema'
+export * from './leads.schema'

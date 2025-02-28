@@ -26,6 +26,7 @@ model Unidade {
   codigoDaUnidadeConsumidora String        @unique
   modeloFasico               ModeloFasico
   enquadramento              Enquadramento
+  consumoEmReais             Float
   historicoDeConsumoEmKWH    Consumo[]
   leadId                     String
   lead                       Lead          @relation(fields: [leadId], references: [id], onDelete: Cascade)

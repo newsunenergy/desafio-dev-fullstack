@@ -21,12 +21,42 @@ const pdfFileSchema = z.custom<File>((file) => {
   return true
 }, "O arquivo deve ser um PDF válido")
 
-export const userFormSchema = z.object({
-  fullName: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
+export const leadFormSchema = z.object({
+  name: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
   email: z.string().email("Email inválido"),
   phone: z.string().min(14, "Telefone inválido").max(15, "Telefone inválido"),
   files: z.array(pdfFileSchema).min(1, "Selecione pelo menos um arquivo PDF"),
 })
 
-export type UserFormData = z.infer<typeof userFormSchema>
+export type LeadFormData = z.infer<typeof leadFormSchema>
+
+export type Lead = {
+  id: string,
+  nomeCompleto: string,
+  email: string,
+  telefone: string,
+}
+
+export type Unidade = {
+  id: string,
+  codigoDaUnidadeConsumidora: string,
+  modeloFasico: string,
+  consumoEmReais: number,
+  enquadramento: string,
+  leadId: string,
+}
+
+export type Consumo = {
+  id: string,
+  consumoForaPontaEmKWH: number,
+  mesDoConsumo: string,
+  unidadeId: string,
+}
+
+
+export type FullLead= Lead & {
+  unidades: (Unidade & {
+    historicoDeConsumoEmKWH: Consumo[],
+  })[],
+}
 
