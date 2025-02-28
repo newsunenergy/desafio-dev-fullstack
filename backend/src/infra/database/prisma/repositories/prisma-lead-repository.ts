@@ -54,28 +54,23 @@ export class PrismaLeadRepository implements LeadRepository {
       include: {
         units: {
           include: {
-            consumptionHistory: true,
+            consumptionHistory: {
+              orderBy: {
+                consumptionMonth: 'asc',
+              },
+            },
           },
         },
       },
     });
 
-    return leads.map((lead) => {
-      const sortedUnits = lead.units.map((unit) => ({
-        ...unit,
-        consumptionHistory: unit.consumptionHistory.sort(
-          (a, b) =>
-            new Date(a.consumptionMonth).getTime() -
-            new Date(b.consumptionMonth).getTime(),
-        ),
-      }));
-
-      return PrismaLeadMapper.toDomain(
+    return leads.map((lead) =>
+      PrismaLeadMapper.toDomain(
         lead,
-        sortedUnits,
-        sortedUnits.flatMap((unit) => unit.consumptionHistory),
-      );
-    });
+        lead.units,
+        lead.units.flatMap((unit) => unit.consumptionHistory),
+      ),
+    );
   }
 
   async findById(id: string): Promise<LeadWithUnitsDTO | null> {
@@ -84,7 +79,11 @@ export class PrismaLeadRepository implements LeadRepository {
       include: {
         units: {
           include: {
-            consumptionHistory: true,
+            consumptionHistory: {
+              orderBy: {
+                consumptionMonth: 'asc',
+              },
+            },
           },
         },
       },
@@ -92,19 +91,10 @@ export class PrismaLeadRepository implements LeadRepository {
 
     if (!lead) return null;
 
-    const sortedUnits = lead.units.map((unit) => ({
-      ...unit,
-      consumptionHistory: unit.consumptionHistory.sort(
-        (a, b) =>
-          new Date(a.consumptionMonth).getTime() -
-          new Date(b.consumptionMonth).getTime(),
-      ),
-    }));
-
     return PrismaLeadMapper.toDomain(
       lead,
-      sortedUnits,
-      sortedUnits.flatMap((unit) => unit.consumptionHistory),
+      lead.units,
+      lead.units.flatMap((unit) => unit.consumptionHistory),
     );
   }
 
