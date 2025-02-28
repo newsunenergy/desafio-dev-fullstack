@@ -16,6 +16,7 @@
 - **Docker** - Contêinerização para facilitar o gerenciamento do banco de dados
 - **Swagger** - Documentação automatizada da API e realização de testes diretamente pelo navegador
 - **Class-validator** - Validação de dados nas requisições utilizando decorators
+- **Jest** - Framework de testes para garantir a confiabilidade do código
 
 ## Configuração do Ambiente
 
@@ -139,3 +140,21 @@ Se for passado o parâmetro `search`, o sistema buscará clientes que:
 Se for passado o parâmetro `filter`, o sistema retornará apenas clientes que tenham ao menos uma unidade consumidora com o `modeloFasico` informado.
 
 **Exemplo:** Se `filter=Bifásico`, apenas clientes com pelo menos uma unidade com modelo bifásico serão retornados.
+
+---
+
+## Testes Automatizados com Jest
+
+O projeto utiliza **Jest** para realizar testes unitários e garantir a confiabilidade das funcionalidades implementadas.
+
+### **Como executar os testes?**
+
+Acesse a pasta do backend:
+```sh
+cd backend
+```
+
+Para rodar os testes, utilize o seguinte comando:
+```sh
+npm run test
+```
