@@ -37,17 +37,15 @@ export default function SimulationForm() {
 
     setTimeout(() => {
       alert("Simulação enviada com sucesso!");
-
-      // Resetar o formulário e os arquivos
-      form.reset(); // Limpa os campos
-      setFiles([]); // Remove os arquivos
+      form.reset();
+      setFiles([]);
     }, 1000);
   }
 
   return (
     <div className="w-full flex justify-center items-center p-4 mt-5">
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-2 mt-2 w-[300px]">
+        <div className="flex flex-col gap-2 mt-2 w-[400px]">
           <div className="flex flex-col gap-0.5">
             <Input placeholder="Nome" {...form.register("nome")} />
             {form.formState.errors.nome && (
@@ -76,11 +74,11 @@ export default function SimulationForm() {
           </div>
         </div>
         <Dropzone
-          className="p-10 w-[300px] h-[200px] mt-6 border border-neutral-100 text-zinc-400 text-center hover:cursor-pointer"
+          className="p-10 w-[400px] h-[200px] mt-6 border border-neutral-100 text-zinc-400 text-center hover:cursor-pointer"
           onFilesChange={handleFilesChange}
           files={files}
         />
-        <footer className="flex flex-col items-center gap-2 mt-6">
+        <footer className="flex flex-col items-center gap-2 mt-10">
           <Button className="w-32">Simular</Button>
         </footer>
       </form>

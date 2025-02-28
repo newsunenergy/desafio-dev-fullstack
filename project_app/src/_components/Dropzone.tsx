@@ -54,7 +54,7 @@ export default function Dropzone({
         <div className=" text-zinc-600">
           <p className=" font-semibold">Arquivos Selecionados:</p>
 
-          <div className="flex w-[300px] flex-row flex-wrap items-center mt-4 text-sm gap-3">
+          <div className="flex w-[400px] flex-row flex-wrap items-center mt-4 text-sm gap-3">
             {files.map((file, idx) => (
               <div
                 key={idx}
