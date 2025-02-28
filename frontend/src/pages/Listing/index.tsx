@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { api } from "../../lib/axios";
 import { motion } from 'framer-motion'
 import FilterModal from "./components/FilterModal";
-import UnitTable from "./components/UnitsTabel";
+import UnitTable from "./components/UnitsTable";
 import LeadTable from "./components/LeadsTable";
 
 
@@ -139,7 +139,7 @@ export default function Listing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="md:w-[800px] md:h-[600px] w-[320px] h-[215px] bg-box rounded-xl border border-textInput overflow-auto">
+                className="md:w-[800px] md:h-[600px] w-[320px] min-h-[179px] max-h-[358px]: bg-box rounded-xl border border-textInput overflow-auto">
                 {unitsDetails.length > 0 ? (
                   <UnitTable
                     units={unitsDetails}

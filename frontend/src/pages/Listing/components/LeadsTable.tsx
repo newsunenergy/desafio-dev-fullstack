@@ -35,7 +35,7 @@ export default function LeadTable({
               <th className="h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7">
                 Email
               </th>
-              <th className="h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7">
+              <th className="h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7 min-w-[200px] md:w-auto">
                 Telefone
               </th>
               <th className="h-12 text-left align-middle text-gray-400 font-bold py-[10px] px-7">
@@ -56,7 +56,7 @@ export default function LeadTable({
                 <td className="p-4 align-middle text-left py-[10px] px-7">
                   {lead.lead.email}
                 </td>
-                <td className="p-4 align-middle text-left py-[10px] px-7">
+                <td className="p-4 align-middle text-left py-[10px] px-7 min-w-[20px] md:w-auto">
                   {formatPhone(lead.lead.phone)}
                 </td>
                 <td className="p-4 align-middle font-medium py-[10px] px-7 capitalize">

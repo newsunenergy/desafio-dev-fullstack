@@ -29,7 +29,14 @@ export default function Simulate() {
 
   const validationSchema = yup.object().shape({
     name: yup.string().trim().required("Informe o seu nome"),
-    email: yup.string().email("Email inválido").trim().required("Informe o seu email"),
+    email: yup
+    .string()
+    .trim()
+    .matches(
+      /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      "Email inválido"
+    )
+    .required("Informe o seu email"),
     phone: yup
       .string()
       .trim()

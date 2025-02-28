@@ -13,9 +13,10 @@ type UnitTableProps = {
 export default function UnitTable({ units, onBack }: UnitTableProps) {
   const [selectedUnit, setSelectedUnit] = useState<UnitWithConsumptionsDTO | null>(null);
 
+
   return (
     <>
-      <div className="p-4 justify-start items-center border-b border-gray-400">
+      <div className="p-4 justify-start items-center border-b border-gray-400 h-[61px]">
         <div
           className="w-20 cursor-pointer hover:opacity-70 ease-in-out transition-all duration-300 gap-2 flex"
           onClick={onBack}
@@ -53,7 +54,7 @@ export default function UnitTable({ units, onBack }: UnitTableProps) {
                 <td className="p-4 align-middle py-[10px] px-7">{unit.unit.framing}</td>
                 <td className="p-4 align-middle py-[10px] px-7 flex justify-start">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button label="Detalhes de consumo" size="small" onClick={() => setSelectedUnit(unit)} />
+                    <Button label="Consumos" size="small" onClick={() => setSelectedUnit(unit)} />
                   </motion.div>
                 </td>
               </tr>
