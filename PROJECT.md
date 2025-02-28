@@ -38,7 +38,7 @@ cd desafio-dev-fullstack
 
 2. Suba os containers Docker:
 
-! Observação: Essa etapa pode demorar alguns minutos (principalmente no pull das imagens e na inicialização do container do banco de dados), então espere até que todos os containeres sejam inicializados.
+! Observação: Essa etapa pode demorar alguns minutos (principalmente no pull das imagens e na inicialização do contêiner do banco de dados), então espere até que todos os contêineres sejam inicializados.
 
 ```bash
 docker compose up
@@ -101,7 +101,7 @@ npm install
 npm run dev
 ```
 
-5. Acesse **[http://localhost:8900](http://localhost:8900)** no navegador.
+5. Acesse **[http://localhost:5173](http://localhost:5173)** no navegador.
 
 ## 📌 Funcionalidades
 
