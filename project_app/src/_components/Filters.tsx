@@ -18,7 +18,7 @@ export function FilterSidebar({ onApplyFilters }: FilterSidebarProps) {
   const [modeloFasicoFilters, setModeloFasicoFilters] = useState<string[]>([]);
 
   const enquadramentoOptions = ["AX", "B1", "B2", "B3"];
-  const modeloFasicoOptions = ["monofásico", "bifásico", "trifásico"];
+  const modeloFasicoOptions = ["monofasico", "bifasico", "trifasico"];
 
   const handleEnquadramentoChange = (value: string) => {
     setEnquadramentoFilters((prev) =>

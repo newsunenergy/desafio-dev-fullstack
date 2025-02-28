@@ -10,13 +10,16 @@ import {
 import { useState } from "react";
 
 interface SearchBarProps {
-  onSearch: (type: "nome" | "email" | "codigoDaUnidade", term: string) => void;
+  onSearch: (
+    type: "nome" | "email" | "codigoDaUnidadeConsumidora",
+    term: string
+  ) => void;
 }
 
 export function SearchBar({ onSearch }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState<
-    "nome" | "email" | "codigoDaUnidade"
+    "nome" | "email" | "codigoDaUnidadeConsumidora"
   >("nome");
 
   const handleSearch = () => {
@@ -41,7 +44,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
           <Button variant="outline" className="flex items-center gap-2">
             {searchType === "nome" && "Nome"}
             {searchType === "email" && "Email"}
-            {searchType === "codigoDaUnidade" && "Cod. Unidade"}
+            {searchType === "codigoDaUnidadeConsumidora" && "Cod. Unidade"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="z-10 bg-white rounded-md p-3 text-[#303672]">
@@ -51,7 +54,9 @@ export function SearchBar({ onSearch }: SearchBarProps) {
           <DropdownMenuItem onClick={() => setSearchType("email")}>
             Email
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setSearchType("codigoDaUnidade")}>
+          <DropdownMenuItem
+            onClick={() => setSearchType("codigoDaUnidadeConsumidora")}
+          >
             Cod. Unidade
           </DropdownMenuItem>
         </DropdownMenuContent>

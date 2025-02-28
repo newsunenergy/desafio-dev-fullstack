@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : (
-            <TableRow>
+            <TableRow className=" text-center text-xl">
               <TableCell colSpan={columns.length}>Sem resultados.</TableCell>
             </TableRow>
           )}
