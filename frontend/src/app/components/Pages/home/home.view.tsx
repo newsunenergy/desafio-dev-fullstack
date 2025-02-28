@@ -3,6 +3,7 @@ import { IHomeProps } from "./home.interface";
 import { HomeParams } from "./home.params";
 import { MaterialSnackbarComponent } from "../../material-snackbar";
 import { Box, Button, DialogActions, TextField, Paper, Typography } from "@mui/material";
+import { formatPhone } from "../../utils/formatter.utils";
 
 export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
   const params: any = HomeParams(props);
@@ -48,7 +49,7 @@ export const HomeView: React.FC<IHomeProps> = (props: IHomeProps) => {
             label="Telefone"
             name="telefone"
             type="tel"
-            value={params.formData.telefone}
+            value={formatPhone(params.formData.telefone)}
             onChange={params.handleChange}
             fullWidth
             variant="outlined"
