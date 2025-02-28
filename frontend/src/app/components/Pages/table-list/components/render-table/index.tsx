@@ -21,7 +21,7 @@ export const cellsTableList: HeadCell[] = [
   {
     id: "unidadeConsumidora",
     numeric: false,
-    label: "Unidade Consumidora",
+    label: "Unidades Consumidoras",
   },
   {
     id: "modeloFasico",
@@ -37,8 +37,8 @@ function createListData(client: IClient) {
     nome: client.nome || NOT_AVAILABLE,
     telefone: client.telefone || NOT_AVAILABLE,
     email: client.email || NOT_AVAILABLE,
-    unidadeConsumidora: client.unidades ? client.unidades[0].codigoDaUnidadeConsumidora : NOT_AVAILABLE,
-    modeloFasico: client.unidades ? client.unidades[0].modeloFasico : NOT_AVAILABLE
+    unidadeConsumidora: client.unidades ? client.unidades.map(item => item.codigoDaUnidadeConsumidora).join(',') : NOT_AVAILABLE,
+    modeloFasico: client.unidades ? Array.from(new Set(client.unidades.map(item => item.modeloFasico))).join(', ') : NOT_AVAILABLE,
   };
 }
 
