@@ -110,8 +110,8 @@ Essa interface permite testar as requisições diretamente pelo navegador.
 **Rota:** `GET /clients?page={page}&limit={limit}&search={search}&filter={filter}`
 
 **Parâmetros:**
-- `page` (opcional): Número da página.
-- `limit` (opcional): Número de registros por página.
+- `page`: Número da página.
+- `limit`: Número de registros por página.
 - `search` (opcional): Busca por nome, email ou código da unidade consumidora.
 - `filter` (opcional): Filtra clientes pelo `modeloFasico` da unidade consumidora.
 
