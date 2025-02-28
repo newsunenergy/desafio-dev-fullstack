@@ -1,3 +1,57 @@
+"use client";
+import { ColumnDef } from "@tanstack/react-table";
+
+export type SimulatioData = {
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  codigoDaUnidadeConsumidora: string;
+  enquadramento: string;
+  modeloFasico: string;
+  valor: number;
+};
+
+export const columns: ColumnDef<SimulatioData>[] = [
+  {
+    accessorKey: "nome",
+    header: "Nome",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "telefone",
+    header: "Telefone",
+  },
+  {
+    accessorKey: "codigoDaUnidadeConsumidora",
+    header: "Código da Unidade",
+  },
+  {
+    accessorKey: "enquadramento",
+    header: "Enquadramento",
+  },
+  {
+    accessorKey: "modeloFasico",
+    header: "Modelo Fásico",
+  },
+  {
+    accessorKey: "valor",
+    header: () => <div className="text-right">Valor</div>,
+    cell: ({ row }) => {
+      const valor = parseFloat(row.getValue("valor"));
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(valor);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+];
+
 export const simulations = [
   {
     id: 1,
