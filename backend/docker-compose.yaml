@@ -1,0 +1,27 @@
+services:
+  database:
+    image: postgres:16
+    container_name: database
+    hostname: database
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: adm
+      POSTGRES_PASSWORD: adm
+      POSTGRES_DB: db
+    networks:
+      - erickgcastro-newsun
+
+  backend:
+    build: .
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env
+    depends_on:
+      - database
+    networks:
+      - erickgcastro-newsun
+
+networks:
+  erickgcastro-newsun:
