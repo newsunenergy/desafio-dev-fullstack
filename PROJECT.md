@@ -14,6 +14,8 @@
 - **Prisma ORM** - Gerenciamento do banco de dados
 - **MySQL** - Banco de dados relacional
 - **Docker** - Contêinerização para facilitar o gerenciamento do banco de dados
+- **Swagger** - Documentação automatizada da API e realização de testes diretamente pelo navegador
+- **Class-validator** - Validação de dados nas requisições utilizando decorators
 
 ## Configuração do Ambiente
 
@@ -65,6 +67,18 @@ npm run dev
 npm run dev  
 ```
 O projeto rodará em [**http://localhost:3000**](http://localhost:3000) por padrão.
+
+## Documentação da API com Swagger
+O projeto utiliza o Swagger para documentar as rotas da API de forma automatizada.
+
+### **Acessar a documentação da API**
+Após iniciar o backend, a documentação pode ser acessada em:
+
+[**http://localhost:3001/docs**](http://localhost:3001/docs)
+
+Essa interface permite testar as requisições diretamente pelo navegador.
+
+---
 
 ## Funcionalidades do Backend
 
@@ -125,5 +139,3 @@ Se for passado o parâmetro `search`, o sistema buscará clientes que:
 Se for passado o parâmetro `filter`, o sistema retornará apenas clientes que tenham ao menos uma unidade consumidora com o `modeloFasico` informado.
 
 **Exemplo:** Se `filter=Bifásico`, apenas clientes com pelo menos uma unidade com modelo bifásico serão retornados.
-
-
