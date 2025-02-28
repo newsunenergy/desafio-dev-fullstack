@@ -18,11 +18,7 @@ export interface IMaterialTableProps {
   link?: string;
   title?: string;
   totalItems?: number;
-  excelQuery?: string;
-  excelRoute?: string;
   isModalOpen?: boolean;
-  excelFileName?: string;
-  dateMaxAgenda?: boolean;
   updatePage?: () => void;
   readOnly?: boolean;
   loading?: boolean;
@@ -31,12 +27,11 @@ export interface IMaterialTableProps {
   addCollectionIcon?: boolean;
   children?: React.ReactNode;
   remove?: (id: string) => void;
-  ModalComponent?: React.ElementType | unknown;
+  ModalComponent?: React.FC<{ isOpen: boolean; onClose: () => void; id: string }>;
   setIsModalOpen?: (e: boolean) => void;
   removeIconAdd?: boolean | number;
   removeIconDelete?: boolean | number;
   removeIconEdit?: boolean | number;
-  tableCode?: string[];
 }
 
 export type IMaterialTableComponentProps = IMaterialTableProps &

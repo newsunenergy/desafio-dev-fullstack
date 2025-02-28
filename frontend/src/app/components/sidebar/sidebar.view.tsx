@@ -10,7 +10,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex">
+    <div>
       <button
         className="md:hidden p-4 fixed top-4 left-4 z-50 bg-white rounded-full shadow-lg"
         onClick={() => setIsSidebarOpen(true)}

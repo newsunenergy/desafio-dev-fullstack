@@ -13,5 +13,4 @@ export interface IScrollModalProps {
 export type IScrollModalComponentProps = IScrollModalProps &
   HTMLAttributes<IScrollModalProps>;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IScrollModalParams {}
+export type IScrollModalParams = unknown
