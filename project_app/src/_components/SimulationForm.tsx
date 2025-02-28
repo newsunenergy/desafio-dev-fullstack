@@ -9,6 +9,8 @@ import {
   newLeadFormSchema,
 } from "@/_validators/lead-validators";
 import { useState } from "react";
+import axios from "axios";
+import { api } from "@/_services/api";
 
 export default function SimulationForm() {
   const form = useForm<NewLeadFormData>({
@@ -16,30 +18,38 @@ export default function SimulationForm() {
   });
 
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
 
   function handleFilesChange(uploadedFiles: File[]) {
     setFiles(uploadedFiles);
   }
 
-  function onSubmit(data: NewLeadFormData) {
-    const formData = new FormData();
+  async function onSubmit(data: NewLeadFormData) {
+    try {
+      setLoading(true);
+      const formData = new FormData();
 
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key as keyof NewLeadFormData]);
-    });
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key as keyof NewLeadFormData]);
+      });
 
-    files.forEach((file) => {
-      formData.append("files", file);
-    });
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
 
-    //axios
-    console.log(formData);
+      const response = await api.post("/simulacao", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    setTimeout(() => {
-      alert("Simulação enviada com sucesso!");
+      console.log("Simulação criada: ", response.data);
+
       form.reset();
       setFiles([]);
-    }, 1000);
+    } catch (error) {
+      console.log("Erro ao enviar os arquivos: ", error.response.data);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -79,7 +89,9 @@ export default function SimulationForm() {
           files={files}
         />
         <footer className="flex flex-col items-center gap-2 mt-10">
-          <Button className="w-32">Simular</Button>
+          <Button className="w-32" type="submit" disabled={loading}>
+            {loading ? "Enviando" : "Simular"}
+          </Button>
         </footer>
       </form>
     </div>
