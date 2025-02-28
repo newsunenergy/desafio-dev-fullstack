@@ -1,21 +1,25 @@
-FROM node:latest
+FROM node:18.12-bullseye-slim AS build
 
-RUN npm install -g pnpm
+COPY . /app
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+RUN npm install
 
-RUN pnpm install --frozen-lockfile
+RUN npm run build
 
-COPY . .
+FROM node:18.12-bullseye-slim AS production
 
-RUN pnpm prisma generate
+WORKDIR /app
 
-RUN pnpm run build
+COPY --from=build /app/.env ./.env
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/package.json ./package.json
 
-RUN pnpm prune --prod
+RUN npm install
 
-EXPOSE 8000
+EXPOSE 5000
 
-CMD ["pnpm", "start:prod"]
+CMD ["npm", "run", "start:prod"]

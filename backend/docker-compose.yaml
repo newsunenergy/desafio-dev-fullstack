@@ -1,38 +1,27 @@
-version: "3.8"
-
 services:
-  mysql:
-    image: mysql:8
-    env_file:
-      - .env
+  database:
+    image: postgres:16
+    container_name: database
+    hostname: database
     ports:
-      - '3306:3306'
-    volumes:
-      - mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - 5432:5432
+    environment:
+      POSTGRES_USER: adm
+      POSTGRES_PASSWORD: adm
+      POSTGRES_DB: db
+    networks:
+      - erickgcastro-newsun
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "8000:8000"
-    depends_on:
-      - mysql
+      - 5000:5000
     env_file:
-      - .env
-    command: >
-      sh -c "
-      pnpm prisma generate &&
-      pnpm start:prod
-      "
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - ./.env
+    depends_on:
+      - database
+    networks:
+      - erickgcastro-newsun
 
-volumes:
-  mysql-data:
+networks:
+  erickgcastro-newsun:
