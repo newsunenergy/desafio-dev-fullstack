@@ -4,6 +4,8 @@ import { ModalListParams } from "./modal-list.params";
 import { ScrollModalComponent } from "@/app/components/scroll-modal";
 import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, CircularProgress } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { formatPhone } from "@/app/components/utils/formatter.utils";
+import { NOT_AVAILABLE } from "../../table-list.constants";
 
 export const ModalListView: React.FC<ModalListProps> = (props) => {
   const { isOpen, onClose } = props;
@@ -19,9 +21,9 @@ export const ModalListView: React.FC<ModalListProps> = (props) => {
         ) : (
           <>
             <Typography variant="h6">Dados do Cliente</Typography>
-            <Typography><strong>Nome:</strong> {formData?.nome}</Typography>
-            <Typography><strong>Email:</strong> {formData?.email}</Typography>
-            <Typography><strong>Telefone:</strong> {formData?.telefone}</Typography>
+            <Typography><strong>Nome:</strong> {formData?.nome || NOT_AVAILABLE}</Typography>
+            <Typography><strong>Email:</strong> {formData?.email || NOT_AVAILABLE}</Typography>
+            <Typography><strong>Telefone:</strong> {formatPhone(formData!.telefone || NOT_AVAILABLE)}</Typography>
 
             <Typography variant="h6" sx={{ mt: 2 }}>Unidades</Typography>
             {formData?.unidades && formData?.unidades.map((unidade, index) => (
