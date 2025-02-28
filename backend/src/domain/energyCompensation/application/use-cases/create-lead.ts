@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Lead } from '../../enterprise/entities/lead';
 import { Unit } from '../../enterprise/entities/unit';
 import { Consumption } from '../../enterprise/entities/consumption';
+import { InvoiceLengthException } from './errors/InvoiceLengthException';
 
 interface CreateLeadUseCaseRequest {
   name: string;
@@ -68,6 +69,12 @@ export class CreateLeadUseCase {
     );
 
     return billInformationArray.map((billInformation) => {
+      if (billInformation.invoice.length !== 12) {
+        throw new InvoiceLengthException(
+          'Cada fatura deve conter exatamente 12 meses de consumo.',
+        );
+      }
+
       return {
         unit: Unit.create({
           consumerUnitCode: billInformation.unit_key,
