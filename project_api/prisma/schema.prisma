@@ -30,6 +30,7 @@ model Unidade {
   modeloFasico               TipoModeloFasico
   enquadramento              TipoEnquadramento
   historicoDeConsumoEmKWH    Consumo[]          @relation("UnidadeConsumo")
+  valor                      Int
   leadId                     String
   lead                       Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
   simulacoes                 SimulacaoUnidade[]

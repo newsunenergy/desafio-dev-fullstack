@@ -1,9 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateSimulacaoDto } from './dto/create-simulacao.dto';
-import { UpdateSimulacaoDto } from './dto/update-simulacao.dto';
 import { SimulacaoRepository } from './simulacao.repository';
 import { processarContaPdf } from 'src/utils';
-import { HistoricoConsumoDto, UnidadeDto } from './dto/unidade.dto';
+import { UnidadeDto } from './dto/unidade.dto';
 import { ConsumoDto } from './dto/consumo.dto';
 
 @Injectable()
@@ -24,9 +23,15 @@ export class SimulacaoService {
           );
         }
 
-        console.log('Dados Conta: ', dadosConta);
+        const { valor, unit_key, chargingModel, phaseModel, invoice } =
+          dadosConta;
 
-        const { unit_key, chargingModel, phaseModel, invoice } = dadosConta;
+        if (invoice.length !== 12) {
+          throw new BadRequestException(
+            'A quantidade de meses de consumo deve ser igual a 12',
+          );
+        }
+
         const historicoDeConsumo: ConsumoDto[] = invoice.map((item) => ({
           consumoForaPontaEmKWH: item.consumo_fp,
           mesDoConsumo: new Date(item.consumo_date),
@@ -35,6 +40,7 @@ export class SimulacaoService {
           codigoDaUnidadeConsumidora: unit_key,
           modeloFasico: phaseModel,
           enquadramento: chargingModel,
+          valor: valor,
         } as UnidadeDto;
 
         await this.simulacaoRepository.create(
@@ -44,7 +50,9 @@ export class SimulacaoService {
         );
       }
     } catch (error) {
-      console.log(error);
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new BadRequestException('Falha ao tentar criar simulação!');
     }
   }
@@ -53,15 +61,7 @@ export class SimulacaoService {
     return await this.simulacaoRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} simulacao`;
-  }
-
-  update(id: number, updateSimulacaoDto: UpdateSimulacaoDto) {
-    return `This action updates a #${id} simulacao`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} simulacao`;
+  async findOne(id: string) {
+    return await this.simulacaoRepository.findById(id);
   }
 }

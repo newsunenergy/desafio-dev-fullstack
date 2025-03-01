@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Lead, Simulacao, Unidade } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateSimulacaoDto } from './dto/create-simulacao.dto';
@@ -10,11 +10,34 @@ export class SimulacaoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<Simulacao[] | null> {
-    return await this.prisma.simulacao.findMany();
+    return await this.prisma.simulacao.findMany({
+      include: {
+        lead: true,
+        unidades: {
+          include: {
+            unidade: true,
+          },
+        },
+      },
+    });
   }
 
   async findById(id: string): Promise<Simulacao | null> {
-    return await this.prisma.simulacao.findFirst({ where: { id } });
+    return await this.prisma.simulacao.findFirst({
+      where: { id },
+      include: {
+        lead: true,
+        unidades: {
+          include: {
+            unidade: {
+              include: {
+                historicoDeConsumoEmKWH: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async create(
@@ -33,6 +56,17 @@ export class SimulacaoRepository {
         });
       }
 
+      const unidadeExistente = await transaction.unidade.findUnique({
+        where: {
+          codigoDaUnidadeConsumidora: unidade.codigoDaUnidadeConsumidora,
+        },
+      });
+
+      if (unidadeExistente) {
+        throw new BadRequestException(
+          `A unidade com o código ${unidade.codigoDaUnidadeConsumidora} já existe no banco!`,
+        );
+      }
       const novaUnidade = await transaction.unidade.create({
         data: {
           ...unidade,
