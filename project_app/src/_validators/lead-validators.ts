@@ -7,10 +7,10 @@ export const newLeadFormSchema = z.object({
   email: z.string().email({ message: "Entre com um endereço de email válido" }),
   telefone: z
     .string()
-    .regex(
-      /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
-      { message: "Entre com um número no formato +55 xx xxxxx-xxxx" }
-    ),
+    .regex(/^(?:(?:\+|00)?(55))?([1-9][0-9])([0-9]{8,9})$/, {
+      message:
+        "Entre com um número no formato DDDXXXXXXXXX (apenas números, sem traços ou caracteres especiais)",
+    }),
 });
 
 export type NewLeadFormData = z.infer<typeof newLeadFormSchema>;

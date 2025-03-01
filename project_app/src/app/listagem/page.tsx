@@ -5,12 +5,12 @@ import { SearchBar } from "@/_components/SearchBar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/_services/api";
-import { columns, SimulatioData } from "@/_services/mockSimulations";
+import { columns, SimulationData } from "@/_utils/simulationData";
 import { useEffect, useState } from "react";
 import SimulationDetailsModal from "@/_components/SimulationDetailsModal";
 
 export default function SimulationList() {
-  const [data, setData] = useState<SimulatioData[]>([]);
+  const [data, setData] = useState<SimulationData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
