@@ -49,7 +49,10 @@ const Simular = () => {
       .catch((err) => {
         toast({
           title: "Houve um erro...",
-          text: err.data.message || "Tente novamente",
+          text:
+            err?.response?.data?.message ||
+            err?.response?.data?.message?.[0] ||
+            "Tente novamente",
           icon: "error",
         });
         console.error(err);

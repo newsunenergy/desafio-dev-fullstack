@@ -19,7 +19,7 @@ const useLeadDetail = () => {
         console.error(err);
         toast({
           title: "Houve um erro...",
-          text: err.data.message || "Recarregue a página",
+          text: err?.response?.data?.message || "Recarregue a página",
           icon: "error",
         });
       })

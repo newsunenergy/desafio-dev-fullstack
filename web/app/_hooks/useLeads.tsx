@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api } from "../_config/api";
+import { Lead } from "../_types/lead.type";
 import { toast } from "../_utils/toast";
 
 const useLeads = () => {
@@ -21,7 +22,7 @@ const useLeads = () => {
         console.error(err);
         toast({
           title: "Houve um erro...",
-          text: err.data.message || "Recarregue a página",
+          text: err?.response?.data?.message || "Recarregue a página",
           icon: "error",
         });
       })

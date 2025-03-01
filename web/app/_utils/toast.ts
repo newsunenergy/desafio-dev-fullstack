@@ -12,7 +12,7 @@ export const toast = (options: SweetAlertOptions) => {
       htmlContainer: "!font-semibold !text-sm",
     },
     showConfirmButton: false,
-    timer: 2000,
+    timer: 4000,
     timerProgressBar: true,
     ...options,
   });
