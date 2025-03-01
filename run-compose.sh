@@ -1,0 +1,1 @@
+docker compose --env-file ./server/.env --env-file ./web/.env up --build -d

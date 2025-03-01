@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ./.postgres-data:/var/lib/postgresql/data
+    env_file:
+      - server/.env
+  back_nestjs:
+    image: nestjs-app
+    container_name: back_nestjs
+    build:
+      context: ./server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file:
+      - server/.env
+  front_nextjs:
+    image: nextjs-app
+    container_name: front_nextjs
+    build:
+      context: ./web
+    ports:
+      - "3001:3000"
+    depends_on:
+      - back_nestjs
+    env_file:
+      - web/.env
+
+volumes:
+  postgres-data:
