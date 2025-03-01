@@ -31,7 +31,7 @@ export class ClientsService {
             },
           });
 
-          if (existingUnit) {
+          if (existingUnit.length > 0) {
             throw new BadRequestException(
               `A unidade consumidora ${unidade.codigoDaUnidadeConsumidora} já está cadastrada.`,
             );

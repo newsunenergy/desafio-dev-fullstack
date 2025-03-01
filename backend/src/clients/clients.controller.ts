@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import axios from 'axios';
 import { ClientsService } from './clients.service';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { Multer } from 'multer';
 import { IClient, IDataPdf, ILeadFilters } from './clients.interface';
 import { FilesInterceptor } from '@nestjs/platform-express';
