@@ -1,3 +1,46 @@
+# Informações Gerais do Projeto
+
+Este projeto utiliza as seguintes tecnologias e bibliotecas:
+
+### Frontend
+
+- **Next.js**: Framework React para renderização do lado do servidor (SSR) e geração de páginas estáticas.
+- **Bibliotecas**:
+  - **React Hook Form**: Para gerenciamento de formulários.
+  - **shadcn**: Componentes UI reutilizáveis.
+  - **Tailwind CSS**: Framework CSS utilitário para estilização.
+
+### Backend
+
+- **NestJS**: Framework Node.js para construção de aplicações server-side robustas e escaláveis.
+- **Prisma ORM**: ORM para modelagem e interação com o banco de dados MySQL.
+
+### Funcionalidades Implementadas
+
+#### Frontend
+
+- **Páginas**:
+  1. **Página Principal**: Auxílio na navegação entre as páginas do sistema.
+  2. **Página `/simular`**:
+     - Contém um formulário para envio de informações do lead e arquivos das contas.
+     - Os dados são enviados para o backend através do endpoint `POST: {url_da_api}/simulacao`.
+  3. **Página `/listagem`**:
+     - Carrega, na renderização, os dados de todas as simulações do banco de dados `GET: {url_da_api}/simulacao`.
+     - Possui filtros e uma barra de busca para facilitar a localização de simulações específicas.
+     - Ao clicar em uma linha, um modal é aberto, exibindo detalhes da simulação consultada via API `GET: {url_da_api}/simulacao/{idSimulacao}`.
+
+#### Backend
+
+- **Endpoints**:
+  1. **Busca Geral**: Retorna todas as simulações cadastradas.
+  2. **Busca por ID**: Retorna os detalhes de uma simulação específica.
+  3. **Criação de Simulação**:
+     - Recebe os dados enviados pelo frontend na página `/simular`.
+     - Antes de acessar a camada de repositório, os arquivos são enviados para endpoint externo fornecido pela empresa e os dados são validados.
+     - No repositório, é realizada uma transação para garantir a consistência dos dados, já que as informações precisam ser armazenadas em múltiplas tabelas simultaneamente.
+
+---
+
 # Guia de Configuração e Execução do Projeto
 
 Este guia fornece instruções para configurar, construir e rodar o projeto.
