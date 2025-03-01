@@ -9,7 +9,6 @@ import {
   newLeadFormSchema,
 } from "@/_validators/lead-validators";
 import { useState } from "react";
-import axios from "axios";
 import { api } from "@/_services/api";
 
 export default function SimulationForm() {
@@ -37,16 +36,15 @@ export default function SimulationForm() {
         formData.append("files", file);
       });
 
-      const response = await api.post("/simulacao", formData, {
+      await api.post("/simulacao", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("Simulação criada: ", response.data);
-
+      alert("Simulação criada com sucesso!");
       form.reset();
       setFiles([]);
     } catch (error) {
-      console.log("Erro ao enviar os arquivos: ", error.response.data);
+      alert(`Erro ao enviar os arquivos: \n ${error?.response?.data?.message}`);
     } finally {
       setLoading(false);
     }
