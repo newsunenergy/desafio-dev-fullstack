@@ -2,7 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type SimulatioData = {
-  id: number;
+  id: string;
   nome: string;
   email: string;
   telefone: string;

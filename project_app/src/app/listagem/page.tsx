@@ -5,19 +5,15 @@ import { SearchBar } from "@/_components/SearchBar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/_services/api";
-import {
-  columns,
-  SimulatioData,
-  simulations,
-} from "@/_services/mockSimulations";
+import { columns, SimulatioData } from "@/_services/mockSimulations";
 import { useEffect, useState } from "react";
+import SimulationDetailsModal from "@/_components/SimulationDetailsModal";
 
 export default function SimulationList() {
-  //  const data = simulations;
-
   const [data, setData] = useState<SimulatioData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filters, setFilters] = useState<{
     enquadramento: string[];
     modeloFasico: string[];
@@ -48,7 +44,7 @@ export default function SimulationList() {
             simulacao.unidades[0]?.unidade.codigoDaUnidadeConsumidora,
           enquadramento: simulacao.unidades[0]?.unidade.enquadramento || "N/A",
           modeloFasico: simulacao.unidades[0]?.unidade.modeloFasico || "N/A",
-          valor: 0,
+          valor: simulacao.unidades[0]?.unidade.valor,
         }));
         setData(formattedData);
       } catch (error) {
@@ -99,10 +95,19 @@ export default function SimulationList() {
           <FilterSidebar onApplyFilters={handleApplyFilters} />
           <div className="flex flex-col gap-3">
             <SearchBar onSearch={handleSearch} />
-            <DataTable columns={columns} data={filteredData} />
+            <DataTable
+              columns={columns}
+              data={filteredData}
+              onRowClick={(row) => setSelectedId(row.original.id)}
+            />
           </div>
         </div>
       )}
+
+      <SimulationDetailsModal
+        simulationId={selectedId}
+        onClose={() => setSelectedId(null)}
+      />
     </div>
   );
 }
