@@ -24,17 +24,17 @@ services:
       - postgres
     env_file:
       - server/.env
-  # front_nextjs:
-  #   image: nextjs-app
-  #   container_name: front_nextjs
-  #   build:
-  #     context: ./web
-  #   ports:
-  #     - "3001:3000"
-  #   depends_on:
-  #     - server_nestjs
-  #   env_file:
-  #     - web/.env
+  web_nextjs:
+    container_name: web_nextjs
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3005"
+    depends_on:
+      - server_nestjs
+    env_file:
+      - web/.env
 
 volumes:
   postgres-data:
