@@ -13,9 +13,8 @@ services:
       - ./.postgres-data:/var/lib/postgresql/data
     env_file:
       - server/.env
-  back_nestjs:
-    image: nestjs-app
-    container_name: back_nestjs
+  server_nestjs:
+    container_name: server_nestjs
     build:
       context: ./server
     ports:
@@ -32,7 +31,7 @@ services:
   #   ports:
   #     - "3001:3000"
   #   depends_on:
-  #     - back_nestjs
+  #     - server_nestjs
   #   env_file:
   #     - web/.env
 
