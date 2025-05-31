@@ -7,6 +7,7 @@ import { ConsumoModule } from './consumo/consumo.module';
 import { EnergyBillModule } from './energy-bill/energy-bill.module';
 import { LeadModule } from './lead/lead.module';
 import { UnidadeModule } from './unidade/unidade.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UnidadeModule } from './unidade/unidade.module';
     ConsumoModule,
     UnidadeModule,
     EnergyBillModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
