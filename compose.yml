@@ -17,6 +17,7 @@ services:
     container_name: server_nestjs
     build:
       context: ./server
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     depends_on:
