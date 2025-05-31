@@ -1,11 +1,8 @@
-FROM node:22-alpine3.20
+FROM node:22.16.0-alpine3.22
 
 WORKDIR /app
-RUN npm install --global pm2
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3000
-RUN npm run build
-USER node
-CMD [ "pm2-runtime", "start", "npm", "--", "run", "start" ]
+EXPOSE 3005
+CMD [ "npm", "run", "dev" ]
