@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as FormData from 'form-data';
 import { catchError, firstValueFrom } from 'rxjs';
 import { CreateUnidadeDto } from 'src/unidade/dto/create-unidade.dto';
@@ -25,7 +25,10 @@ export class EnergyBillService {
         .pipe(
           catchError((error) => {
             console.error('Erro ao enviar conta para API externa:', error);
-            throw new Error('Falha ao enviar conta para API externa');
+            throw new HttpException(
+              'Falha ao enviar conta para API externa',
+              HttpStatus.BAD_REQUEST,
+            );
           }),
         ),
     );
