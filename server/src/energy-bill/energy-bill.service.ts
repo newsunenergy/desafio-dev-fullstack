@@ -1,13 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as FormData from 'form-data';
 import { catchError, firstValueFrom } from 'rxjs';
 import { CreateUnidadeDto } from 'src/unidade/dto/create-unidade.dto';
+import { Unidade } from 'src/unidade/entities/unidade.entity';
+import { Repository } from 'typeorm';
 import { EnergyBill } from './types/energy-bill.type';
 
 @Injectable()
 export class EnergyBillService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    @InjectRepository(Unidade)
+    private readonly unidadeRepository: Repository<Unidade>,
+  ) {}
   private readonly baseUrl = process.env.API_URL;
 
   async decode(file: Express.Multer.File): Promise<CreateUnidadeDto> {
@@ -32,6 +39,15 @@ export class EnergyBillService {
           }),
         ),
     );
+    const unitCodeExists = await this.unidadeRepository.findOneBy({
+      codigoDaUnidadeConsumidora: data.unit_key,
+    });
+    if (unitCodeExists !== null) {
+      throw new HttpException(
+        'Unidade consumidora já cadastrada no sistema',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     return {
       codigoDaUnidadeConsumidora: data.unit_key,

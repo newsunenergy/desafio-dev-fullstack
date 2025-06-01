@@ -47,8 +47,8 @@ export class LeadService {
       );
     }
     const unidades = await Promise.all(
-      informacoesDaFatura.map(
-        async (file) => await this.decodeEnergyBillService.decode(file),
+      informacoesDaFatura.map((file) =>
+        this.decodeEnergyBillService.decode(file),
       ),
     );
     const lead = this.leadRepository.create({ ...createLeadDto, unidades });
