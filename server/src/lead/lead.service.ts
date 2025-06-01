@@ -40,7 +40,7 @@ export class LeadService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (informacoesDaFatura.length === 0) {
+    if ((informacoesDaFatura?.length || 0) < 12) {
       throw new HttpException(
         'Forneça uma conta de energia com 12 meses de consumo',
         HttpStatus.BAD_REQUEST,
