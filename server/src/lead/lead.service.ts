@@ -73,8 +73,8 @@ export class LeadService {
     return await queryBuilder.getMany();
   }
 
-  findOne(id: number): Promise<Lead | null> {
-    return this.findLeadOrFail(id);
+  async findOne(id: number): Promise<Lead | null> {
+    return await this.findLeadOrFail(id);
   }
 
   async update(id: number, updateLeadDto: UpdateLeadDto) {
@@ -82,8 +82,8 @@ export class LeadService {
     return await this.leadRepository.update(id, updateLeadDto);
   }
 
-  remove(id: number): Promise<DeleteResult> {
-    this.findLeadOrFail(id);
-    return this.leadRepository.delete(id);
+  async remove(id: number): Promise<DeleteResult> {
+    await this.findLeadOrFail(id);
+    return await this.leadRepository.delete(id);
   }
 }

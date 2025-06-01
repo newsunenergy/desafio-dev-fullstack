@@ -49,17 +49,17 @@ export class UnidadeService {
     return this.unidadeRepository.find();
   }
 
-  findOne(id: number): Promise<Unidade> {
-    return this.findUnidadeOrFail(id);
+  async findOne(id: number): Promise<Unidade> {
+    return await this.findUnidadeOrFail(id);
   }
 
-  update(id: number, updateUnidadeDto: UpdateUnidadeDto) {
-    this.findUnidadeOrFail(id);
-    return this.unidadeRepository.update(id, updateUnidadeDto);
+  async update(id: number, updateUnidadeDto: UpdateUnidadeDto) {
+    await this.findUnidadeOrFail(id);
+    return await this.unidadeRepository.update(id, updateUnidadeDto);
   }
 
-  remove(id: number): Promise<DeleteResult> {
-    this.findUnidadeOrFail(id);
-    return this.unidadeRepository.delete(id);
+  async remove(id: number): Promise<DeleteResult> {
+    await this.findUnidadeOrFail(id);
+    return await this.unidadeRepository.delete(id);
   }
 }

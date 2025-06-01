@@ -29,17 +29,17 @@ export class ConsumoService {
     return this.consumoRepository.find();
   }
 
-  findOne(id: number): Promise<Consumo> {
-    return this.findConsumoOrFail(id);
+  async findOne(id: number): Promise<Consumo> {
+    return await this.findConsumoOrFail(id);
   }
 
   async update(id: number, updateConsumoDto: UpdateConsumoDto) {
-    this.findConsumoOrFail(id);
+    await this.findConsumoOrFail(id);
     return await this.consumoRepository.update(id, updateConsumoDto);
   }
 
-  remove(id: number): Promise<DeleteResult> {
-    this.findConsumoOrFail(id);
-    return this.consumoRepository.delete(id);
+  async remove(id: number): Promise<DeleteResult> {
+    await this.findConsumoOrFail(id);
+    return await this.consumoRepository.delete(id);
   }
 }
