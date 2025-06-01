@@ -13,30 +13,30 @@ services:
       - ./.postgres-data:/var/lib/postgresql/data
     env_file:
       - server/.env
-  server_nestjs:
-    container_name: server_nestjs
+  server:
+    container_name: server
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     depends_on:
       - postgres
     env_file:
       - server/.env
     environment:
       DB_HOST: postgres
-  web_nextjs:
-    container_name: web_nextjs
+  web:
+    container_name: web
     build:
       context: ./web
       dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_BASE_URL: "http://server:${PORT}"
     ports:
       - "3005:3005"
     depends_on:
-      - server_nestjs
-    environment:
-      - NEXT_PUBLIC_BASE_URL=http://server_nestjs:3000
+      - server
 
 volumes:
   postgres-data:
