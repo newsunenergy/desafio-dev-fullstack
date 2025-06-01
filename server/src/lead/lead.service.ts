@@ -40,9 +40,9 @@ export class LeadService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if ((informacoesDaFatura?.length || 0) < 12) {
+    if (informacoesDaFatura?.length < 1) {
       throw new HttpException(
-        'Forneça uma conta de energia com 12 meses de consumo',
+        'Forneça no mínimo uma conta de energia',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -77,9 +77,9 @@ export class LeadService {
     return this.findLeadOrFail(id);
   }
 
-  update(id: number, updateLeadDto: UpdateLeadDto) {
-    this.findLeadOrFail(id);
-    return this.leadRepository.update(id, updateLeadDto);
+  async update(id: number, updateLeadDto: UpdateLeadDto) {
+    await this.findLeadOrFail(id);
+    return await this.leadRepository.update(id, updateLeadDto);
   }
 
   remove(id: number): Promise<DeleteResult> {
