@@ -31,8 +31,6 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
-    environment:
-      NEXT_PUBLIC_BASE_URL: "http://server:${PORT}"
     ports:
       - "3005:3005"
     depends_on:
