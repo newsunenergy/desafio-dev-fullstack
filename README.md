@@ -1,148 +1,198 @@
-# NewSun Energy Brazil
+# Energy Compensation Simulator
 
-## Processo de recrutamento
+A full-stack application designed to simulate energy compensation plans. Users can submit energy bills, view simulations, and manage leads through a modern web interface. The backend is built with **NestJS** and **TypeORM**, using a **PostgreSQL** database, while the frontend is powered by **Next.js** with **React** and **Tailwind CSS**. The application supports file uploads for energy bills (PDFs), real-time search.
 
-Olá dev, bem vindo ao nosso processo de recrutamento para desenvolvedor Full Stack!
+## Features
 
-### Sobre a vaga
+- **Lead Management**: Create, update, delete, and view leads with associated energy consumption data.
+- **Energy Bill Processing**: Upload and process energy bills (PDFs) to extract consumption data via an external API.
+- **Real-time Search**: Search leads by name, email, or phone number with debounced input.
+- **Responsive UI**: Modern, user-friendly interface with Tailwind CSS and Next.js.
+- **Health Checks**: Monitor database connectivity with a dedicated `/health` endpoint.
+- **Form Validation**: Client and server-side validation using Zod and class-validator.
+- **File Uploads**: Support for multiple PDF uploads with validation for size and format.
+- **Data Visualization**: Display energy consumption history in tabular format.
 
-- 100% Remoto
-- Flexibilidade no horário de trabalho
-
-### Requisitos para a vaga
-
-Conhecimentos sólidos em:
-
-- Typescript (com nodejs)
-- ReactJS/NextJS
-- Estilização com tailwindCSS ou @chakra-ui
-- MySQL (utilizando algum ORM: prisma, typeORM, etc...)
-- Consumir e Servir aplicações RESTful
-
-Desejável:
-
-- NestJS
-- Docker
-- Noções de Clean Architeture
-
-# Resumo
-
-### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
-
-### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
-
-# O Desafio:
-
-Utilizando o seu smartphone ou desktop, João deve ser capaz de realizar uma simulação para um plano de compensação energética. <br/>
-O processo é simples, João submete um formulário contendo o seu nome, email e telefone, junto a **uma ou mais** contas de energia (que será decodificada por nossa API interna).<br/><br/>
-Uma vez submetido o formulário, o backend tem que ser capaz de criar um novo `lead` contendo as informações cadastrais do author, juntamente aos dados decodificados da conta de energia.
-
-#
-
-# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
-
-> [!TIP]
-> A escolha de tecnologia é livre. O único requisito é que seja feito em Typescript e que o frontend seja feito em ReactJS ou NextJS. Pode adicionar frameworks ou bibliotecas da sua escolha!<br/>
-
-> [!NOTE]
-> Endpoint utilizado para decodificação da conta de energia. <br/>
-> Sem autenticação, apenas realizar um POST com `multipart/form-data`<br/> o body deve ter o campo `"file"` contendo a conta de energia <br/>
-> POST https://magic-pdf.solarium.newsun.energy/v1/magic-pdf <br/><br/>
-> Content-Type: multipart/form-data <br /> > ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/c2d784b6-d4f3-4009-b9c1-cbea7feac17d)
-
-> [!CAUTION]
-> Não há necessidade de salvar o arquivo da conta de energia. Não será utilizado como critério de avaliação
-
-# Link para contas de energia [aqui](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/tree/main/contas-de-energia)
-
-### Frontend
-
-- [ ] Página para submissão do formulário `/simular`
-- [ ] Página de consulta `/listagem`
+## Tech Stack
 
 ### Backend
 
-- [ ] Endpoint para registrar uma nova simulação
-- [ ] Endpoint para listar todas as simulações (com opção de filtro por nome, email, codigo da unidade consumidora etc)
-- [ ] Endpoint para listar uma simulação baseado no id do lead, etc...
-- [ ] Modelar domínio com os agregados a seguir:
+- **Node.js** with **NestJS**: Framework for building scalable server-side applications.
+- **TypeORM**: ORM for PostgreSQL database interactions.
+- **PostgreSQL**: Relational database for storing leads, units, and consumption data.
+- **Axios**: For making HTTP requests to external APIs (e.g., for processing energy bills).
+- **NestJS Terminus**: For health checks.
+- **Multer**: For handling file uploads.
 
-### Diferencial
+### Frontend
 
-- [ ] Fazer validação dos dados transitados na API.
-- [ ] Configurar ambiente docker para rodar a aplicação.
+- **Next.js**: React framework for server-side rendering and static site generation.
+- **React Hook Form**: Form handling with validation using Zod.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Tanstack React Table**: For rendering data tables.
+- **SweetAlert2**: For toast notifications.
+- **React Dropzone**: For drag-and-drop file uploads.
 
-```ts
-export interface Lead {
-  id: string;
-  nomeCompleto: string;
-  email: string;
-  telefone: string;
-  unidades: Unidade[];
-}
+### DevOps
 
-export interface Unidade {
-  id: string;
-  codigoDaUnidadeConsumidora: string;
-  modeloFasico: "monofasico" | "bifasico" | "trifasico";
-  enquadramento: "AX" | "B1" | "B2" | "B3";
-  historicoDeConsumoEmKWH: Consumo[];
-}
+- **Docker**: Containerization for backend and frontend services.
+- **Environment Variables**: Configured via `.env` files.
 
-export interface Consumo {
-  consumoForaPontaEmKWH: number;
-  mesDoConsumo: Date;
-}
+## Prerequisites
+
+- **Node.js** (v22.16.0 or higher)
+- **PostgreSQL** (running locally or via Docker)
+- **Docker** and **Docker Compose** (for containerized setup)
+- **npm** (Node Package Manager)
+
+## Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/Mirian97/energy-compensation-simulator-fullstack.git
+   cd energy-compensation-simulator-fullstack
+   ```
+
+2. **Install Backend Dependencies**:
+   Navigate to the backend directory and run:
+
+   ```bash
+   cd server
+   npm install
+   ```
+
+3. **Install Frontend Dependencies**:
+   Navigate to the frontend directory or the root if Next.js is in the same directory:
+
+   ```bash
+   cd web
+   npm install
+   ```
+
+4. **Set Up PostgreSQL**:
+   - Ensure PostgreSQL is running locally or via Docker.
+   - Create a database named `compensationSimulator`:
+     ```sql
+     CREATE DATABASE compensationSimulator;
+     ```
+
+## Environment Variables
+
+Create a `.env` file inside server and web folders:
+
+```env
+# /server/.env
+DB_HOST=localhost
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=compensationSimulator
+DB_PORT=5432
+PORT=3004
+API_URL=<external-api-url> # URL for the external energy bill processing API
+
+# /web/.env
+NEXT_PUBLIC_BASE_URL=http://localhost:3004
 ```
 
-> [!NOTE]
-> DICA<br/> > ![image](https://github.com/newsunenergy/desafio-dev-fullstack-12-2023/assets/30875229/1601b2e4-f1b9-4b40-a2ae-020e342c7796)<br/> > `unit_key` representa `codigoDaUnidadeConsumidora` no nosso domínio<br/> > `chargingModel` representa `unit.enquadramento` no nosso domínio<br/> > `phaseModel` representa `unit.modeloFasico` no nosso domínio<br/> > `consumo_fp` representa `unit.historicoDeConsumoEmKWH.consumoForaPontaEmKWH`<br/> > `consumo_date` representa `mesDoConsumo` <br/><br/>
+Replace `<external-api-url>` with the actual URL of the energy bill processing API (e.g., for the `/magic-pdf` endpoint).
 
-#
+## Running the Application
 
-# Regras
+### Backend
 
-- O email deverá ser único por `lead`
-- O codigoDaUnidadeConsumidora deve ser único.
-- Um lead deve ter no mínimo 1 `unidade`.
-- Uma `unidade` deve ter exatamente o `historicoDeConsumoEmKWH` do `Consumo` dos últimos 12 meses. Em outras palavras, `${unit.historicoDeConsumoEmKWH}` length tem que ser 12.
+1. Start the NestJS server in development mode:
+   ```bash
+   npm run start:dev
+   ```
+   The backend will run on `http://localhost:3004`.
 
-```ts
-export interface SolicitarSimulacaoDeCompensacaoEnergeticaInput {
-  nomeCompleto: string;
-  email: string;
-  telefone: string;
-  informacoesDaFatura: InformacaoDaFatura[];
-}
+---
 
-export interface InformacaoDaFatura {
-  codigoDaUnidadeConsumidora: string;
-  modeloFasico: string;
-  enquadramento: string;
-  mesDeReferencia: Date;
-  consumoEmReais: number;
-  historicoDeConsumoEmKWH: {
-    consumoForaPontaEmKWH: number;
-    mesDoConsumo: Date;
-  }[];
-}
+### Frontend
+
+1. Start the Next.js application:
+   ```bash
+   npm run dev
+   ```
+   The frontend will run on `http://localhost:3000`.
+
+---
+
+### Database
+
+Ensure the PostgreSQL database is running and accessible. TypeORM will automatically synchronize the schema (`synchronize: true` in `ormconfig`).
+
+---
+
+## Docker Setup
+
+**Build and Run using Docker Compose**:
+
+```bash
+docker compose --env-file ./server/.env up -d --build
 ```
 
-# Resumo
+## API Endpoints
 
-### Duas telas no frontend, uma com o formulário, outra com a listagem das simulações registradas (filtros, etc).
+### Lead Management (`/lead`)
 
-### No backend, 3 endpoints: registrar uma nova simulação, consumir em lista, consumir por id.
+- **POST /lead**: Create a new lead with energy bill uploads.
+  - Body: `CreateLeadDto` (nomeCompleto, email, telefone) + `informacoesDaFatura` (PDF files).
+  - Response: Created `Lead` object.
+- **GET /lead**: Retrieve all leads with optional search query.
+  - Query: `search` (string, optional).
+  - Response: Array of `Lead` objects.
+- **GET /lead/:id**: Retrieve a lead by ID.
+  - Response: `Lead` object or 404 if not found.
+- **PATCH /lead/:id**: Update a lead by ID.
+  - Body: `UpdateLeadDto`.
+  - Response: Updated `Lead` object.
+- **DELETE /lead/:id**: Delete a lead by ID.
+  - Response: Deletion result.
 
-#
+### Unit Management (`/unidade`)
 
-# Comece
+- **POST /unidade**: Create a new consumption unit.
+  - Body: `CreateUnidadeDto` (codigoDaUnidadeConsumidora, modeloFasico, enquadramento, consumoEmReais, historicoDeConsumoEmKWH).
+  - Response: Created `Unidade` object.
+- **GET /unidade**: Retrieve all units.
+  - Response: Array of `Unidade` objects.
+- **GET /unidade/:id**: Retrieve a unit by ID.
+  - Response: `Unidade` object or 404 if not found.
+- **PATCH /unidade/:id**: Update a unit by ID.
+  - Body: `UpdateUnidadeDto`.
+  - Response: Updated `Unidade` object.
+- **DELETE /unidade/:id**: Delete a unit by ID.
+  - Response: Deletion result.
 
-O processo do desafio deve ser: <br />
+### Consumption Management (`/consumo`)
 
-- Faça o fork do desafio.
-- Crie um PROJECT.md com a explicação de como devemos executar o projeto e com o máximo de detalhes possível do que foi feito.
-- Após concluir faça um pull request
+- **POST /consumo**: Create a new consumption record.
+  - Body: `CreateConsumoDto` (consumoForaPontaEmKWH, mesDoConsumo).
+  - Response: Created `Consumo` object.
+- **GET /consumo**: Retrieve all consumption records.
+  - Response: Array of `Consumo` objects.
+- **GET /consumo/:id**: Retrieve a consumption record by ID.
+  - Response: `Consumo` object or 404 if not found.
+- **PATCH /consumo/:id**: Update a consumption record by ID.
+  - Body: `UpdateConsumoDto`.
+  - Response: Updated `Consumo` object.
+- **DELETE /consumo/:id**: Delete a consumption record by ID.
+  - Response: Deletion result.
 
-Qualquer dúvida entre em contato por email
-paulo.santana@newsun.energy
+### Health Check (`/health`)
+
+- **GET /health**: Check database connectivity.
+  - Response: `{ status: 'ok', info: { database: { status: 'up' } } }` or error if down.
+
+## Frontend Pages
+
+- **Home (`/`)**: Landing page with options to start a new simulation or view existing ones.
+- **New Simulation (`/simular`)**: Form to submit lead details and energy bills (PDFs).
+- **Simulations List (`/listagem`)**: Table displaying all leads with search functionality.
+- **Lead Details (`/listagem/:id`)**: Detailed view of a lead, including client info, energy data, and consumption history.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./docs/LICENSE.md) file for details.
