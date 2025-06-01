@@ -1,8 +1,8 @@
 import {
   IsEmail,
   IsNotEmpty,
-  IsPhoneNumber,
   IsString,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 
@@ -17,6 +17,6 @@ export class CreateLeadDto {
   email: string;
 
   @IsString()
-  @IsPhoneNumber()
+  @MaxLength(30)
   telefone: string;
 }

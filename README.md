@@ -1,4 +1,4 @@
-# Energy Compensation Simulator
+# ⚡ Energy Compensation Simulator ⚡
 
 A full-stack application designed to simulate energy compensation plans. Users can submit energy bills, view simulations, and manage leads through a modern web interface. The backend is built with **NestJS** and **TypeORM**, using a **PostgreSQL** database, while the frontend is powered by **Next.js** with **React** and **Tailwind CSS**. The application supports file uploads for energy bills (PDFs), real-time search.
 
