@@ -3,7 +3,9 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Consumo {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment', {
+    primaryKeyConstraintName: 'PK_consumo_id',
+  })
   id: number;
 
   @Column()

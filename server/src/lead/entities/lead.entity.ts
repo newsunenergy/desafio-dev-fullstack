@@ -5,11 +5,15 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity()
+@Unique('UQ_lead_email', ['email'])
 export class Lead {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('increment', {
+    primaryKeyConstraintName: 'PK_lead_id',
+  })
   id: number;
 
   @Column({
@@ -19,7 +23,6 @@ export class Lead {
   nomeCompleto: string;
 
   @Column({
-    unique: true,
     type: 'varchar',
     length: 50,
   })
