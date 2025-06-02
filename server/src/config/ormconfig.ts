@@ -12,7 +12,7 @@ export const config: TypeOrmModuleOptions = {
   username: DB_USERNAME,
   entities: [Lead, Consumo, Unidade],
   database: DB_NAME,
-  synchronize: true,
+  synchronize: false,
   logging: true,
   autoLoadEntities: true,
 };
