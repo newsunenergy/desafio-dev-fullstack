@@ -16,9 +16,4 @@ export const config: TypeOrmModuleOptions = {
   logging: true,
   autoLoadEntities: true,
   ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
 };
