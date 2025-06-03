@@ -26,7 +26,7 @@ const useLeadDetail = () => {
       .finally(() => setIsLoading(false));
   };
 
-  useEffect(getLeads, []);
+  useEffect(getLeads, [params.id]);
 
   return {
     data: data,

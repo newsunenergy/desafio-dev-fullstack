@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from "react";
 import { cn } from "../_lib/utils";
 
-interface ChipStatus extends ComponentProps<"span"> {}
+type ChipStatus = ComponentProps<"span">;
 
 export const ChipStatus: FC<ChipStatus> = ({ children, className }) => {
   return (
