@@ -7,3 +7,5 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+console.log("API URL FRONTEND:", process.env.NEXT_PUBLIC_BASE_URL);
