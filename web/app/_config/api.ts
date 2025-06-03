@@ -9,3 +9,4 @@ export const api = axios.create({
 });
 
 console.log("API URL FRONTEND:", process.env.NEXT_PUBLIC_BASE_URL);
+console.log(api.defaults.baseURL);
