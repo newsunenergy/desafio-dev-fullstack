@@ -33,10 +33,10 @@ export default function DetalhesSimulacaoPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow rounded-lg p-8 text-center">
-            <p className="text-gray-500">Carregando...</p>
+            <p className="text-[#676767]">Carregando...</p>
           </div>
         </div>
       </div>
@@ -45,10 +45,10 @@ export default function DetalhesSimulacaoPage() {
 
   if (error || !lead) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow rounded-lg p-8">
-            <p className="text-red-600 mb-4">{error || 'Simulação não encontrada'}</p>
+            <p className="text-[#EF4444] mb-4">{error || 'Simulação não encontrada'}</p>
             <Button onClick={() => router.push('/listagem')}>Voltar</Button>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function DetalhesSimulacaoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white shadow rounded-lg p-8">
           <div className="mb-6">
@@ -66,57 +66,57 @@ export default function DetalhesSimulacaoPage() {
             </Button>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Detalhes da Simulação</h1>
+          <h1 className="text-3xl font-bold text-[#0B3C78] mb-6">Detalhes da Simulação</h1>
 
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Informações do Lead</h2>
+              <h2 className="text-xl font-semibold text-[#0B3C78] mb-4">Informações do Lead</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Nome Completo</p>
-                  <p className="text-lg font-medium">{lead.nomeCompleto}</p>
+                  <p className="text-sm text-[#676767]">Nome Completo</p>
+                  <p className="text-lg font-medium text-[#0B3C78]">{lead.nomeCompleto}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="text-lg font-medium">{lead.email}</p>
+                  <p className="text-sm text-[#676767]">Email</p>
+                  <p className="text-lg font-medium text-[#0B3C78]">{lead.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Telefone</p>
-                  <p className="text-lg font-medium">{lead.telefone}</p>
+                  <p className="text-sm text-[#676767]">Telefone</p>
+                  <p className="text-lg font-medium text-[#0B3C78]">{lead.telefone}</p>
                 </div>
               </div>
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              <h2 className="text-xl font-semibold text-[#0B3C78] mb-4">
                 Unidades Consumidoras ({lead.unidades.length})
               </h2>
               <div className="space-y-4">
                 {lead.unidades.map((unidade, index) => (
-                  <div key={unidade.id} className="border rounded-lg p-4">
-                    <h3 className="font-semibold text-gray-800 mb-2">
+                  <div key={unidade.id} className="border border-gray-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-[#0B3C78] mb-2">
                       Unidade {index + 1}
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-gray-500">Código</p>
-                        <p className="font-medium">{unidade.codigoDaUnidadeConsumidora}</p>
+                        <p className="text-sm text-[#676767]">Código</p>
+                        <p className="font-medium text-[#0B3C78]">{unidade.codigoDaUnidadeConsumidora}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Modelo Fasico</p>
-                        <p className="font-medium capitalize">{unidade.modeloFasico}</p>
+                        <p className="text-sm text-[#676767]">Modelo Fasico</p>
+                        <p className="font-medium text-[#0B3C78] capitalize">{unidade.modeloFasico}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Enquadramento</p>
-                        <p className="font-medium">{unidade.enquadramento}</p>
+                        <p className="text-sm text-[#676767]">Enquadramento</p>
+                        <p className="font-medium text-[#0B3C78]">{unidade.enquadramento}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Meses de Histórico</p>
-                        <p className="font-medium">{unidade.historicoDeConsumoEmKWH.length}</p>
+                        <p className="text-sm text-[#676767]">Meses de Histórico</p>
+                        <p className="font-medium text-[#0B3C78]">{unidade.historicoDeConsumoEmKWH.length}</p>
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-2">Histórico de Consumo (últimos 12 meses)</p>
+                      <p className="text-sm text-[#676767] mb-2">Histórico de Consumo (últimos 12 meses)</p>
                       <div className="overflow-x-auto">
                         <table className="min-w-full text-sm">
                           <thead className="bg-gray-50">

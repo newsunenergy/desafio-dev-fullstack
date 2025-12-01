@@ -107,15 +107,16 @@ export default function SimularPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white shadow rounded-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Simular Compensação Energética</h1>
+          <h1 className="text-3xl font-bold text-[#0B3C78] mb-6 text-center">Simulador de Compensação Energética</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Nome Completo"
               type="text"
+              placeholder="Digite seu nome completo"
               value={formData.nomeCompleto}
               onChange={(e) => setFormData({ ...formData, nomeCompleto: e.target.value })}
               error={errors.nomeCompleto}
@@ -125,6 +126,7 @@ export default function SimularPage() {
             <Input
               label="Email"
               type="email"
+              placeholder="Digite seu email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               error={errors.email}
@@ -134,6 +136,7 @@ export default function SimularPage() {
             <Input
               label="Telefone"
               type="tel"
+              placeholder="Digite seu telefone"
               value={formData.telefone}
               onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
               error={errors.telefone}
