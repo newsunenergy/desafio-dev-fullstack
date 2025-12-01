@@ -30,8 +30,13 @@
   
   /* Backgrounds */
   --bg-primary: #f2f2f2;
-  --bg-white: #ffffff;
+  --bg-white: #ffffff8a;
   --bg-card: #ffffff;
+}
+
+/* Classe customizada para substituir bg-white */
+.bg-card-white {
+  background-color: var(--bg-white);
 }
 
 @theme inline {

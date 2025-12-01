@@ -67,7 +67,7 @@ export function FileUpload({
 
   return (
     <div className="w-full">
-      <label className="block text-sm font-medium text-[#0B3C78] mb-1">{label}</label>
+      <label className="block text-sm font-bold text-[#0B3C78] mb-1">{label}</label>
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
           dragActive ? 'border-[#FF9D29] bg-[#FFF4E6]' : 'border-gray-300'

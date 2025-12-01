@@ -18,6 +18,34 @@ export default function SimularPage() {
   });
   const [arquivos, setArquivos] = useState<File[]>([]);
 
+  // Função para formatar telefone: (XX) XXXX-XXXX
+  const formatarTelefone = (valor: string): string => {
+    // Remove tudo que não é número
+    const apenasNumeros = valor.replace(/\D/g, '');
+
+    // Limita a 11 dígitos (DDD + 9 dígitos)
+    const numerosLimitados = apenasNumeros.slice(0, 11);
+
+    // Aplica a máscara progressivamente
+    if (numerosLimitados.length === 0) {
+      return '';
+    } else if (numerosLimitados.length <= 2) {
+      return `(${numerosLimitados}`;
+    } else if (numerosLimitados.length <= 6) {
+      return `(${numerosLimitados.slice(0, 2)}) ${numerosLimitados.slice(2)}`;
+    } else if (numerosLimitados.length <= 10) {
+      return `(${numerosLimitados.slice(0, 2)}) ${numerosLimitados.slice(2, 6)}-${numerosLimitados.slice(6)}`;
+    } else {
+      // 11 dígitos: (XX) XXXXX-XXXX (celular)
+      return `(${numerosLimitados.slice(0, 2)}) ${numerosLimitados.slice(2, 7)}-${numerosLimitados.slice(7, 11)}`;
+    }
+  };
+
+  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valorFormatado = formatarTelefone(e.target.value);
+    setFormData({ ...formData, telefone: valorFormatado });
+  };
+
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
@@ -31,8 +59,12 @@ export default function SimularPage() {
       newErrors.email = 'Email inválido';
     }
 
+    // Validar telefone: deve ter 11 dígitos (formato completo)
+    const apenasNumeros = formData.telefone.replace(/\D/g, '');
     if (!formData.telefone.trim()) {
       newErrors.telefone = 'Telefone é obrigatório';
+    } else if (apenasNumeros.length !== 11) {
+      newErrors.telefone = 'Telefone deve conter 11 dígitos (DDD + número)';
     }
 
     if (arquivos.length === 0) {
@@ -109,7 +141,7 @@ export default function SimularPage() {
   return (
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white shadow rounded-lg p-8">
+        <div className="bg-card-white shadow rounded-lg p-8">
           <h1 className="text-3xl font-bold text-[#0B3C78] mb-6 text-center">Simulador de Compensação Energética</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -136,11 +168,12 @@ export default function SimularPage() {
             <Input
               label="Telefone"
               type="tel"
-              placeholder="Digite seu telefone"
+              placeholder="(00) 0000-0000"
               value={formData.telefone}
-              onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+              onChange={handleTelefoneChange}
               error={errors.telefone}
               required
+              maxLength={15}
             />
 
             <FileUpload
