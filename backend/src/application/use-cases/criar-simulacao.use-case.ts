@@ -50,14 +50,34 @@ export class CriarSimulacaoUseCase {
           );
         }
 
-        // Validar que temos exatamente 12 meses de histórico
+        // Validar que temos pelo menos 12 meses de histórico
         if (
           !dadosDecodificados.invoice ||
-          dadosDecodificados.invoice.length !== 12
+          dadosDecodificados.invoice.length < 12
         ) {
           throw new BadRequestException(
-            `O histórico de consumo deve conter exatamente 12 meses. Encontrado: ${dadosDecodificados.invoice?.length || 0} meses`,
+            `O histórico de consumo deve conter pelo menos 12 meses. Encontrado: ${dadosDecodificados.invoice?.length || 0} meses`,
           );
+        }
+
+        // Se tiver mais de 12 meses, pegar apenas os últimos 12 (mais recentes)
+        // Ordenar por data (mais recente primeiro) e pegar os primeiros 12
+        let invoiceProcessado = [...dadosDecodificados.invoice];
+        if (invoiceProcessado.length > 12) {
+          // Ordenar por data (mais recente primeiro)
+          invoiceProcessado.sort((a, b) => {
+            const dateA = new Date(a.consumo_date).getTime();
+            const dateB = new Date(b.consumo_date).getTime();
+            return dateB - dateA; // Ordem decrescente (mais recente primeiro)
+          });
+          // Pegar apenas os últimos 12 meses
+          invoiceProcessado = invoiceProcessado.slice(0, 12);
+          // Reordenar por data crescente (mais antigo primeiro) para manter ordem cronológica
+          invoiceProcessado.sort((a, b) => {
+            const dateA = new Date(a.consumo_date).getTime();
+            const dateB = new Date(b.consumo_date).getTime();
+            return dateA - dateB; // Ordem crescente (mais antigo primeiro)
+          });
         }
 
         // Validar e converter tipos
@@ -66,7 +86,7 @@ export class CriarSimulacaoUseCase {
 
         // Mapear dados decodificados para o domínio
         // invoice é um array de objetos, cada um com consumo_fp e consumo_date
-        const consumos = dadosDecodificados.invoice.map(
+        const consumos = invoiceProcessado.map(
           (item) =>
             new Consumo(uuidv4(), item.consumo_fp, new Date(item.consumo_date)),
         );
