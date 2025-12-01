@@ -62,22 +62,39 @@ export default function SimularPage() {
       );
 
       router.push('/listagem?success=true');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao criar simulação:', error);
       
       let errorMessage = 'Erro ao criar simulação. Tente novamente.';
       
-      if (error.response?.data) {
-        if (error.response.data.message) {
-          errorMessage = error.response.data.message;
-        } else if (error.response.data.errors) {
+      if (
+        error &&
+        typeof error === 'object' &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'data' in error.response
+      ) {
+        const responseData = error.response.data as {
+          message?: string;
+          errors?: Array<{ path: string; message: string }>;
+        };
+        
+        if (responseData.message) {
+          errorMessage = responseData.message;
+        } else if (responseData.errors) {
           // Erros de validação do Zod
-          const validationErrors = error.response.data.errors
-            .map((err: { path: string; message: string }) => `${err.path}: ${err.message}`)
+          const validationErrors = responseData.errors
+            .map((err) => `${err.path}: ${err.message}`)
             .join(', ');
           errorMessage = `Erro de validação: ${validationErrors}`;
         }
-      } else if (error.message) {
+      } else if (
+        error &&
+        typeof error === 'object' &&
+        'message' in error &&
+        typeof error.message === 'string'
+      ) {
         errorMessage = error.message;
       }
       

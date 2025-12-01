@@ -143,6 +143,67 @@ export class MagicPdfService {
           `Resposta da API Magic PDF - Status: ${statusCode}, Data: ${JSON.stringify(responseData)}`,
         );
 
+        // Verificar se a API retornou dados parciais mesmo com erro
+        if (
+          responseData &&
+          typeof responseData === 'object' &&
+          responseData !== null
+        ) {
+          const data = responseData as Record<string, unknown>;
+
+          // Log de todos os campos retornados pela API
+          this.logger.warn(
+            `📋 Campos retornados pela API: ${Object.keys(data).join(', ')}`,
+          );
+
+          let dadosEncontrados = false;
+
+          if (data.unit_key && typeof data.unit_key === 'string') {
+            this.logger.warn(
+              `✅ API conseguiu extrair unit_key: ${data.unit_key}`,
+            );
+            dadosEncontrados = true;
+          }
+          if (data.phaseModel && typeof data.phaseModel === 'string') {
+            this.logger.warn(
+              `✅ API conseguiu extrair phaseModel: ${data.phaseModel}`,
+            );
+            dadosEncontrados = true;
+          }
+          if (data.chargingModel && typeof data.chargingModel === 'string') {
+            this.logger.warn(
+              `✅ API conseguiu extrair chargingModel: ${data.chargingModel}`,
+            );
+            dadosEncontrados = true;
+          }
+          if (data.invoice && Array.isArray(data.invoice)) {
+            this.logger.warn(
+              `✅ API conseguiu extrair invoice com ${data.invoice.length} itens`,
+            );
+            dadosEncontrados = true;
+          }
+          if (data.valor && typeof data.valor === 'number') {
+            this.logger.warn(`✅ API conseguiu extrair valor: ${data.valor}`);
+            dadosEncontrados = true;
+          }
+          if (data.barcode && typeof data.barcode === 'string') {
+            this.logger.warn(
+              `✅ API conseguiu extrair barcode: ${data.barcode}`,
+            );
+            dadosEncontrados = true;
+          }
+
+          if (!dadosEncontrados) {
+            this.logger.warn(
+              `❌ API não conseguiu extrair nenhum dado do PDF. Apenas retornou: ${JSON.stringify(data)}`,
+            );
+          }
+        } else {
+          this.logger.warn(
+            `❌ API retornou resposta vazia ou inválida: ${responseData}`,
+          );
+        }
+
         // Tentar extrair a mensagem de erro de diferentes formatos possíveis
         let errorMessage = error.message;
         if (responseData) {
