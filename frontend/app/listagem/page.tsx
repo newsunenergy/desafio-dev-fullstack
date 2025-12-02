@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
@@ -16,6 +16,20 @@ export default function ListagemPage() {
     email: '',
     codigoUnidade: '',
   });
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [hasScroll, setHasScroll] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+      // Verificar se há scroll horizontal disponível
+      setHasScroll(scrollWidth > clientWidth);
+    }
+  };
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
@@ -27,6 +41,12 @@ export default function ListagemPage() {
     carregarSimulacoes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [leads]);
 
   const carregarSimulacoes = async (filtrosParaUsar = filtros) => {
     setLoading(true);
@@ -129,54 +149,70 @@ export default function ListagemPage() {
               <p className="text-white/80">Nenhuma simulação encontrada.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-white/20">
-                <thead className="bg-white/10">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
-                      Nome
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
-                      Telefone
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
-                      Unidades
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
-                      Ações
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white/5 divide-y divide-white/20">
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-white/10 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                        {lead.nomeCompleto}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                        {lead.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                        {lead.telefone}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                        {lead.unidades.length} unidade(s)
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button
-                          onClick={() => router.push(`/listagem/${lead.id}`)}
-                          className="text-white hover:text-primary font-medium transition-colors cursor-pointer"
-                        >
-                          Ver Detalhes
-                        </button>
-                      </td>
+            <div>
+              {/* Indicador visual de scroll em mobile - acima da tabela */}
+              {hasScroll && (
+                <div className="md:hidden mb-3 text-center">
+                  <div className="inline-flex items-center gap-1 bg-gradient-to-r from-[#FF6B6B] to-primary text-white text-[10px] px-2 py-1 rounded-full animate-pulse shadow-lg">
+                    <span>← Deslize →</span>
+                  </div>
+                </div>
+              )}
+              
+              <div 
+                ref={scrollContainerRef}
+                className="overflow-x-auto scrollbar-hide"
+                onScroll={checkScroll}
+                style={{ scrollBehavior: 'smooth' }}
+              >
+                <table className="min-w-full divide-y divide-white/20">
+                  <thead className="bg-white/10">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
+                        Nome
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
+                        Email
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
+                        Telefone
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
+                        Unidades
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
+                        Ações
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white/5 divide-y divide-white/20">
+                    {leads.map((lead) => (
+                      <tr key={lead.id} className="hover:bg-white/10 transition-colors">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                          {lead.nomeCompleto}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                          {lead.email}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                          {lead.telefone}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                          {lead.unidades.length} unidade(s)
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <button
+                            onClick={() => router.push(`/listagem/${lead.id}`)}
+                            className="text-white hover:text-primary font-medium transition-colors cursor-pointer"
+                          >
+                            Ver Detalhes
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
