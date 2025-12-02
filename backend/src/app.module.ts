@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LeadsModule } from './leads/leads.module';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { LeadsModule } from './leads/leads.module';
       isGlobal: true,
     }),
     LeadsModule,
+    PdfModule,
   ],
   controllers: [],
   providers: [],
