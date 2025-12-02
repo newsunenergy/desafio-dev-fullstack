@@ -351,6 +351,7 @@ docker-compose exec backend npx prisma migrate dev
 - Mensagem "Nenhuma simulação encontrada" quando não há resultados
 - Link para detalhes de cada simulação
 - Design responsivo com cards transparentes
+- **Indicador de scroll horizontal em mobile**: Badge com gradiente laranja acima da tabela indicando que há mais conteúdo para visualizar deslizando horizontalmente
 
 ### Página de Detalhes (/listagem/[id])
 - Informações completas do lead
@@ -419,6 +420,20 @@ A aplicação trata automaticamente casos onde a API externa retorna mais de 12 
 4. **Garantia**: Sempre há exatamente 12 meses de histórico por unidade
 
 Este tratamento garante que mesmo quando a API retorna 13 ou mais meses, apenas os 12 mais recentes são utilizados, mantendo a consistência dos dados.
+
+## 📱 Melhorias Mobile
+
+### Indicador de Scroll Horizontal
+A página de listagem inclui melhorias específicas para dispositivos móveis:
+
+- **Badge indicador**: Badge com gradiente laranja (mesmo dos botões) posicionado acima da tabela
+- **Animação pulse**: Badge com animação para chamar atenção do usuário
+- **Detecção inteligente**: Badge permanece visível sempre que há scroll horizontal disponível
+- **Scrollbar oculta**: Scrollbar é ocultada mantendo funcionalidade de scroll
+- **Scroll suave**: Implementado scroll suave para melhor experiência
+- **Acessibilidade**: Permite visualizar todos os campos da tabela (nome, email, telefone, unidades, ações) em dispositivos móveis
+
+Esta implementação resolve o problema de visualização limitada em telas pequenas, garantindo que todos os dados sejam acessíveis através de scroll horizontal intuitivo.
 
 ## 🎯 Melhorias de Código Implementadas
 
