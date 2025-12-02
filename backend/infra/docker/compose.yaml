@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    ports:
+      - '3306:3306'
+    env_file:
+      - ../../.env.development
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  workbench:
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    container_name: mysql_workbench
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    ports:
+      - '3001:3000'
+    networks:
+      - app-network
+    volumes:
+      - workbench_config:/config
+
+volumes:
+  mysql_data:
+  workbench_config:
+
+networks:
+  app-network:
+    driver: bridge
