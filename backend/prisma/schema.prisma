@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id            String    @id @default(uuid())
+  nomeCompleto  String
+  email         String    @unique
+  telefone      String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  unidades      Unidade[]
+
+  @@map("leads")
+}
+
+model Unidade {
+  id                          String    @id @default(uuid())
+  leadId                      String
+  codigoDaUnidadeConsumidora  String    @unique
+  modeloFasico                String    // 'monofasico' | 'bifasico' | 'trifasico'
+  enquadramento               String    // 'AX' | 'B1' | 'B2' | 'B3'
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+  lead                        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  consumos                    Consumo[]
+
+  @@map("unidades")
+}
+
+model Consumo {
+  id                        String   @id @default(uuid())
+  unidadeId                 String
+  consumoForaPontaEmKWH     Float
+  mesDoConsumo              DateTime
+  createdAt                 DateTime @default(now())
+  unidade                   Unidade  @relation(fields: [unidadeId], references: [id], onDelete: Cascade)
+
+  @@map("consumos")
+  @@index([unidadeId])
+}
+
