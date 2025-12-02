@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id           String    @id @default(uuid())
+  nomeCompleto String
+  email        String    @unique
+  telefone     String
+  unidades     Unidade[]
+
+  @@map("lead")
+}
+
+model Unidade {
+  id                         String        @id @default(uuid())
+  valor                      Int
+  codigoDaUnidadeConsumidora String
+  modeloFasico               ModeloFasico
+  enquadramento              Enquadramento
+  historicoDeConsumoEmKWH    Consumo[]
+  lead                       Lead          @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId                     String
+
+  @@map("unidade")
+}
+
+model Consumo {
+  id                    String   @id @default(uuid())
+  consumoForaPontaEmKWH Int
+  mesDoConsumo          DateTime
+  unidade               Unidade  @relation(fields: [unidadeId], references: [id], onDelete: Cascade)
+  unidadeId             String
+
+  @@map("consumo")
+}
+
+enum ModeloFasico {
+  monofasico
+  bifasico
+  trifasico
+}
+
+enum Enquadramento {
+  AX
+  B1
+  B2
+  B3
+}

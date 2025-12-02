@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=newsun
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

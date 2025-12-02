@@ -1,0 +1,84 @@
+### Variables
+@apiurl = http://localhost:3333
+@leadID = 540d865f-078d-4220-bd49-7e6dafb9b4cb
+
+### Get Lead
+GET {{apiurl}}/lead/{{leadID}}
+
+### Get Lead With Filters
+
+GET {{apiurl}}/lead_list?filter=salve
+
+### Get All Leads
+
+GET {{apiurl}}/lead_list
+
+### Create Lead
+POST {{apiurl}}/create_lead
+Content-Type: application/json
+
+{
+  "nomeCompleto": "tarcisioa",
+  "email": "leldomeldo@gmail.com",
+  "telefone": "71986797225",
+  "unidades": [
+    {
+      "valor": 7123.29,
+      "barcode": "836300000715 232900403147 835076709038 101102222763",
+      "chargingModel": "B1",
+      "phaseModel": "trifasico",
+      "unit_key": "4003041512",
+      "invoice": [
+        {
+          "consumo_fp": 7409,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 9459,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 7345,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 8109,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 7045,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 8722,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 8307,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 7405,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 6320,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 6296,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 8287,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        },
+        {
+          "consumo_fp": 9036,
+          "consumo_date": "2022-05-01T00:00:00.000Z"
+        }
+      ],
+      "energy_company_id": "0c7efef7-cbbe-46a1-9c0e-67b25ad27933"
+    }
+  ]
+}
