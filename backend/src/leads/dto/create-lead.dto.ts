@@ -1,10 +1,4 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-
-class FaturaDto {
-  @IsNotEmpty()
-  file: any;
-}
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
 
 export class CreateLeadDto {
   @IsString()
@@ -17,7 +11,5 @@ export class CreateLeadDto {
   @IsPhoneNumber('BR')
   telefone: string;
 
-  @ValidateNested({ each: true })
-  @Type(() => FaturaDto)
-  faturas: FaturaDto[];
+  faturas: any[]; 
 }

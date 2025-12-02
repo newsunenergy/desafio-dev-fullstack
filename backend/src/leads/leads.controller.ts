@@ -7,9 +7,11 @@ import {
   Body,
   UploadedFiles,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { CreateLeadDto } from './dto/create-lead.dto';
 
 @Controller('leads')
 export class LeadsController {
@@ -22,25 +24,22 @@ export class LeadsController {
     ]),
   )
   async simular(
-    @Body() body: any,
+    @Body() body: CreateLeadDto,
     @UploadedFiles() files: { faturas?: Express.Multer.File[] },
   ) {
-    const { nomeCompleto, email, telefone } = body;
+    if (!files?.faturas || files.faturas.length === 0) {
+      throw new BadRequestException('Pelo menos uma fatura é obrigatória');
+    }
+
     return this.leadsService.criarSimulacao({
-      nomeCompleto,
-      email,
-      telefone,
-      faturas: files?.faturas || [],
+      ...body,
+      faturas: files.faturas,
     });
   }
 
   @Get()
-  async listar(
-    @Query('nome') nome?: string,
-    @Query('email') email?: string,
-    @Query('codigoUC') codigoUC?: string,
-  ) {
-    return this.leadsService.listar({ nome, email, codigoUC });
+  async listar(@Query('filtro') filtro?: string) {
+    return this.leadsService.listar(filtro);
   }
 
   @Get(':id')
