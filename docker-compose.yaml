@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8900:5173"
+    environment:
+    # AVISO! 
+    # Caso você não rode a aplicação em sua máquina (em uma VPS, por exemplo), 
+    # troque o localhost pelo IP da máquina em que a aplicação está rodando. 
+      VITE_API_BASE_URL: "http://localhost:3100"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "npm run dev"
+    volumes:
+      - ./frontend/src:/app/src
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3100:3100"
+    environment:
+      DATABASE_URL: "mysql://root:password@db:3306/newsun"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx prisma generate && npx prisma migrate deploy && npm run start:dev"
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=newsun
+      - MYSQL_ROOT_PASSWORD=password
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      timeout: 10s
+      retries: 20
+    ports:
+      - "3306:3306"
+    volumes:
+      - './.mysql-data/db:/var/lib/mysql'
