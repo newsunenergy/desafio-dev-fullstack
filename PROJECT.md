@@ -193,11 +193,13 @@ Registra uma nova simulação de compensação energética.
 Lista todas as simulações com filtros opcionais.
 
 **Query Parameters**:
-- `nome`: string (opcional) - Filtra por nome
-- `email`: string (opcional) - Filtra por email
-- `codigoUnidade`: string (opcional) - Filtra por código da unidade consumidora
+- `nome`: string (opcional) - Filtra por nome (busca parcial - contains)
+- `email`: string (opcional) - Filtra por email (busca exata - equals)
+- `codigoUnidade`: string (opcional) - Filtra por código da unidade consumidora (busca exata - equals)
 
 **Resposta**: Array de objetos Lead
+
+**Nota**: Quando nenhum filtro é aplicado, retorna todas as simulações cadastradas.
 
 ### GET /simulacoes/:id
 Busca uma simulação específica por ID.
@@ -227,26 +229,37 @@ Busca uma simulação específica por ID.
 
 ## ✅ Regras de Negócio Implementadas
 
-1. **Email único**: Cada lead deve ter um email único no sistema
-2. **Código da unidade único**: Cada unidade consumidora deve ter um código único
-3. **Mínimo 1 unidade**: Um lead deve ter pelo menos 1 unidade
+1. **Email único**: Cada lead deve ter um email único no sistema (validação no backend)
+2. **Código da unidade único**: Cada unidade consumidora deve ter um código único (validação no backend)
+3. **Mínimo 1 unidade**: Um lead deve ter pelo menos 1 unidade (validação no frontend e backend)
 4. **12 meses de histórico**: Cada unidade deve ter exatamente 12 meses de histórico de consumo
+   - Se a API retornar mais de 12 meses, apenas os 12 mais recentes são utilizados
+   - Se retornar menos de 12 meses, a simulação é rejeitada
 5. **Validação de tipos**: Modelo fasico e enquadramento devem ser valores válidos
+   - Modelo fasico: 'monofasico' | 'bifasico' | 'trifasico'
+   - Enquadramento: 'AX' | 'B1' | 'B2' | 'B3'
+6. **Validação de telefone**: Deve conter 11 dígitos (DDD + número)
+7. **Validação de arquivos**: Apenas arquivos PDF são aceitos
 
 ## 🔧 Validações
 
 ### Backend
-- Validação de schemas usando **Zod**
-- Validação de email único
-- Validação de código da unidade único
-- Validação de quantidade de meses de histórico (exatamente 12)
-- Validação de tipos (modelo fasico, enquadramento)
+- Validação de schemas usando **Zod** em todos os endpoints
+- Validação de email único (retorna `ConflictException` se já existir)
+- Validação de código da unidade único (retorna `ConflictException` se já existir)
+- Validação de quantidade de meses de histórico (mínimo 12, trata casos com mais de 12)
+- Validação de tipos (modelo fasico, enquadramento) via enum no Zod
+- Validação de formato de email
+- Validação de arquivos (verifica se há pelo menos um arquivo)
+- Tratamento de erros da API externa com mensagens descritivas
 
 ### Frontend
-- Validação de campos obrigatórios
-- Validação de formato de email
-- Validação de arquivos (PDF)
-- Feedback visual de erros
+- Validação de campos obrigatórios em tempo real
+- Validação de formato de email com regex
+- Validação de telefone (11 dígitos) com máscara automática
+- Validação de arquivos (PDF) antes do upload
+- Feedback visual de erros em todos os campos
+- Validação de múltiplos arquivos (pelo menos um obrigatório)
 
 ## 🔌 Integração Externa
 
@@ -323,21 +336,112 @@ docker-compose exec backend npx prisma migrate dev
 
 ### Página de Simulação (/simular)
 - Formulário com campos: Nome, Email, Telefone
-- Upload múltiplo de arquivos PDF
+- Máscara automática de telefone: `(XX) XXXXX-XXXX`
+- Upload múltiplo de arquivos PDF com drag & drop
 - Validação em tempo real
-- Feedback de sucesso/erro
+- Feedback visual de sucesso/erro
+- Design moderno com cards transparentes e background image
 
 ### Página de Listagem (/listagem)
 - Tabela com todas as simulações
 - Filtros por nome, email e código da unidade
+- **Busca parcial para nome** (permite encontrar por primeiro nome)
+- **Busca exata para email e código** (requer valor completo)
+- Botão para limpar filtros e recarregar lista
+- Mensagem "Nenhuma simulação encontrada" quando não há resultados
 - Link para detalhes de cada simulação
-- Design responsivo
+- Design responsivo com cards transparentes
 
 ### Página de Detalhes (/listagem/[id])
 - Informações completas do lead
 - Detalhes de todas as unidades
-- Histórico de consumo dos últimos 12 meses
-- Visualização organizada e clara
+- Histórico de consumo dos últimos 12 meses em tabela organizada
+- Visualização clara e moderna
+- Botão de voltar para listagem
+
+## 🎨 Design System e Estilização
+
+### Sistema de Cores
+A aplicação utiliza um sistema de cores centralizado através do TailwindCSS v4 com `@theme`:
+- **Cores primárias**: Laranja (#FF9D29) com gradiente para botões (de #FF6B6B para #FF9D29)
+- **Cores de texto**: Azul escuro (#0B3C78) para títulos, cinza (#676767) para textos secundários
+- **Cores de estado**: Vermelho (#EF4444) para erros
+- **Background**: Imagem de painéis solares com overlay semi-transparente
+- Todas as cores são configuráveis através de variáveis CSS no `globals.css`
+
+### Componentes Reutilizáveis
+- **Input**: Componente de input com suporte a modo escuro (`darkMode`), validação e labels
+- **Button**: Botões com variantes (primary com gradiente, secondary com borda)
+- **FileUpload**: Upload de arquivos com drag & drop, validação de tipo PDF, suporte a modo escuro
+
+### Background e Overlay
+- Background image com painéis solares
+- Overlay semi-transparente (rgba(0, 0, 0, 0.2)) para melhor legibilidade
+- Cards com `backdrop-filter: blur(10px)` para efeito moderno
+- Bordas arredondadas (16px) para design mais suave
+
+## 🔍 Sistema de Filtros
+
+### Comportamento dos Filtros
+- **Nome**: Busca parcial (`contains`) - permite encontrar por primeiro nome ou parte do nome
+- **Email**: Busca exata (`equals`) - requer email completo para encontrar resultados
+- **Código da Unidade**: Busca exata (`equals`) - requer código completo para encontrar resultados
+
+### Melhorias de UX
+- Limpar filtros recarrega a lista imediatamente (sem race conditions)
+- Mensagem "Nenhuma simulação encontrada" quando não há resultados
+- Tratamento correto de estados vazios e erros
+- Loading states durante carregamento de dados
+
+## 📱 Validações e Máscaras
+
+### Frontend
+- **Telefone**: Máscara automática `(XX) XXXXX-XXXX` com validação de 11 dígitos
+- **Email**: Validação de formato em tempo real com regex
+- **Arquivos**: Validação de tipo PDF antes do upload
+- Feedback visual de erros em todos os campos
+- Validação de campos obrigatórios
+
+### Backend
+- Validação de schemas com **Zod** em todos os endpoints
+- Validação de unicidade (email, código da unidade)
+- Validação de quantidade de meses (mínimo 12, trata casos com mais de 12)
+- Tratamento robusto de erros da API externa Magic PDF
+- Mensagens de erro descritivas e amigáveis
+
+## 🔄 Tratamento de Histórico de Consumo
+
+A aplicação trata automaticamente casos onde a API externa retorna mais de 12 meses de histórico:
+
+1. **Ordenação**: Ordena por data (mais recente primeiro)
+2. **Seleção**: Seleciona os 12 meses mais recentes
+3. **Reordenação**: Reordena cronologicamente (mais antigo primeiro)
+4. **Garantia**: Sempre há exatamente 12 meses de histórico por unidade
+
+Este tratamento garante que mesmo quando a API retorna 13 ou mais meses, apenas os 12 mais recentes são utilizados, mantendo a consistência dos dados.
+
+## 🎯 Melhorias de Código Implementadas
+
+### Backend
+- **Clean Architecture** com separação clara de responsabilidades:
+  - Domain: Entidades e interfaces
+  - Application: Casos de uso e DTOs
+  - Infrastructure: Implementações (Prisma, serviços externos)
+  - Presentation: Controllers e pipes
+- **Dependency Injection** com tokens customizados para repositórios
+- **Filtro global de exceções** (`AllExceptionsFilter`) para tratamento centralizado
+- **Logging detalhado** para debugging e monitoramento
+- **Tratamento robusto de erros** da API externa com mensagens específicas
+- **Validação com Zod** em todos os endpoints
+
+### Frontend
+- **Componentes funcionais** com TypeScript e tipagem forte
+- **Gerenciamento de estado** com React Hooks (useState, useEffect)
+- **Tratamento de erros** com feedback visual
+- **Validação em tempo real** nos formulários
+- **Loading states** para melhor UX
+- **Componentes reutilizáveis** (Input, Button, FileUpload)
+- **Sistema de cores centralizado** com TailwindCSS v4
 
 ## 🔒 Segurança
 
@@ -376,6 +480,7 @@ docker-compose exec backend npx prisma migrate dev
 
 ## 👤 Autor
 
+Caio Dias de Oliveira
 Desenvolvido como parte do processo seletivo para desenvolvedor Full Stack na Newsun Energy.
 
 ## 📄 Licença

@@ -170,7 +170,7 @@ export default function SimularPage() {
             <Input
               label="Telefone"
               type="tel"
-              placeholder="(00) 0000-0000"
+              placeholder="(11) 99999-9999"
               value={formData.telefone}
               onChange={handleTelefoneChange}
               error={errors.telefone}
