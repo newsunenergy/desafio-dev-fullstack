@@ -142,7 +142,7 @@ export default function SimularPage() {
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         <div className="bg-card-white shadow rounded-lg p-8">
-          <h1 className="text-3xl font-bold text-[#0B3C78] mb-6 text-center">Simulador de Compensação Energética</h1>
+          <h1 className="text-3xl font-bold text-text-primary mb-6 text-center">Simulador de Compensação Energética</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input

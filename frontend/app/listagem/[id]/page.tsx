@@ -24,8 +24,22 @@ export default function DetalhesSimulacaoPage() {
     try {
       const data = await simulacaoApi.buscarPorId(id);
       setLead(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao carregar simulação');
+    } catch (err: unknown) {
+      let errorMessage = 'Erro ao carregar simulação';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'response' in err &&
+        err.response &&
+        typeof err.response === 'object' &&
+        'data' in err.response
+      ) {
+        const responseData = err.response.data as { message?: string };
+        if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+      }
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -36,7 +50,7 @@ export default function DetalhesSimulacaoPage() {
       <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow rounded-lg p-8 text-center">
-            <p className="text-[#676767]">Carregando...</p>
+            <p className="text-text-secondary">Carregando...</p>
           </div>
         </div>
       </div>
@@ -48,7 +62,7 @@ export default function DetalhesSimulacaoPage() {
       <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow rounded-lg p-8">
-            <p className="text-[#EF4444] mb-4">{error || 'Simulação não encontrada'}</p>
+            <p className="text-error mb-4">{error || 'Simulação não encontrada'}</p>
             <Button onClick={() => router.push('/listagem')}>Voltar</Button>
           </div>
         </div>
@@ -59,67 +73,67 @@ export default function DetalhesSimulacaoPage() {
   return (
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow rounded-lg p-8">
+        <div className="bg-card-white shadow rounded-lg p-8">
           <div className="mb-6">
             <Button variant="secondary" onClick={() => router.push('/listagem')}>
               ← Voltar
             </Button>
           </div>
 
-          <h1 className="text-3xl font-bold text-[#0B3C78] mb-6">Detalhes da Simulação</h1>
+          <h1 className="text-3xl font-bold text-text-primary mb-6">Detalhes da Simulação</h1>
 
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-semibold text-[#0B3C78] mb-4">Informações do Lead</h2>
+              <h2 className="text-xl font-semibold text-text-primary mb-4">Informações do Lead</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-[#676767]">Nome Completo</p>
-                  <p className="text-lg font-medium text-[#0B3C78]">{lead.nomeCompleto}</p>
+                  <p className="text-sm text-text-secondary">Nome Completo</p>
+                  <p className="text-lg font-medium text-text-primary">{lead.nomeCompleto}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-[#676767]">Email</p>
-                  <p className="text-lg font-medium text-[#0B3C78]">{lead.email}</p>
+                  <p className="text-sm text-text-secondary">Email</p>
+                  <p className="text-lg font-medium text-text-primary">{lead.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-[#676767]">Telefone</p>
-                  <p className="text-lg font-medium text-[#0B3C78]">{lead.telefone}</p>
+                  <p className="text-sm text-text-secondary">Telefone</p>
+                  <p className="text-lg font-medium text-text-primary">{lead.telefone}</p>
                 </div>
               </div>
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold text-[#0B3C78] mb-4">
+              <h2 className="text-xl font-semibold text-text-primary mb-4">
                 Unidades Consumidoras ({lead.unidades.length})
               </h2>
               <div className="space-y-4">
                 {lead.unidades.map((unidade, index) => (
-                  <div key={unidade.id} className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-[#0B3C78] mb-2">
+                  <div key={unidade.id} className="border border-gray-600 rounded-lg p-4">
+                    <h3 className="font-semibold text-text-primary mb-2">
                       Unidade {index + 1}
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <p className="text-sm text-[#676767]">Código</p>
-                        <p className="font-medium text-[#0B3C78]">{unidade.codigoDaUnidadeConsumidora}</p>
+                        <p className="text-sm text-text-secondary">Código</p>
+                        <p className="font-medium text-text-primary">{unidade.codigoDaUnidadeConsumidora}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#676767]">Modelo Fasico</p>
-                        <p className="font-medium text-[#0B3C78] capitalize">{unidade.modeloFasico}</p>
+                        <p className="text-sm text-text-secondary">Modelo Fasico</p>
+                        <p className="font-medium text-text-primary capitalize">{unidade.modeloFasico}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#676767]">Enquadramento</p>
-                        <p className="font-medium text-[#0B3C78]">{unidade.enquadramento}</p>
+                        <p className="text-sm text-text-secondary">Enquadramento</p>
+                        <p className="font-medium text-text-primary">{unidade.enquadramento}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#676767]">Meses de Histórico</p>
-                        <p className="font-medium text-[#0B3C78]">{unidade.historicoDeConsumoEmKWH.length}</p>
+                        <p className="text-sm text-text-secondary">Meses de Histórico</p>
+                        <p className="font-medium text-text-primary">{unidade.historicoDeConsumoEmKWH.length}</p>
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm text-[#676767] mb-2">Histórico de Consumo (últimos 12 meses)</p>
+                      <p className="text-sm text-text-secondary mb-2">Histórico de Consumo (últimos 12 meses)</p>
                       <div className="overflow-x-auto">
                         <table className="min-w-full text-sm">
-                          <thead className="bg-gray-50">
+                          <thead>
                             <tr>
                               <th className="px-3 py-2 text-left">Mês</th>
                               <th className="px-3 py-2 text-right">Consumo (kWh)</th>

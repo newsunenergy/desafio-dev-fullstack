@@ -25,12 +25,17 @@ export default function ListagemPage() {
       }, 3000);
     }
     carregarSimulacoes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const carregarSimulacoes = async () => {
     setLoading(true);
     try {
-      const filtrosLimpos: any = {};
+      const filtrosLimpos: {
+        nome?: string;
+        email?: string;
+        codigoUnidade?: string;
+      } = {};
       if (filtros.nome.trim()) filtrosLimpos.nome = filtros.nome.trim();
       if (filtros.email.trim()) filtrosLimpos.email = filtros.email.trim();
       if (filtros.codigoUnidade.trim())
@@ -63,36 +68,36 @@ export default function ListagemPage() {
   return (
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white shadow rounded-lg p-8">
+        <div className="bg-card-white shadow rounded-lg p-8">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-[#0B3C78]">Listagem de Simulações</h1>
+            <h1 className="text-3xl font-bold text-text-primary">Listagem de Simulações</h1>
             <Button variant="primary" onClick={() => router.push('/simular')}>
               Nova Simulação
             </Button>
           </div>
 
           {/* Filtros */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 rounded-lg">
             <Input
               label="Nome"
               type="text"
               value={filtros.nome}
               onChange={(e) => handleFiltroChange('nome', e.target.value)}
-              placeholder="Filtrar por nome..."
+              placeholder="Filtrar por nome"
             />
             <Input
               label="Email"
               type="email"
               value={filtros.email}
               onChange={(e) => handleFiltroChange('email', e.target.value)}
-              placeholder="Filtrar por email..."
+              placeholder="Filtrar por email"
             />
             <Input
               label="Código da Unidade"
               type="text"
               value={filtros.codigoUnidade}
               onChange={(e) => handleFiltroChange('codigoUnidade', e.target.value)}
-              placeholder="Filtrar por código..."
+              placeholder="Filtrar por código"
             />
             <div className="flex gap-2 md:col-span-3">
               <Button onClick={aplicarFiltros} className="flex-1">
@@ -107,11 +112,11 @@ export default function ListagemPage() {
           {/* Tabela */}
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-[#676767]">Carregando...</p>
+              <p className="text-text-secondary">Carregando...</p>
             </div>
           ) : leads.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-[#676767]">Nenhuma simulação encontrada.</p>
+              <p className="text-text-secondary">Nenhuma simulação encontrada.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -138,22 +143,22 @@ export default function ListagemPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {leads.map((lead) => (
                     <tr key={lead.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         {lead.nomeCompleto}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         {lead.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         {lead.telefone}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         {lead.unidades.length} unidade(s)
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={() => router.push(`/listagem/${lead.id}`)}
-                          className="text-[#0B3C78] hover:text-[#FF9D29] font-medium transition-colors"
+                          className="text-text-primary hover:text-primary font-medium transition-colors cursor-pointer"
                         >
                           Ver Detalhes
                         </button>

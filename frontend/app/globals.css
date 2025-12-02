@@ -39,11 +39,28 @@
   background-color: var(--bg-white);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Cores customizadas para usar como classes Tailwind */
+  --color-primary: #FF9D29;
+  --color-primary-hover: #D67603;
+  --color-primary-light: #FFF4E6;
+  
+  --color-text-primary: #0B3C78;
+  --color-text-secondary: #676767;
+  --color-text-placeholder: #cac9c9;
+  
+  --color-error: #EF4444;
+  --color-error-light: #FEE2E2;
+  --color-error-border: #FECACA;
+  
+  --color-bg-primary: #f2f2f2;
+  --color-bg-white: #ffffff;
+  --color-bg-card: #ffffff;
 }
 
 body {

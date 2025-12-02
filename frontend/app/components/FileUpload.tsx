@@ -67,11 +67,11 @@ export function FileUpload({
 
   return (
     <div className="w-full">
-      <label className="block text-sm font-bold text-[#0B3C78] mb-1">{label}</label>
+      <label className="block text-sm font-bold text-text-primary mb-1">{label}</label>
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-          dragActive ? 'border-[#FF9D29] bg-[#FFF4E6]' : 'border-gray-300'
-        } ${error ? 'border-[#EF4444]' : ''}`}
+          dragActive ? 'border-primary bg-primary-light' : 'border-gray-300'
+        } ${error ? 'border-error' : ''}`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -85,17 +85,17 @@ export function FileUpload({
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
         />
-        <p className="text-[#676767] mb-2">
+        <p className="text-text-secondary mb-2">
           Arraste arquivos aqui ou{' '}
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="text-[#0B3C78] hover:text-[#FF9D29] underline font-medium transition-colors cursor-pointer"
+            className="text-text-primary hover:text-primary underline font-medium transition-colors cursor-pointer"
           >
             clique para selecionar
           </button>
         </p>
-        <p className="text-sm text-[#676767]">Formatos aceitos: PDF</p>
+        <p className="text-sm text-text-secondary">Formatos aceitos: PDF</p>
       </div>
       {files.length > 0 && (
         <div className="mt-4 space-y-2">
@@ -104,11 +104,11 @@ export function FileUpload({
               key={index}
               className="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
             >
-              <span className="text-sm text-[#0B3C78] truncate flex-1">{file.name}</span>
+              <span className="text-sm text-text-primary truncate flex-1">{file.name}</span>
               <button
                 type="button"
                 onClick={() => removeFile(index)}
-                className="ml-2 text-[#EF4444] hover:text-[#D32F2F] text-sm font-medium transition-colors"
+                className="ml-2 text-error hover:text-error text-sm font-medium transition-colors"
               >
                 Remover
               </button>
@@ -116,7 +116,7 @@ export function FileUpload({
           ))}
         </div>
       )}
-      {error && <p className="mt-1 text-sm text-[#EF4444]">{error}</p>}
+      {error && <p className="mt-1 text-sm text-error">{error}</p>}
     </div>
   );
 }
