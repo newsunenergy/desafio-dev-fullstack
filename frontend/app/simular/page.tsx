@@ -1,112 +1,142 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 
-export default function Simular() {
-  const [nome, setNome] = useState('')
-  const [email, setEmail] = useState('')
-  const [telefone, setTelefone] = useState('')
-  const [files, setFiles] = useState<File[]>([])
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+export default function SimularPage() {
+  const [nomeCompleto, setNomeCompleto] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'application/pdf': ['.pdf'] },
     onDrop: (acceptedFiles) => {
-      setFiles(acceptedFiles)
+      setFiles((prev) => [...prev, ...acceptedFiles]);
     },
-  })
+  });
+
+  const removerArquivo = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    if (files.length === 0) return;
 
-    const formData = new FormData()
-    formData.append('nomeCompleto', nome)
-    formData.append('email', email)
-    formData.append('telefone', telefone)
-    files.forEach(file => formData.append('faturas', file))
+    setLoading(true);
+    setMessage(null);
+
+    const formData = new FormData();
+    formData.append('nomeCompleto', nomeCompleto);
+    formData.append('email', email);
+    formData.append('telefone', telefone);
+    files.forEach((file) => formData.append('faturas', file));
 
     try {
       const res = await fetch('http://localhost:3001/leads/simular', {
         method: 'POST',
         body: formData,
-      })
+      });
 
       if (res.ok) {
-        setSuccess(true)
-        setFiles([])
-        setNome('')
-        setEmail('')
-        setTelefone('')
+        setMessage({ text: 'Simulação enviada com sucesso!', type: 'success' });
+        setNomeCompleto('');
+        setEmail('');
+        setTelefone('');
+        setFiles([]);
       } else {
-        alert('Erro ao enviar simulação')
+        const erro = await res.text();
+        setMessage({ text: erro || 'Erro ao enviar simulação', type: 'error' });
       }
     } catch (err) {
-      alert('Erro de conexão')
+      setMessage({ text: 'Erro de conexão com o backend', type: 'error' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-10 rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-8 text-center">Faça sua simulação</h2>
+    <div className="max-w-2xl mx-auto bg-white p-10 rounded-xl shadow-2xl">
+      <h1 className="text-3xl font-bold text-center mb-8 text-blue-700">
+        Simulação de Compensação Energética
+      </h1>
 
-      {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-          Simulação enviada com sucesso! Acesse a listagem para ver.
+      {message && (
+        <div className={`p-4 rounded-lg mb-6 text-white font-medium ${message.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+          {message.text}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <input
-          type="text"
-          placeholder="Nome completo"
-          value={nome}
-          onChange={e => setNome(e.target.value)}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div>
+          <label className="block text-sm font-medium mb-2">Nome completo</label>
+          <input
+            type="text"
+            required
+            value={nomeCompleto}
+            onChange={(e) => setNomeCompleto(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="João Silva"
+          />
+        </div>
 
-        <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div>
+          <label className="block text-sm font-medium mb-2">E-mail</label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="joao@email.com"
+          />
+        </div>
 
-        <input
-          type="tel"
-          placeholder="Telefone (com DDD)"
-          value={telefone}
-          onChange={e => setTelefone(e.target.value)}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div>
+          <label className="block text-sm font-medium mb-2">Telefone</label>
+          <input
+            type="tel"
+            required
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="(11) 98765-4321"
+          />
+        </div>
 
-        <div
-          {...getRootProps()}
-          className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition ${
-            isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-          }`}
-        >
-          <input {...getInputProps()} />
-          {files.length === 0 ? (
-            <p className="text-gray-600">
-              Arraste suas contas de luz (PDF) aqui ou clique para selecionar
+        <div>
+          <label className="block text-sm font-medium mb-2">Contas de energia (PDFs)</label>
+          <div
+            {...getRootProps()}
+            className={`border-4 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all ${
+              isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+            }`}
+          >
+            <input {...getInputProps()} />
+            <p className="text-lg text-gray-600">
+              {isDragActive ? 'Solte os arquivos aqui...' : 'Arraste suas contas de luz ou clique para selecionar'}
             </p>
-          ) : (
-            <div>
-              <p className="font-medium">{files.length} arquivo(s) selecionado(s)</p>
-              <ul className="mt-2">
-                {files.map(file => (
-                  <li key={file.name} className="text-sm text-gray-700">{file.name}</li>
-                ))}
-              </ul>
+            <p className="text-sm text-gray-500 mt-2">Apenas arquivos PDF</p>
+          </div>
+
+          {files.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <p className="font-medium">{files.length} arquivo(s) selecionado(s):</p>
+              {files.map((file, i) => (
+                <div key={i} className="flex items-center justify-between bg-gray-100 p-3 rounded">
+                  <span className="text-sm truncate">{file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removerArquivo(i)}
+                    className="text-red-600 hover:text-red-800 font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -116,9 +146,9 @@ export default function Simular() {
           disabled={loading || files.length === 0}
           className="w-full bg-blue-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-blue-800 disabled:bg-gray-400 transition"
         >
-          {loading ? 'Enviando...' : 'Enviar Simulação'}
+          {loading ? 'Enviando simulação...' : 'Enviar Simulação'}
         </button>
       </form>
     </div>
-  )
+  );
 }

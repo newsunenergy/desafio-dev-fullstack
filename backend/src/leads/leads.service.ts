@@ -6,24 +6,17 @@ import FormData from 'form-data';
 
 @Injectable()
 export class LeadsService {
-  constructor(
-    private prisma: PrismaService,
-    private httpService: HttpService,
-  ) {}
+  constructor(private prisma: PrismaService, private httpService: HttpService) {}
 
   async criarSimulacao(dto: any) {
     const { nomeCompleto, email, telefone, faturas } = dto;
 
-    // Validações básicas
-    if (!faturas || faturas.length === 0) throw new BadRequestException('Pelo menos uma fatura é obrigatória');
+    
+    const existingLead = await this.prisma.lead.findUnique({ where: { email } });
+    if (existingLead) throw new BadRequestException('E-mail já cadastrado');
 
     const lead = await this.prisma.lead.create({
-      data: {
-        nomeCompleto,
-        email,
-        telefone,
-        unidades: { create: [] },
-      },
+      data: { nomeCompleto, email, telefone },
     });
 
     for (const file of faturas) {
@@ -31,25 +24,26 @@ export class LeadsService {
       form.append('file', file.buffer, file.originalname);
 
       const response = await firstValueFrom(
-        this.httpService.post(
-          'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf',
-          form,
-          { headers: form.getHeaders() },
-        ),
+        this.httpService.post('https://magic-pdf.solarium.newsun.energy/v1/magic-pdf', form, {
+          headers: form.getHeaders(),
+        }),
       );
 
       const data = response.data;
-
       if (!data.unit_key || !data.history || data.history.length !== 12) {
-        throw new BadRequestException('Fatura inválida ou histórico incompleto');
+        throw new BadRequestException('Fatura inválida: histórico deve ter exatamente 12 meses');
       }
+
+      
+      const existingUC = await this.prisma.unidade.findUnique({ where: { codigoDaUnidadeConsumidora: data.unit_key } });
+      if (existingUC) throw new BadRequestException('Código da unidade consumidora já cadastrado');
 
       await this.prisma.unidade.create({
         data: {
           leadId: lead.id,
           codigoDaUnidadeConsumidora: data.unit_key,
-          modeloFasico: data.phaseModel.toLowerCase(),
-          enquadramento: data.chargingModel,
+          modeloFasico: data.phaseModel?.toLowerCase() || 'monofasico',
+          enquadramento: data.chargingModel || 'B1',
           historicoDeConsumo: {
             create: data.history.map((h: any) => ({
               consumoForaPontaEmKWH: h.consumo_fp,
@@ -66,10 +60,19 @@ export class LeadsService {
     });
   }
 
-  async listar(filters: any) {
+  async listar(filtro?: string) {
+    const where = filtro ? {
+      OR: [
+        { nomeCompleto: { contains: filtro } },
+        { email: { contains: filtro } },
+        { unidades: { some: { codigoDaUnidadeConsumidora: { contains: filtro } } } },
+      ],
+    } : {};
+
     return this.prisma.lead.findMany({
-      where: filters,
+      where,
       include: { unidades: true },
+      orderBy: { createdAt: 'desc' },
     });
   }
 
