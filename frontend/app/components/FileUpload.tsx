@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Button } from './Button';
 
 interface FileUploadProps {
   label: string;
@@ -10,6 +9,7 @@ interface FileUploadProps {
   files: File[];
   onChange: (files: File[]) => void;
   error?: string;
+  darkMode?: boolean; // Nova prop para modo escuro
 }
 
 export function FileUpload({
@@ -19,6 +19,7 @@ export function FileUpload({
   files,
   onChange,
   error,
+  darkMode = false,
 }: FileUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -67,10 +68,10 @@ export function FileUpload({
 
   return (
     <div className="w-full">
-      <label className="block text-sm font-bold text-text-primary mb-1">{label}</label>
+      <label className={`block text-sm font-bold mb-1 ${darkMode ? 'text-white' : 'text-text-primary'}`}>{label}</label>
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-          dragActive ? 'border-primary bg-primary-light' : 'border-gray-300'
+          dragActive ? 'border-primary bg-primary-light' : darkMode ? 'border-white/50 bg-white/10' : 'border-gray-300'
         } ${error ? 'border-error' : ''}`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -85,17 +86,17 @@ export function FileUpload({
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
         />
-        <p className="text-text-secondary mb-2">
+        <p className={darkMode ? 'text-white/80 mb-2' : 'text-text-secondary mb-2'}>
           Arraste arquivos aqui ou{' '}
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="text-text-primary hover:text-primary underline font-medium transition-colors cursor-pointer"
+            className={darkMode ? 'text-white hover:text-primary underline font-medium transition-colors cursor-pointer' : 'text-text-primary hover:text-primary underline font-medium transition-colors cursor-pointer'}
           >
             clique para selecionar
           </button>
         </p>
-        <p className="text-sm text-text-secondary">Formatos aceitos: PDF</p>
+        <p className={darkMode ? 'text-sm text-white/70' : 'text-sm text-text-secondary'}>Formatos aceitos: PDF</p>
       </div>
       {files.length > 0 && (
         <div className="mt-4 space-y-2">

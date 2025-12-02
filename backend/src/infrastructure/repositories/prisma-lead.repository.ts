@@ -89,7 +89,7 @@ export class PrismaLeadRepository implements ILeadRepository {
 
     if (filtros?.email) {
       where.email = {
-        contains: filtros.email,
+        equals: filtros.email,
       };
     }
 
@@ -97,7 +97,7 @@ export class PrismaLeadRepository implements ILeadRepository {
       where.unidades = {
         some: {
           codigoDaUnidadeConsumidora: {
-            contains: filtros.codigoUnidade,
+            equals: filtros.codigoUnidade,
           },
         },
       };

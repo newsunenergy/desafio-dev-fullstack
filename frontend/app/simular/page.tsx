@@ -141,8 +141,8 @@ export default function SimularPage() {
   return (
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-card-white shadow rounded-lg p-8">
-          <h1 className="text-3xl font-bold text-text-primary mb-6 text-center">Simulador de Compensação Energética</h1>
+        <div className="bg-card-white shadow-lg rounded-2xl p-8">
+          <h1 className="text-3xl font-bold text-white mb-6 text-center">Simulador de Compensação Energética</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -152,6 +152,7 @@ export default function SimularPage() {
               value={formData.nomeCompleto}
               onChange={(e) => setFormData({ ...formData, nomeCompleto: e.target.value })}
               error={errors.nomeCompleto}
+              darkMode={true}
               required
             />
 
@@ -162,6 +163,7 @@ export default function SimularPage() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               error={errors.email}
+              darkMode={true}
               required
             />
 
@@ -172,6 +174,7 @@ export default function SimularPage() {
               value={formData.telefone}
               onChange={handleTelefoneChange}
               error={errors.telefone}
+              darkMode={true}
               required
               maxLength={15}
             />
@@ -183,6 +186,7 @@ export default function SimularPage() {
               files={arquivos}
               onChange={setArquivos}
               error={errors.arquivos}
+              darkMode={true}
             />
 
             {errors.submit && (

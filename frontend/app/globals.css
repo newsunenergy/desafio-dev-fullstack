@@ -36,7 +36,16 @@
 
 /* Classe customizada para substituir bg-white */
 .bg-card-white {
-  background-color: var(--bg-white);
+  background-color: rgba(0, 0, 0, 0.4) !important; /* Cinza escuro semi-transparente */
+  backdrop-filter: blur(10px); /* Efeito de blur para modernidade */
+  border-radius: 16px; /* Bordas mais arredondadas */
+}
+
+/* Classe para cards claros (listagem) */
+.bg-card-light {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
 }
 
 @theme {
@@ -93,7 +102,7 @@ textarea::placeholder {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(242, 242, 242, 0.75);
+  background: rgba(0, 0, 0, 0.2); /* Overlay mais escuro mas menos opaco para fundo mais vivo */
   z-index: 0;
 }
 

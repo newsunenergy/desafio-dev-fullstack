@@ -28,7 +28,7 @@ export default function ListagemPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  const carregarSimulacoes = async () => {
+  const carregarSimulacoes = async (filtrosParaUsar = filtros) => {
     setLoading(true);
     try {
       const filtrosLimpos: {
@@ -36,17 +36,22 @@ export default function ListagemPage() {
         email?: string;
         codigoUnidade?: string;
       } = {};
-      if (filtros.nome.trim()) filtrosLimpos.nome = filtros.nome.trim();
-      if (filtros.email.trim()) filtrosLimpos.email = filtros.email.trim();
-      if (filtros.codigoUnidade.trim())
-        filtrosLimpos.codigoUnidade = filtros.codigoUnidade.trim();
+      
+      if (filtrosParaUsar.nome.trim()) filtrosLimpos.nome = filtrosParaUsar.nome.trim();
+      if (filtrosParaUsar.email.trim()) filtrosLimpos.email = filtrosParaUsar.email.trim();
+      if (filtrosParaUsar.codigoUnidade.trim())
+        filtrosLimpos.codigoUnidade = filtrosParaUsar.codigoUnidade.trim();
 
       const data = await simulacaoApi.listar(
         Object.keys(filtrosLimpos).length > 0 ? filtrosLimpos : undefined,
       );
-      setLeads(data);
+      
+      // Garantir que sempre define o array (mesmo que vazio)
+      setLeads(data || []);
     } catch (error) {
       console.error('Erro ao carregar simulações:', error);
+      // Em caso de erro, limpar a lista
+      setLeads([]);
     } finally {
       setLoading(false);
     }
@@ -61,16 +66,18 @@ export default function ListagemPage() {
   };
 
   const limparFiltros = () => {
-    setFiltros({ nome: '', email: '', codigoUnidade: '' });
-    setTimeout(() => carregarSimulacoes(), 100);
+    const filtrosVazios = { nome: '', email: '', codigoUnidade: '' };
+    setFiltros(filtrosVazios);
+    // Carregar imediatamente com filtros vazios
+    carregarSimulacoes(filtrosVazios);
   };
 
   return (
     <div className="min-h-screen bg-energy-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-card-white shadow rounded-lg p-8">
+        <div className="bg-card-white shadow-lg rounded-2xl p-8">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-text-primary">Listagem de Simulações</h1>
+            <h1 className="text-3xl font-bold text-white">Listagem de Simulações</h1>
             <Button variant="primary" onClick={() => router.push('/simular')}>
               Nova Simulação
             </Button>
@@ -84,6 +91,7 @@ export default function ListagemPage() {
               value={filtros.nome}
               onChange={(e) => handleFiltroChange('nome', e.target.value)}
               placeholder="Filtrar por nome"
+              darkMode={true}
             />
             <Input
               label="Email"
@@ -91,6 +99,7 @@ export default function ListagemPage() {
               value={filtros.email}
               onChange={(e) => handleFiltroChange('email', e.target.value)}
               placeholder="Filtrar por email"
+              darkMode={true}
             />
             <Input
               label="Código da Unidade"
@@ -98,6 +107,7 @@ export default function ListagemPage() {
               value={filtros.codigoUnidade}
               onChange={(e) => handleFiltroChange('codigoUnidade', e.target.value)}
               placeholder="Filtrar por código"
+              darkMode={true}
             />
             <div className="flex gap-2 md:col-span-3">
               <Button onClick={aplicarFiltros} className="flex-1">
@@ -112,53 +122,53 @@ export default function ListagemPage() {
           {/* Tabela */}
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-text-secondary">Carregando...</p>
+              <p className="text-white/80">Carregando...</p>
             </div>
           ) : leads.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-text-secondary">Nenhuma simulação encontrada.</p>
+              <p className="text-white/80">Nenhuma simulação encontrada.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-white/20">
+                <thead className="bg-white/10">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
                       Nome
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
                       Telefone
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
                       Unidades
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/90 uppercase tracking-wider">
                       Ações
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white/5 divide-y divide-white/20">
                   {leads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    <tr key={lead.id} className="hover:bg-white/10 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         {lead.nomeCompleto}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         {lead.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         {lead.telefone}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         {lead.unidades.length} unidade(s)
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={() => router.push(`/listagem/${lead.id}`)}
-                          className="text-text-primary hover:text-primary font-medium transition-colors cursor-pointer"
+                          className="text-white hover:text-primary font-medium transition-colors cursor-pointer"
                         >
                           Ver Detalhes
                         </button>
