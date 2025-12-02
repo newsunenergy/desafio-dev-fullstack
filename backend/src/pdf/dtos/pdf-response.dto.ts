@@ -1,4 +1,4 @@
-import { ConsumoItemDto } from './invoice-item.dto';
+import { ConsumoItemDto } from './consumo-item.dto';
 
 export interface PdfResponseDto {
   valor: number;
