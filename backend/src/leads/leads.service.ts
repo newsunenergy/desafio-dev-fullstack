@@ -55,9 +55,11 @@ export class LeadsService {
       invoice: ConsumptionHistory[];
     },
   ): Promise<CreateLeadResponseDto> {
-    if (!createDto.invoice || createDto.invoice.length !== 12) {
+    const last12Invoices = createDto.invoice.slice(-12);
+
+    if (last12Invoices.length === 0) {
       throw new ValidationError({
-        message: 'Histórico de consumo deve conter exatamente 12 meses.',
+        message: 'Não há histórico de consumo para a unidade informada.',
       });
     }
 
@@ -81,7 +83,7 @@ export class LeadsService {
 
     const unit = this.unitRepo.create({
       codigoDaUnidadeConsumidora: createDto.unitKey,
-      historicoDeConsumoEmKWH: createDto.invoice,
+      historicoDeConsumoEmKWH: last12Invoices,
       amount: createDto.amount,
       barcode: createDto.barcode,
       chargingModel: createDto.chargingModel,
