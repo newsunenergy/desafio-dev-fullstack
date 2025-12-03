@@ -1,33 +1,46 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
-  OneToMany,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Unit } from './unit.entity';
 
-@Entity('leads')
+@Entity({ name: 'leads' })
 export class Lead {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 191 })
-  full_name: string;
+  @Column()
+  name: string;
 
-  @Column({ type: 'varchar', length: 191, unique: true })
+  @Column()
   email: string;
 
-  @Column({ type: 'varchar', length: 191 })
+  @Column()
   phone: string;
 
+  @Column('decimal', { precision: 12, scale: 2, nullable: true })
+  amount?: number;
+
+  @Column({ nullable: true })
+  barcode?: string;
+
+  @Column({ nullable: true })
+  chargingModel?: string;
+
+  @Column({ nullable: true })
+  phaseModel?: string;
+
+  @Column({ nullable: true })
+  unitKey?: string;
+
+  @Column({ nullable: true })
+  energyCompanyId?: string;
+
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
-
-  @OneToMany(() => Unit, (unit) => unit.lead, { cascade: true })
-  units: Unit[];
+  updatedAt: Date;
 }

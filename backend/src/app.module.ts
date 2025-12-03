@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LeadsModule } from './leads/leads.module';
 import { PdfModule } from './pdf/pdf.module';
+import { LeadsController } from './leads/leads.controller';
+import { PdfController } from './pdf/pdf.controller';
+import { LeadsService } from './leads/leads.service';
+import { PdfService } from './pdf/pdf.service';
 
 @Module({
   imports: [
@@ -12,7 +16,7 @@ import { PdfModule } from './pdf/pdf.module';
     LeadsModule,
     PdfModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [LeadsController, PdfController],
+  providers: [LeadsService, PdfService],
 })
 export class AppModule {}
