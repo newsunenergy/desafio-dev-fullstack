@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Navbar, MobileNavbar } from "./components";
 
 const poppins = Poppins({
   weight: ["500", "600"],
@@ -21,8 +22,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${poppins.variable}`}>
-      <body className="bg-white text-gray-600">
-        <main className="w-full">{children}</main>
+      <body className="bg-gray-50 text-gray-600">
+        <div className="hidden md:block">
+          <Navbar />
+        </div>
+        <div className="md:hidden">
+          <MobileNavbar />
+        </div>
+        <main className="w-full md:pt-0 pt-20">{children}</main>
       </body>
     </html>
   );
