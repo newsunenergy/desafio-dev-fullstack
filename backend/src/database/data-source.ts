@@ -16,3 +16,23 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: true,
 });
+
+export const databaseProviders = [
+  {
+    provide: 'DATA_SOURCE',
+    useFactory: async () => {
+      if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+      }
+      return AppDataSource;
+    },
+  },
+];
+
+export const leadProviders = [
+  {
+    provide: 'LEAD_REPOSITORY',
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(Lead),
+    inject: ['DATA_SOURCE'],
+  },
+];
