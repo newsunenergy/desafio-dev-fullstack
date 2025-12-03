@@ -2,46 +2,39 @@ import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
-  BadRequestException,
+  HttpException,
+  Logger,
 } from '@nestjs/common';
-import { ValidationError } from './errors';
+import { HttpErrorJSON } from './errors';
 
-@Catch(BadRequestException)
-export class ValidationFilter implements ExceptionFilter {
-  catch(exception: BadRequestException, host: ArgumentsHost) {
+interface CustomException extends HttpException {
+  toJSON(): HttpErrorJSON;
+}
+
+function isCustomException(
+  exception: HttpException,
+): exception is CustomException {
+  return (
+    typeof (exception as unknown as Record<string, unknown>).toJSON ===
+    'function'
+  );
+}
+
+@Catch(HttpException)
+export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionsFilter.name);
+
+  catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<import('express').Response>();
+    const status = exception.getStatus();
 
-    const exceptionResponse = exception.getResponse();
+    const responseData: HttpErrorJSON | Record<string, unknown> | string =
+      isCustomException(exception)
+        ? exception.toJSON()
+        : (exception.getResponse() as Record<string, unknown> | string);
 
-    let message: string | string[];
-
-    if (
-      typeof exceptionResponse === 'object' &&
-      exceptionResponse !== null &&
-      'message' in exceptionResponse
-    ) {
-      const extracted = (exceptionResponse as { message: unknown }).message;
-
-      if (Array.isArray(extracted)) {
-        message = extracted.filter((m): m is string => typeof m === 'string');
-      } else if (typeof extracted === 'string') {
-        message = extracted;
-      } else {
-        message = 'Erro de validação desconhecido.';
-      }
-    } else if (typeof exceptionResponse === 'string') {
-      message = exceptionResponse;
-    } else {
-      message = 'Erro de validação desconhecido.';
-    }
-
-    const messageText = Array.isArray(message) ? message.join(', ') : message;
-
-    response.status(400).json(
-      new ValidationError({
-        message: messageText,
-      }).toJSON(),
-    );
+    this.logger.debug(`Exception caught: ${JSON.stringify(responseData)}`);
+    response.status(status).json(responseData);
   }
 }
