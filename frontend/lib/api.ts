@@ -49,7 +49,9 @@ export const api = {
       throw new Error("Erro ao listar simulações");
     }
 
-    return response.json();
+    const data = await response.json();
+
+    return data;
   },
 
   async getLeadById(id: string): Promise<Lead> {
