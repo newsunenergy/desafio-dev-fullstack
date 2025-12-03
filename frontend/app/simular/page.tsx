@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Input } from "@/app/components";
 import { api } from "@/lib/api";
-import { contactFormSchema } from "@/lib/form-schema";
+import { validateFormSchema } from "@/lib/form-schema";
 import { ZodError } from "zod";
 
 export default function SimularPage() {
@@ -30,7 +30,7 @@ export default function SimularPage() {
     setErrors({ name: "", email: "", phone: "", file: "" });
 
     try {
-      contactFormSchema.parse({
+      validateFormSchema.parse({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
