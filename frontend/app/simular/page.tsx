@@ -3,14 +3,14 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Input } from "@/app/components";
-import { api } from "@/lib/api";
+import { useCreateLead } from "@/lib/hooks/use-leads";
 import { validateFormSchema } from "@/lib/form-schema";
 import { ZodError } from "zod";
 import toast from "react-hot-toast";
 
 export default function SimularPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const createLeadMutation = useCreateLead();
   const [file, setFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
@@ -64,25 +64,25 @@ export default function SimularPage() {
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      await api.createLead({
+    createLeadMutation.mutate(
+      {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         file,
-      });
-
-      toast.success("Simulação criada com sucesso!");
-      setTimeout(() => router.push("/listagem?success=true"), 500);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro ao criar simulação";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success("Simulação criada com sucesso!");
+          setTimeout(() => router.push("/listagem?success=true"), 500);
+        },
+        onError: (error) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Erro ao criar simulação";
+          toast.error(errorMessage);
+        },
+      }
+    );
   };
 
   return (
@@ -100,7 +100,7 @@ export default function SimularPage() {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             error={errors.name}
-            disabled={isLoading}
+            disabled={createLeadMutation.isPending}
           />
 
           <Input
@@ -112,7 +112,7 @@ export default function SimularPage() {
               setFormData({ ...formData, email: e.target.value })
             }
             error={errors.email}
-            disabled={isLoading}
+            disabled={createLeadMutation.isPending}
           />
 
           <Input
@@ -124,7 +124,7 @@ export default function SimularPage() {
               setFormData({ ...formData, phone: e.target.value })
             }
             error={errors.phone}
-            disabled={isLoading}
+            disabled={createLeadMutation.isPending}
           />
 
           <div>
@@ -140,7 +140,7 @@ export default function SimularPage() {
                   setErrors((prev) => ({ ...prev, file: "" }));
                 }
               }}
-              disabled={isLoading}
+              disabled={createLeadMutation.isPending}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 disabled:opacity-50"
             />
             {file && (
@@ -153,8 +153,12 @@ export default function SimularPage() {
             )}
           </div>
 
-          <Button type="submit" disabled={isLoading} className="w-full mt-6">
-            {isLoading ? "Enviando..." : "Enviar Simulação"}
+          <Button
+            type="submit"
+            disabled={createLeadMutation.isPending}
+            className="w-full mt-6"
+          >
+            {createLeadMutation.isPending ? "Enviando..." : "Enviar Simulação"}
           </Button>
         </form>
 

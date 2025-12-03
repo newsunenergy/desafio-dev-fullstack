@@ -3,60 +3,38 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Input, LeadCard } from "@/app/components";
-import { api } from "@/lib/api";
-import type { Lead } from "@/types";
+import { useListLeads } from "@/lib/hooks/use-leads";
+import { useLeadsFilterStore } from "@/lib/stores/leads-filter";
 import toast from "react-hot-toast";
 
 export default function ListagemPage() {
   const searchParams = useSearchParams();
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(!!searchParams.get("success"));
 
-  const [filters, setFilters] = useState({
-    name: "",
-    email: "",
-    codigoDaUnidadeConsumidora: "",
-  });
+  // Zustand store para filtros
+  const filters = useLeadsFilterStore((state) => state.filters);
+  const setFilters = useLeadsFilterStore((state) => state.setFilters);
+  const clearFilters = useLeadsFilterStore((state) => state.clearFilters);
+
+  // TanStack Query
+  const { data: leads = [], isLoading, error } = useListLeads(filters);
 
   useEffect(() => {
     if (showSuccess) {
-      toast.success("Simulação criada com sucesso!");
-      const timer = setTimeout(() => setShowSuccess(false), 5000);
-      return () => clearTimeout(timer);
+      setShowSuccess(false);
     }
   }, [showSuccess]);
 
   useEffect(() => {
-    const fetchLeads = async () => {
-      setIsLoading(true);
-      try {
-        const data = await api.listLeads({
-          name: filters.name || undefined,
-          email: filters.email || undefined,
-          codigoDaUnidadeConsumidora:
-            filters.codigoDaUnidadeConsumidora || undefined,
-        });
-        setLeads(data);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Erro ao carregar simulações";
-        toast.error(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const timer = setTimeout(fetchLeads, 300);
-    return () => clearTimeout(timer);
-  }, [filters]);
+    if (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro ao carregar simulações";
+      toast.error(errorMessage);
+    }
+  }, [error]);
 
   const handleClearFilters = () => {
-    setFilters({
-      name: "",
-      email: "",
-      codigoDaUnidadeConsumidora: "",
-    });
+    clearFilters();
     toast("Filtros limpos", { icon: "🔄" });
   };
 
@@ -77,16 +55,14 @@ export default function ListagemPage() {
               label="Nome"
               placeholder="Filtrar por nome..."
               value={filters.name}
-              onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+              onChange={(e) => setFilters({ name: e.target.value })}
             />
 
             <Input
               label="Email"
               placeholder="Filtrar por email..."
               value={filters.email}
-              onChange={(e) =>
-                setFilters({ ...filters, email: e.target.value })
-              }
+              onChange={(e) => setFilters({ email: e.target.value })}
             />
 
             <Input
@@ -94,10 +70,7 @@ export default function ListagemPage() {
               placeholder="Filtrar por código..."
               value={filters.codigoDaUnidadeConsumidora}
               onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  codigoDaUnidadeConsumidora: e.target.value,
-                })
+                setFilters({ codigoDaUnidadeConsumidora: e.target.value })
               }
             />
           </div>
