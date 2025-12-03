@@ -69,7 +69,7 @@ export class LeadsService {
 
     if (existingUnit) {
       throw new ValidationError({
-        message: 'Código da unidade consumidora já existe no sistema.',
+        message: 'Unidade consumidora já cadastrada no sistema.',
       });
     }
 
