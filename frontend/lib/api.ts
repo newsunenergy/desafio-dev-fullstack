@@ -2,6 +2,13 @@ import type { CreateLeadRequest, CreateLeadResponse, Lead } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
+interface ApiError {
+  name?: string;
+  message?: string;
+  action?: string;
+  status_code?: number;
+}
+
 export const api = {
   async createLead(data: CreateLeadRequest): Promise<CreateLeadResponse> {
     const formData = new FormData();
@@ -16,8 +23,14 @@ export const api = {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Erro ao criar simulação");
+      let errorMessage = "Erro ao criar simulação";
+      try {
+        const errorData = (await response.json()) as ApiError;
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        errorMessage = "Erro ao criar simulação";
+      }
+      throw new Error(errorMessage);
     }
 
     return response.json();
@@ -46,7 +59,14 @@ export const api = {
     });
 
     if (!response.ok) {
-      throw new Error("Erro ao listar simulações");
+      let errorMessage = "Erro ao listar simulações";
+      try {
+        const errorData = (await response.json()) as ApiError;
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        errorMessage = "Erro ao listar simulações";
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
@@ -60,7 +80,14 @@ export const api = {
     });
 
     if (!response.ok) {
-      throw new Error("Erro ao obter simulação");
+      let errorMessage = "Erro ao obter simulação";
+      try {
+        const errorData = (await response.json()) as ApiError;
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        errorMessage = "Erro ao obter simulação";
+      }
+      throw new Error(errorMessage);
     }
 
     return response.json();

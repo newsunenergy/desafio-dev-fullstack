@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar, MobileNavbar } from "./components";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ["500", "600"],
@@ -30,6 +31,17 @@ export default function RootLayout({
           <MobileNavbar />
         </div>
         <main className="w-full md:pt-0 pt-20">{children}</main>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#059669",
+              color: "#fff",
+              fontWeight: "bold",
+            },
+          }}
+        />
       </body>
     </html>
   );

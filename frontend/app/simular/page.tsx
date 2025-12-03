@@ -6,11 +6,11 @@ import { Button, Input } from "@/app/components";
 import { api } from "@/lib/api";
 import { validateFormSchema } from "@/lib/form-schema";
 import { ZodError } from "zod";
+import toast from "react-hot-toast";
 
 export default function SimularPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
@@ -52,14 +52,15 @@ export default function SimularPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
 
     if (!validateForm()) {
+      toast.error("Verifique os erros no formulário");
       return;
     }
 
     if (!file) {
       setErrors((prev) => ({ ...prev, file: "Arquivo é obrigatório" }));
+      toast.error("Selecione um arquivo PDF");
       return;
     }
 
@@ -73,14 +74,12 @@ export default function SimularPage() {
         file,
       });
 
-      // Redireciona para listagem após sucesso
-      router.push("/listagem?success=true");
+      toast.success("Simulação criada com sucesso!");
+      setTimeout(() => router.push("/listagem?success=true"), 500);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Erro ao criar simulação. Tente novamente."
-      );
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro ao criar simulação";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -92,12 +91,6 @@ export default function SimularPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-6">
           Nova Simulação
         </h1>
-
-        {error && (
-          <div className="mb-6 rounded-md bg-red-50 p-4 text-sm text-red-700 border border-red-200">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input

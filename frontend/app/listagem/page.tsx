@@ -5,12 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { Input, LeadCard } from "@/app/components";
 import { api } from "@/lib/api";
 import type { Lead } from "@/types";
+import toast from "react-hot-toast";
 
 export default function ListagemPage() {
   const searchParams = useSearchParams();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string>("");
   const [showSuccess, setShowSuccess] = useState(!!searchParams.get("success"));
 
   const [filters, setFilters] = useState({
@@ -21,6 +21,7 @@ export default function ListagemPage() {
 
   useEffect(() => {
     if (showSuccess) {
+      toast.success("Simulação criada com sucesso!");
       const timer = setTimeout(() => setShowSuccess(false), 5000);
       return () => clearTimeout(timer);
     }
@@ -29,7 +30,6 @@ export default function ListagemPage() {
   useEffect(() => {
     const fetchLeads = async () => {
       setIsLoading(true);
-      setError("");
       try {
         const data = await api.listLeads({
           name: filters.name || undefined,
@@ -39,9 +39,9 @@ export default function ListagemPage() {
         });
         setLeads(data);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erro ao carregar simulações"
-        );
+        const errorMessage =
+          err instanceof Error ? err.message : "Erro ao carregar simulações";
+        toast.error(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -57,6 +57,7 @@ export default function ListagemPage() {
       email: "",
       codigoDaUnidadeConsumidora: "",
     });
+    toast("Filtros limpos", { icon: "🔄" });
   };
 
   return (
@@ -66,19 +67,6 @@ export default function ListagemPage() {
         <p className="text-gray-600 mb-8">
           Consulte todas as simulações registradas
         </p>
-
-        {showSuccess && (
-          <div className="mb-6 rounded-md bg-green-50 p-4 text-sm text-green-700 border border-green-200 flex items-start">
-            <span className="mr-3">✓</span>
-            <div>
-              <p className="font-medium">Simulação criada com sucesso!</p>
-              <p className="text-green-600 text-xs mt-1">
-                Sua simulação foi registrada e está disponível na listagem
-                abaixo.
-              </p>
-            </div>
-          </div>
-        )}
 
         {/* Filtros */}
         <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
@@ -121,12 +109,6 @@ export default function ListagemPage() {
             Limpar filtros
           </button>
         </div>
-
-        {error && (
-          <div className="mb-6 rounded-md bg-red-50 p-4 text-sm text-red-700 border border-red-200">
-            {error}
-          </div>
-        )}
 
         {isLoading ? (
           <div className="text-center py-12">
