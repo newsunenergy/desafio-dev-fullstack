@@ -1,5 +1,5 @@
+import { Lead } from 'src/leads/entities/lead.entity';
 import { DataSource } from 'typeorm';
-import { Lead } from './leads/entities/lead.entity';
 
 export const databaseProviders = [
   {

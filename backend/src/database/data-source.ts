@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { Lead } from './leads/entities/lead.entity';
+import { Lead } from 'src/leads/entities/lead.entity';
 
 dotenv.config({ path: '.env.development' });
 
