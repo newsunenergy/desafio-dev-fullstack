@@ -6,8 +6,15 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const frontUrl =
+    process.env.NODE_ENV === 'production'
+      ? process.env.FRONT_URL
+      : process.env.FRONT_URL_DEV || 'http://localhost:3000';
+
+  console.log(`🔐 CORS enabled for: ${frontUrl}`);
+
   app.enableCors({
-    origin: process.env.FRONT_END_URL_DEV || 'http://localhost:3000',
+    origin: frontUrl,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
