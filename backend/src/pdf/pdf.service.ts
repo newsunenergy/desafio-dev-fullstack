@@ -3,14 +3,23 @@ import FormData from 'form-data';
 import fetch, { Response } from 'node-fetch';
 import { ExternalPdfResponseDto } from './dtos/pdf-response.dto';
 import { ConsumptionItemDto } from './dtos/consumption-item.dto';
-import { ServiceError, ValidationError } from 'src/core/errors';
+import { ConfigError, ServiceError, ValidationError } from 'src/core/errors';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PdfService {
   private readonly logger = new Logger(PdfService.name);
-  private readonly EXTERNAL_API_URL =
-    process.env.MAGIC_PDF_URL ??
-    'https://magic-pdf.solarium.newsun.energy/v1/magic-pdf';
+  private readonly EXTERNAL_API_URL: string;
+
+  constructor(private readonly configService: ConfigService) {
+    const url = this.configService.get<string>('MAGIC_PDF_URL');
+    if (!url) {
+      throw new ConfigError({
+        message: 'MAGIC_PDF_URL deve ser definido no ambiente',
+      });
+    }
+    this.EXTERNAL_API_URL = url;
+  }
 
   async decodeInvoiceFromBuffer(
     fileBuffer: Buffer,
@@ -34,17 +43,17 @@ export class PdfService {
       });
     } catch (err) {
       this.logger.error(
-        `Network error when calling external PDF API: ${(err as Error).message}`,
+        `Erro de rede ao chamar a API de PDF externa: ${(err as Error).message}`,
       );
       throw new ServiceError({
-        message: 'Erro ao acessar serviço de processamento de faturas.',
+        message: 'Erro ao acessar o serviço de processamento de faturas.',
       });
     }
 
     if (!response.ok) {
       const text = await response.text().catch(() => '');
       this.logger.error(
-        `External PDF API returned non-ok status ${response.status}: ${text}`,
+        `A API externa de PDF retornou um status não-OK ${response.status}: ${text}`,
       );
 
       throw new ServiceError({
@@ -53,15 +62,17 @@ export class PdfService {
     }
 
     const raw = await response.text();
-    this.logger.debug(`Raw response from external PDF API: ${raw}`);
+    this.logger.debug(`Resposta bruta de um PDF externo da API: ${raw}`);
 
     let parsed: unknown;
     try {
       parsed = JSON.parse(raw) as ExternalPdfResponseDto;
     } catch {
-      this.logger.error('External PDF API returned non-JSON response');
+      this.logger.error(
+        'A API externa de PDF retornou uma resposta diferente de um JSON',
+      );
       throw new ValidationError({
-        message: 'Resposta da API externa em formato inesperado.',
+        message: 'Resposta da API externa em um formato inesperado.',
       });
     }
 
@@ -72,7 +83,7 @@ export class PdfService {
       !('invoice' in parsed)
     ) {
       this.logger.error(
-        'External PDF API response missing required fields',
+        'Resposta da API externa de PDF sem campos obrigatórios',
         parsed as any,
       );
       throw new ValidationError({
