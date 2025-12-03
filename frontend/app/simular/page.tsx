@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Input } from "@/app/components";
 import { api } from "@/lib/api";
+import { contactFormSchema } from "@/lib/form-schema";
+import { ZodError } from "zod";
 
 export default function SimularPage() {
   const router = useRouter();
@@ -25,30 +27,27 @@ export default function SimularPage() {
   });
 
   const validateForm = (): boolean => {
-    const newErrors = { name: "", email: "", phone: "", file: "" };
+    setErrors({ name: "", email: "", phone: "", file: "" });
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+    try {
+      contactFormSchema.parse({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        file: file,
+      });
+      return true;
+    } catch (err) {
+      if (err instanceof ZodError) {
+        const newErrors = { name: "", email: "", phone: "", file: "" };
+        err.issues.forEach((issue) => {
+          const field = issue.path[0] as keyof typeof newErrors;
+          newErrors[field] = issue.message;
+        });
+        setErrors(newErrors);
+      }
+      return false;
     }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email inválido";
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Telefone é obrigatório";
-    }
-
-    if (!file) {
-      newErrors.file = "Arquivo PDF é obrigatório";
-    } else if (file.type !== "application/pdf") {
-      newErrors.file = "Apenas arquivos PDF são permitidos";
-    }
-
-    setErrors(newErrors);
-    return Object.values(newErrors).every((err) => err === "");
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
