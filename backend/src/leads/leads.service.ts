@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Lead } from './entities/lead.entity';
 import { CreateLeadDto } from './dto/create-lead.dto';
@@ -9,7 +8,7 @@ import { ValidationError } from 'src/core/errors';
 @Injectable()
 export class LeadsService {
   constructor(
-    @InjectRepository(Lead)
+    @Inject('LEAD_REPOSITORY')
     private readonly repo: Repository<Lead>,
   ) {}
 
