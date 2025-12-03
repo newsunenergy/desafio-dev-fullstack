@@ -1,4 +1,5 @@
 import { Unit } from "@/types";
+import { ConsumptionHistoryExpanded } from "./ConsumptionHistoryExpanded";
 
 interface LeadCardProps {
   id: string;
@@ -17,7 +18,7 @@ export function LeadCard({
   units,
   createdAt,
 }: LeadCardProps) {
-  const unit = units[0]; // Assume lead has at least 1 unit
+  const unit = units[0];
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -50,11 +51,7 @@ export function LeadCard({
         </p>
       </div>
 
-      <div className="pt-3 border-t border-gray-200">
-        <span className="inline-block bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded">
-          {unit.historicoDeConsumoEmKWH.length} meses de histórico
-        </span>
-      </div>
+      <ConsumptionHistoryExpanded history={unit.historicoDeConsumoEmKWH} />
     </div>
   );
 }

@@ -3,3 +3,4 @@ export { MobileNavbar } from "./MobileNavbar";
 export { Button } from "./Button";
 export { Input } from "./Input";
 export { LeadCard } from "./LeadCard";
+export { ConsumptionHistoryExpanded } from "./ConsumptionHistoryExpanded";
