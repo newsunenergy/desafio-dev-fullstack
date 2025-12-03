@@ -3,7 +3,6 @@ import { Repository } from 'typeorm';
 import { Lead } from './entities/lead.entity';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { LeadDto } from './dto/lead.dto';
-import { ValidationError } from 'src/core/errors';
 
 @Injectable()
 export class LeadsService {
@@ -22,11 +21,6 @@ export class LeadsService {
       energyCompanyId?: string;
     },
   ): Promise<LeadDto> {
-    if (!createDto.email || !createDto.name || !createDto.phone) {
-      throw new ValidationError({
-        message: 'Nome, e-mail e telefone são obrigatórios',
-      });
-    }
     const entity = this.repo.create({
       name: createDto.name,
       email: createDto.email,

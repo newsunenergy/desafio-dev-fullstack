@@ -6,6 +6,7 @@ export class CreateLeadDto {
   name: string;
 
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @IsString()
