@@ -10,15 +10,15 @@ export type HttpErrorJSON = {
 export class InternalServerError extends HttpException {
   public action: string;
 
-  constructor({ statusCode }: { cause?: unknown; statusCode?: number }) {
-    const message = 'Um erro não esperado ocorreu.';
+  constructor({ message }: { cause?: unknown; message?: string }) {
+    const errorMessage = message ?? 'Um erro não esperado ocorreu.';
     const action = 'Entre em contato com o suporte.';
-    const status = statusCode ?? 500;
+    const status = 500;
 
     super(
       {
         name: 'InternalServerError',
-        message,
+        message: errorMessage,
         action,
         status_code: status,
       },
@@ -124,6 +124,38 @@ export class NotFoundError extends HttpException {
 
     this.name = 'NotFoundError';
     this.action = errorAction;
+  }
+
+  toJSON(): HttpErrorJSON {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.getStatus(),
+    };
+  }
+}
+
+export class ConfigError extends HttpException {
+  public action: string;
+
+  constructor({ message }: { message?: string }) {
+    const errorMessage = message ?? 'Erro de configuração da aplicação.';
+    const action = 'Verifique as variáveis de ambiente necessárias.';
+    const status = 500;
+
+    super(
+      {
+        name: 'ConfigError',
+        message: errorMessage,
+        action,
+        status_code: status,
+      },
+      status,
+    );
+
+    this.name = 'ConfigError';
+    this.action = action;
   }
 
   toJSON(): HttpErrorJSON {
