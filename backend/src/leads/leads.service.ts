@@ -1,55 +1,151 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Lead } from './entities/lead.entity';
+import { Unit, ConsumptionHistory } from './entities/unit.entity';
 import { CreateLeadDto } from './dto/create-lead.dto';
-import { LeadDto } from './dto/lead.dto';
+import { LeadResponseDto } from './dto/lead-response.dto';
+import { CreateLeadResponseDto } from './dto/create-lead-response.dto';
+import { UnitDto } from './dto/unit.dto';
+import { ValidationError, NotFoundError } from 'src/core/errors';
 
 @Injectable()
 export class LeadsService {
   constructor(
     @Inject('LEAD_REPOSITORY')
-    private readonly repo: Repository<Lead>,
+    private readonly leadRepo: Repository<Lead>,
+    @Inject('UNIT_REPOSITORY')
+    private readonly unitRepo: Repository<Unit>,
   ) {}
+
+  private mapUnitToDto(unit: Unit): UnitDto {
+    return {
+      id: unit.id,
+      codigoDaUnidadeConsumidora: unit.codigoDaUnidadeConsumidora,
+      historicoDeConsumoEmKWH: unit.historicoDeConsumoEmKWH,
+      amount: Number(unit.amount),
+      barcode: unit.barcode,
+      chargingModel: unit.chargingModel,
+      phaseModel: unit.phaseModel,
+      energyCompanyId: unit.energyCompanyId,
+      createdAt: unit.createdAt,
+      updatedAt: unit.updatedAt,
+    };
+  }
+
+  private mapLeadToDto(lead: Lead): LeadResponseDto {
+    return {
+      id: lead.id,
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      units: lead.units.map((unit) => this.mapUnitToDto(unit)),
+      createdAt: lead.createdAt,
+      updatedAt: lead.updatedAt,
+    };
+  }
 
   async create(
     createDto: CreateLeadDto & {
-      amount?: number;
-      barcode?: string;
-      chargingModel?: string;
-      phaseModel?: string;
-      unitKey?: string;
-      energyCompanyId?: string;
+      amount: number;
+      barcode: string;
+      chargingModel: string;
+      phaseModel: string;
+      unitKey: string;
+      energyCompanyId: string;
+      invoice: ConsumptionHistory[];
     },
-  ): Promise<LeadDto> {
-    const entity = this.repo.create({
+  ): Promise<CreateLeadResponseDto> {
+    if (!createDto.invoice || createDto.invoice.length !== 12) {
+      throw new ValidationError({
+        message: 'Histórico de consumo deve conter exatamente 12 meses.',
+      });
+    }
+
+    const existingUnit = await this.unitRepo.findOne({
+      where: { codigoDaUnidadeConsumidora: createDto.unitKey },
+    });
+
+    if (existingUnit) {
+      throw new ValidationError({
+        message: 'Código da unidade consumidora já existe no sistema.',
+      });
+    }
+
+    const lead = this.leadRepo.create({
       name: createDto.name,
       email: createDto.email,
       phone: createDto.phone,
+    });
+
+    const savedLead = await this.leadRepo.save(lead);
+
+    const unit = this.unitRepo.create({
+      codigoDaUnidadeConsumidora: createDto.unitKey,
+      historicoDeConsumoEmKWH: createDto.invoice,
       amount: createDto.amount,
       barcode: createDto.barcode,
       chargingModel: createDto.chargingModel,
       phaseModel: createDto.phaseModel,
-      unitKey: createDto.unitKey,
       energyCompanyId: createDto.energyCompanyId,
+      leadId: savedLead.id,
+      lead: savedLead,
     });
 
-    const saved = await this.repo.save(entity);
+    const savedUnit = await this.unitRepo.save(unit);
 
-    const dto: LeadDto = {
-      id: saved.id,
-      name: saved.name,
-      email: saved.email,
-      phone: saved.phone,
-      amount: saved.amount ? Number(saved.amount) : undefined,
-      barcode: saved.barcode,
-      chargingModel: saved.chargingModel,
-      phaseModel: saved.phaseModel,
-      unitKey: saved.unitKey,
-      energyCompanyId: saved.energyCompanyId,
-      createdAt: saved.createdAt,
-      updatedAt: saved.updatedAt,
+    return {
+      lead: {
+        id: savedLead.id,
+        name: savedLead.name,
+        email: savedLead.email,
+        phone: savedLead.phone,
+        createdAt: savedLead.createdAt,
+        updatedAt: savedLead.updatedAt,
+      },
+      unit: this.mapUnitToDto(savedUnit),
     };
+  }
 
-    return dto;
+  async findAll(filters?: {
+    name?: string;
+    email?: string;
+    codigoDaUnidadeConsumidora?: string;
+  }): Promise<LeadResponseDto[]> {
+    const query = this.leadRepo
+      .createQueryBuilder('lead')
+      .leftJoinAndSelect('lead.units', 'unit');
+
+    if (filters?.name) {
+      query.andWhere('lead.name LIKE :name', { name: `%${filters.name}%` });
+    }
+
+    if (filters?.email) {
+      query.andWhere('lead.email LIKE :email', { email: `%${filters.email}%` });
+    }
+
+    if (filters?.codigoDaUnidadeConsumidora) {
+      query.andWhere('unit.codigoDaUnidadeConsumidora = :codigoUnit', {
+        codigoUnit: filters.codigoDaUnidadeConsumidora,
+      });
+    }
+
+    const leads = await query.getMany();
+
+    return leads.map((lead) => this.mapLeadToDto(lead));
+  }
+
+  async findById(id: string): Promise<LeadResponseDto> {
+    const lead = await this.leadRepo.findOne({
+      where: { id },
+      relations: ['units'],
+    });
+
+    if (!lead) {
+      throw new NotFoundError({
+        message: 'Lead não encontrado.',
+      });
+    }
+
+    return this.mapLeadToDto(lead);
   }
 }
