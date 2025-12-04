@@ -31,7 +31,7 @@ export class LeadsService {
 
       const data = response.data;
       if (!data.unit_key || !data.history || data.history.length !== 12) {
-        throw new BadRequestException('Fatura inválida: histórico deve ter exatamente 12 meses');
+        throw new BadRequestException('Fatura inválida: historico deve ter exatamente 12 meses');
       }
 
       
