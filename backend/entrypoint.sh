@@ -1,3 +1,5 @@
+#!/bin/sh
+
 wait_for_db() {
   echo "Aguardando o MySQL ficar operacional..."
   
