@@ -5,7 +5,7 @@ wait_for_db() {
     sleep 1
     echo "MySQL ainda não está pronto. Tentando novamente..."
   done
-  echo "MySQL está pronto! Continuando..."
+  echo "MySQL está pronto! Continuando...."
 }
 
 
