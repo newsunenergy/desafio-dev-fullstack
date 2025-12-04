@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_DB: ${DB_NAME?err}
+      POSTGRES_USER: ${DB_USER?err}
+      POSTGRES_PASSWORD: ${DB_PASS?err}
+    ports:
+      - "${DB_PORT?err}:5432"
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+    networks:
+      - default
+  redis:
+    container_name: redis
+    image: redis:7.0.5-alpine
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - ./docker/redis-data:/data
+    ports:
+      - "${REDIS_PORT?err}:6379"
+
+networks:
+  default:
+    driver: bridge
+volumes:
+  data:
