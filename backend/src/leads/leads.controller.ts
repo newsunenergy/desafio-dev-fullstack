@@ -12,19 +12,22 @@ import {
 import { LeadsService } from './leads.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateLeadDto } from './dto/create-lead.dto';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('Simulação de Energia Solar')
 @Controller('leads')
 export class LeadsController {
   constructor(private readonly leadsService: LeadsService) {}
 
   @Post('simular')
+  @ApiOperation({ summary: 'Enviar formulário + PDFs para criar simulação' })
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'faturas', maxCount: 10 },
     ]),
   )
   async simular(
-    @Body() body: CreateLeadDto,
+    @Body() body: CreateLeadDto,                         
     @UploadedFiles() files: { faturas?: Express.Multer.File[] },
   ) {
     if (!files?.faturas || files.faturas.length === 0) {
