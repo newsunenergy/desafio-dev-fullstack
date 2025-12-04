@@ -1,6 +1,14 @@
 import type { CreateLeadRequest, CreateLeadResponse, Lead } from "@/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const getApiBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    return `http://${host}:8080`;
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 interface ApiError {
   name?: string;
