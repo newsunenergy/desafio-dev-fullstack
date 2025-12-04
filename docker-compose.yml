@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  db:
+    container_name: db
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: 'new-sun-challenge'
+      MYSQL_ROOT_PASSWORD: 'mysql'
+      MYSQL_USER: 'caique'
+      MYSQL_PASSWORD: 'mysql'
+    networks:
+      - base
+    volumes:
+      - db-data:/var/lib/mysql
+
+  backend-new-sun:
+    container_name: backend-new-sun
+    image: node:18.17.0
+    command: npm run start:dev
+    depends_on:
+      - db
+    working_dir: /app
+    networks:
+      - base
+    ports:
+      - 4000:4000
+    volumes:
+      - ./backend/:/app
+
+  frontend-new-sun:
+    image: node:18.17.0
+    container_name: frontend-new-sun
+    command: npm run dev
+    depends_on:
+      - backend-new-sun
+    working_dir: /app
+    ports:
+      - 3333:3333
+    volumes:
+      - ./frontend-new-sun/:/app
+
+networks:
+  base:
+volumes:
+  db-data:
