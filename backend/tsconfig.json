@@ -22,5 +22,5 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*", "infra/**/*"]
+  "include": ["src/**/*", "infra/**/*", "**/__mocks__/**/*"]
 }
