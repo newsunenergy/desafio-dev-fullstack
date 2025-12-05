@@ -40,7 +40,7 @@ export class IsHistorico12MesesConstraint implements ValidatorConstraintInterfac
   }
 }
 
-// Decorators para usar no DTO
+
 export function IsModeloFasico() {
   return function (object: Object, propertyName: string) {
     registerDecorator({
