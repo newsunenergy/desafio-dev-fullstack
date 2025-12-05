@@ -35,9 +35,8 @@ simulações realizadas.
 -   NestJS 10 + TypeScript\
 -   Prisma ORM + MySQL\
 -   Multer (upload de arquivos)\
--   Axios (para integração com API Magic PDF)\
 -   class-validator + validadores customizados\
--   Swagger para documentação
+
 
 ### 🎨 **Frontend**
 
