@@ -31,7 +31,7 @@ cd desafio-dev-fullstack
 2. **Suba toda a aplicação**
 
 ```bash
-docker-compose up
+docker compose up -d
 ```
 
 3. **Aguarde o build e inicialização** (primeira execução pode levar 2-3 minutos)
