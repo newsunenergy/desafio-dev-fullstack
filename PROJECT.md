@@ -48,27 +48,27 @@ docker compose up -d
 
 ```bash
 # Subir em background
-docker-compose up -d
+docker compose up -d
 
 # Ver logs de todos os serviços
-docker-compose logs -f
+docker compose logs -f
 
 # Ver logs de um serviço específico
-docker-compose logs -f backend
-docker-compose logs -f frontend
-docker-compose logs -f mysql
+docker compose logs -f backend
+docker compose logs -f frontend
+docker compose logs -f mysql
 
 # Parar a aplicação
-docker-compose down
+docker compose down
 
 # Remover tudo (incluindo volumes)
-docker-compose down -v
+docker compose down -v
 
 # Reconstruir as imagens
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # Executar comando dentro de um container
-docker-compose exec backend npm run migration:run
+docker compose exec backend npm run migration:run
 ```
 
 ---
